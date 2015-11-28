@@ -22,7 +22,7 @@ import com.beegman.webbee.model.AppModel;
 public class Editor extends Form<Editor.editing, AppModel> {
 
 	@Override
-	protected void loadModel(editing model) {
+	protected editing loadModel(editing model) {
 		if (model.file != null) {
 			String path = new File(getConfigValue("TOPFOLDER", File.separator)).getPath();
 			String filePath = model.file.getPath();
@@ -64,6 +64,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				}
 			}
 		}
+		return model;
 	}
 
 	@Override

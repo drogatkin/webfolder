@@ -36,7 +36,7 @@ import com.beegman.webbee.model.AppModel;
 public class Editor extends Form<Editor.editing, AppModel> {
 
 	@Override
-	protected void loadModel(editing model) {
+	protected editing loadModel(editing model) {
 		if (model.file != null) {
 			String tpath = getConfigValue(Folder.TOPFOLDER, File.separator);
 			try (Folder.RequestTransalated rt = Folder.translateReq(tpath, model.file.replace(File.separatorChar, '/'));) {
@@ -83,6 +83,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				model.content = "" + e;
 			}
 		}
+		return model;
 	}
 
 	@Override
