@@ -1,0 +1,68 @@
+<!--            mobile template                -->
+<script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
+<script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
+<div><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/> &nbsp;@total@</div>
+<div style="overflow:auto;width:100%">@parents(<a class="reg_ref" href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</div>
+<div style="font-color:red">@error@</div>
+
+<form name="folder" method="POST">
+  <input type="hidden" name="path" value="@path@">
+  
+<table class="tinytable" id="folder_table">
+  <thead>
+  <tr>
+     <th class="nosort"><div style="cursor:pointer" onclick="selectAll()"><h3>X</h3></div></th>
+    <th><h3>name</h3></th><th class="nosort"><h3>info</h3></th>
+  </tr>
+  </thead>
+  <tbody>
+  @model(<tr>
+     <td><input type="checkbox" name="files" value="@element.path@"></td>
+    <td id="td_@element.name@" fileName="@element.name@">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
+        @element.name@@element.folder{@true(</a>)@}@&nbsp;&nbsp;<img src="@request.getContextPath*()*@/image/pencil.png" style="float:right" alt="Edit name" onclick="renameFile('td_@^element.name@', @element.folder@)"></td>
+    <td style="text-align:center">@element.size@/@element.last_mod?D'MM-dd-yy:HH@</td>
+  </tr>
+  )@
+  </tbody>
+</table>
+
+<script>
+  <!-- //
+	var wf_uri = '@contextpath@@request.getServletPath*()*@/Folder';
+    var wf_path = '@^path@/';
+    
+    var sorter = new TINY.table.sorter('sorter','folder_table',{
+		headclass:'head',
+		ascclass:'asc',
+		descclass:'desc',
+		evenclass:'evenrow',
+		oddclass:'oddrow',
+		evenselclass:'evenselected',
+		oddselclass:'oddselected',
+		paginate:false,
+		sortcolumn:1,
+		sortdir:1,
+		hoverid:'selectedrow',
+		init:true
+	});
+	var ico_src = '@^contextpath@/image/pencil.png';
+  // -->
+</script>
+
+<div><input type="submit" name="submit" value="Get file links">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;
+      <input type="submit" name="submit" value="Download">&nbsp;</div>
+      <div>
+      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em"> <input type="file" size="8" name="file" multiple="multiple">&nbsp;
+      <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
+      </div><div>
+      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
+      <input type="submit" name="submit" value="Edit">&nbsp;
+      <input type="text" name="folder" size="10">&nbsp;<input type="submit" name="submit" value="New folder">
+      </div>
+      </div>
+      <div>
+      <input type="submit" name="submit" value="Copy">&nbsp;
+      <input type="submit" name="submit" value="Paste">&nbsp;
+      <input type="submit" name="submit" value="Delete">&nbsp;
+       </div>
+</form>

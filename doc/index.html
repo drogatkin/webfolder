@@ -1,0 +1,150 @@
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Welcome to WebFolder 1.8</title>
+    <style type="text/css">
+        #tab_3
+        {
+            width: 723px;
+        }
+        .hl_l {font-family: 'Segoe UI Symbol'; list-style-type: none;cursor: pointer}
+        .tab {display:none }
+        .tab_sel {}
+        .style1
+        {
+            width: 20%;
+            height: 441px;
+        }
+        .style2
+        {
+            height: 441px;
+        }
+        .style3
+        {
+            height: 49px;
+        }
+    *{background:transparent !important;color:#333 !important;text-shadow:none}
+        .style4
+        {
+            font-size: 100%;
+            vertical-align: baseline;
+            list-style-type: disc;
+            list-style-position: inside;
+            border-style: none;
+            border-color: inherit;
+            border-width: 0;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script language="javascript" type="text/javascript">
+        function changetab(tabname) {
+            for (var i = 1; i < 7; i++) {
+                var te = document.getElementById('tab' + i);
+                if (te.id == tabname)
+                    te.className = 'tab_sel';
+                else
+                    te.className = 'tab';
+            }
+        }
+    </script>
+</head>
+<body onload="changetab('tab1')">
+<table style="width:100%;height:100%">
+<tr>
+ <td colspan="2" class="style3"><h1>WebFolder - Web File Manager with Benefits</h1></td>
+</tr>
+<tr>
+<td class="style1">
+<div id="left_menu" style="width:160px;height:100%">
+<ul>
+  <li class="hl_l" onclick="changetab('tab1')" >Overview</li>
+  <li class="hl_l" onclick="changetab('tab2')">Features </li>
+  <li class="hl_l" onclick="changetab('tab3')">Design</li>
+  <li class="hl_l" onclick="changetab('tab5')">Java 7</li>
+  <li class="hl_l" onclick="changetab('tab4')">Download</li>
+  <li class="hl_l" onclick="changetab('tab6')">ACE config</li>
+ </ul>
+</div>
+</td>
+<td class="style2" align="left" valign="top">
+<div id="container">
+<div id="tab1" class="tab">
+<h2>Overview</h2>
+As a software professional I always need to manage more than one computer and it is very common running different OSes and platforms on different hardware. I am not a big fan of command line tools however I am not big fan of GUI either. My favorite tool is FAR file manager which generally works well even across network, but you still need to manage to install some ftp server to make access more unified. So finally I came to an idea utilize web browser. Mostly every imaginable platform can run it, so only one part was under question is server side. 
+    Certainly I do not have luxury to install a full blown app server to run a certain 
+    server side program as PHP or Python module. Using Java servlets brings you even 
+    more trouble as installing some sophisticated tools as Tomcat and Spring. So I 
+    decided to come with something really light weight, which you can carry on single 
+    3&frac12;&quot; diskette.
+    <br />
+    I think I could achieve my goal and WebFolder is simple one file program as big 
+    as 1MB and runs on all operation systems but iOS. I do not see big deal with 
+    iOS, because the OS design prevents managing sharable file space anyway.</div>
+<div id="tab2" class="tab">
+<h2>Features</h2>
+<ul class="features">
+        <li class="style4" style="outline: 0;">Browse content of a remote machine file system</li>
+        <li class="style4" style="outline: 0;">Sorting files view by name, size and date of 
+            modification</li>
+        <li class="style4" style="outline: 0;">Create directories</li>
+        <li class="style4" style="outline: 0;">Upload and download files</li>
+        <li class="style4" style="outline: 0;">Multiple files download including directories 
+            structures</li>
+             <li class="style4" style="outline: 0;">Manipulate with ZIP content (Java 7 required)</li>
+        <li class="style4" style="outline: 0;">Multiple files upload for HTML5 capable browsers</li>
+        <li class="style4" style="outline: 0;">Rename files and directories</li>
+        <li class="style4" style="outline: 0;">Move and copy files within a remote system</li>
+        <li class="style4" style="outline: 0;">Obtain download lists</li>
+        <li class="style4" style="outline: 0;">Access environment variables of remote system</li>
+        <li class="style4" style="outline: 0;">Edit/create files of a remote system</li>
+        <li class="style4" style="outline: 0;">Delete files</li>
+        <li class="style4" style="outline: 0;">Inspect HTTP headers sent by browser</li>
+        <li class="style4" style="outline: 0;">Password protected access</li>
+        <li class="style4" style="outline: 0;">Multi windows work</li>
+        <li class="style4" style="outline: 0;">No limitation on uploaded or downloaded file size</li>
+        <li class="style4" style="outline: 0;">Editing file attributes, time and owner</li>
+        <li class="style4" style="outline: 0;">Execution commands on a target system (planned)</li>
+    </ul>
+</div>
+<div id="tab3" class="tab">
+<h2>Design</h2>
+WebBee framework was chosen. It operates page blocks which are page services underneath. So I implemented 4 major page services as
+ <ol>
+    <li>File list view based on a tabular view block</li>
+    <li>Download and zip service based on a stream block</li>
+    <li>File editing service based on a form block</li>
+    <li>Delete service based on a message block</li>
+    </ol>
+&nbsp;I have implemented both desktop and mobile service views for all services to comfortably work with the program from any device type. I had to tune a little behavior to fit in specific and bugs of mobile and desktop browsers. I made sure that my implementation has no problems to run on Dalvik VM. The implementation doesn’t use any session data so different views and operations can be performed in different windows of a browser asynchronously without interfering. 
+</div>
+<div id="tab4" class="tab">
+<h2>Download</h2>
+Download most suitable distribution from <a href="https://sourceforge.net/projects/webfolder/files/">SourceForge</a>. 
+
+</div>
+<div id="tab5" class="tab">
+<h2>Java 7</h2>
+Java 7 version of WebFolder utilizes NIO file package and Java 7 languages extension. Unfortunately nio.file implementation is a bit sluggish. On benefit side it allows operation with zip file content.
+    </div>
+<div id="tab6" class="tab">
+    <h2>Configuring ACE programmer editor</h2>
+    WebFolder is coming with preconfigured ACE editor for Java, JavaScript, batch and other common format files. However if you desire
+    to modify the set as adding new modes, or modifyng existing ones then you can use the guide.
+    <ol>
+        <li>Support editable file extensions are conigured in webfolder.properties as property <strong>ace_edit_exts</strong><br>
+        predefined value looks like: <strong>ace_edit_exts</strong>=<i>.java.js.xml.h.html.diff.c.cpp.bat.sh.json.jsp.diff.properties</i></li>
+        <li>Modify the property above providing a desirable file extensions list. Specifying the property as empty or removing it will disable ACE extension</li>
+        <li>Edit <i>edit_modes.json</i> specify JSON mapping entries for file extension and ACE mode</li>
+        <li>Copy addtional ACE modes files as needed to ace/ directory when build the project</li>
+    </ol>
+</div>
+</div>
+</td>
+</tr>
+<tr><td colspan="2" style="text-align: center;">&copy; 2015  <a href="mailto:jaddressbook@gmail.com?subject=Re WebFolder">Contact</a></td></tr>
+</table>
+
+</body>
+</html>
+        

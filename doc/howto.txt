@@ -1,0 +1,6 @@
+How to update project home page on SF.net
+sftp drogatkin@web.sourceforge.net
+
+sftp> cd /home/project-web/webfolder/htdocs
+
+sftp> put index.html

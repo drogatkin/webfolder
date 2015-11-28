@@ -1,0 +1,2 @@
+@list(@request.open_url@@.msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@.element@)#@
+)@

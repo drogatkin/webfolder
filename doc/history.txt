@@ -1,0 +1,41 @@
+WebFolder
+
+Web interfaced remote or local file system manager
+
+Releases 
+
+1.8
+- bookmarking directories
+- persistent last sort selection
+- execute commands on target system
+- syntax highlight editor
+
+1.7
+- fixed several bug including mobile misses
+- saving modified files as text with enforcing
+  local system line delimiters
+- editing access attributes for POSIX file systems
+  
+1.6 
+- search by name
+- modification watch
+- clipboard in a session
+
+1.5
+- upload progress update
+- range support with content length preset
+
+1.4
+- Java 7 version with zip management
+
+1.3
+- view and editing files support
+
+1.2
+- multiple files upload for HTML5 browsers
+
+1.1
+- text and HTML selected list
+
+1.0
+- initial version 

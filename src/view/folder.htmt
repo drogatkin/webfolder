@@ -1,0 +1,108 @@
+<script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
+<script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
+<script type="text/javascript" src="@contextpath@/js/ui.js"></script>
+<div style="position:fixed;left:20px;top:54px;"><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/>  &nbsp;&nbsp;@total@</div>
+<div><h3 style="display:inline">@parents(<a class="reg_ref" href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</h3>
+<div id="refresh_btn" style="display:inline;border:solid black 1px;margin-left:1em;visibility:hidden"><a class="reg_ref" href="@contextpath@@servletpath@/Folder@:path@"> Refresh</a></div></div>
+<form name="folder" method="post" action="@request.getRequestURI*()*@">
+
+  <input type="hidden" name="path" value="@path@">
+  <div style="position:relative;background-color:#2B3C66;padding:2px 2px 2px 2px">
+      <input type="submit" name="submit" value="Get file links">
+      <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true">text</div>
+      <input type="submit" name="submit" value="Download">&nbsp;
+      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em"> <input type="file" name="file" multiple="multiple">&nbsp;<!-- HTML5 check can be needed -->
+      <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
+      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
+      <input type="submit" name="submit" value="Edit">&nbsp;
+      <input type="text" name="folder" size="14">&nbsp;<input type="submit" name="submit" value="New folder">
+      </div>&nbsp;
+      <input type="submit" name="submit" value="Copy">&nbsp;
+      <input type="submit" name="submit" value="Paste">&nbsp;
+      <input type="submit" name="submit" value="Delete">&nbsp;      
+  </div>
+<div style="height:74%;overflow-y: scroll; overflow-x: hidden;position:fixed;width:100%">
+<table class="tinytable" id="folder_table">
+  <thead>
+  <tr>
+     <th class="nosort"><div style="cursor:pointer" onclick="selectAll()"><h3>X</h3></div></th>
+    <th><h3>name </h3> </th><th><h3>size</h3></th><th><h3>modified</h3></th><th><h3>attrs</h3></th>
+  </tr>
+  </thead>
+  <tbody style="overflow-y: scroll; overflow-x: hidden; height:72%;position:fixed">
+  @model(<tr>
+    <td><input type="checkbox" name="files" value="@element.path@" @element.unaccessible{@true(disabled)@}@></td>
+    <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
+        @element.name@@element.folder{@true(</a>)@}@</td>
+    <td style="text-align:right">@element.size@</td>
+    <td>@element.last_mod@</td>
+    <td style="text-align:center;font-family:Monospace;cursor:pointer" title="@element.owner@" onclick="updateAttrs(this,'@^element.path@', '@element.permissions@')">@element.permissions@</td>
+  </tr>)@
+  </tbody>
+</table>
+</form>
+
+@%'insert/attrset.htmt'@
+</div>
+<script>
+  <!-- //
+    var wf_uri = '@contextpath@@request.getServletPath*()*@/Folder';
+    var wf_path = '@^path@/';
+    var pageMark = '@^page-mark@';
+    var sorter = new TINY.table.sorter('sorter','folder_table',{
+		headclass:'head',
+		ascclass:'asc',
+		descclass:'desc',
+		evenclass:'evenrow',
+		oddclass:'oddrow',
+		evenselclass:'evenselected',
+		oddselclass:'oddselected',
+		paginate:false,
+		sortcolumn:1,
+		sortdir:1,
+		hoverid:'selectedrow',
+		init:true
+	});
+	
+	var didUpdate = false;
+	
+	function notifyModifications(p) {
+	   if (!p || didUpdate)
+	      return;
+	   // process arguments[]
+	   var msg = '! @title@ - ';
+	   for (var i in p)
+	       msg += i + ': ' + p[i];
+	   document.title = msg;
+	   getElement('refresh_btn').style.visibility = 'visible';
+	   try {
+	       getElement('beep-beep').play();
+	   } catch(se) {
+	       getElement('beep-beep1').play();
+	   }
+	   didUpdate = true;
+	}
+	@watchservice(
+	function initFields() { 
+        handlerUrl = wf_uri+'/ajax/CheckForModifications'+wf_path+'?page-mark='+encodeURIComponent(pageMark);
+        window.onunload = notifyUnload;
+        updateUI();
+     })@
+     
+     function notifyUnload() {
+         makeGenericAjaxCall(wf_uri+'/ajax/ReleaseWatchRequest', 'page-mark='+encodeURIComponent(pageMark), true, 
+	     function(res) {
+	         if(res == 'ok')
+	         ;
+	     });
+     }
+  // -->
+</script>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+
+<audio id="beep-beep">
+  <source src="@contextpath@/sound/chirk.mp3" type="audio/mpeg">
+  <source src="@contextpath@/sound/chirk.ogg" type="audio/ogg">
+<embed height="1" width="1" src="@contextpath@/sound/chirk.mp3" autostart="false" id="beep-beep1">
+</audio>

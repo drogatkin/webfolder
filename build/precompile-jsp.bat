@@ -1,0 +1,1 @@
+bee -- -webapp E:\projects\webfolder\src\html -v -d E:\projects\webfolder\bin\META-INF\Jasper -compile -classpath E:\projects\aldan3\build\aldan3.jar;.\build\jasper.jar;E:\projects\servlet\javax.servlet.jar 

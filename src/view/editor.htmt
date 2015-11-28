@@ -1,0 +1,52 @@
+<form name="editor" method="POST" onsubmit="store()" action="@contextpath@@servletpath@/@pageservicename@">
+<div>Editing: @model.file@</div>
+<input type="hidden" name="file" value="@model.file@">
+
+<!--div>@.ui.field*(file,java.lang.Object^@model@)*@</div-->
+@model.editor{@ace(
+<pre id="editor">@model.content@</pre>
+<input type="hidden" name="content">
+
+<script src="@contextpath@/js/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/chrome");
+makeJSONAjaxCall(window.location.origin+'@contextpath@/edit_modes.json', '', true, 
+	     function(res) {
+	         var n = document.forms.editor.file.value;
+	         var dp = n.lastIndexOf('.');
+	         if (dp > 0) {
+	           n=n.substring(dp);
+	           var mode = res[n];
+	           //alert('mode '+mode+' for '+n+' in '+res);
+	           //for (var i in res)
+	             //alert(i);
+	           if (mode)
+	             editor.getSession().setMode(mode);
+	         }
+	     });
+editor.setAutoScrollEditorIntoView(false);
+editor.setOption("maxLines", 34);
+editor.setReadOnly(@model.partial@);
+
+function store() {
+  document.forms.editor.content.value = editor.getValue();
+  return true;
+} 
+</script>
+)@
+@(<div style="margin:auto;width:100%">@.ui.field*(content,java.lang.Object^@model@)*@</div>)@}@
+
+<hr/>
+<div>
+<input type="submit" name="submit" value="Save">
+&nbsp;
+@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+&nbsp;&nbsp;
+<a href="@request.getHeader*(referer)*@">Discard</a>
+</div>
+</form>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+	

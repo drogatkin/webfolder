@@ -1,0 +1,33 @@
+WebFolder 1.8
+=============
+
+WAR deployed version
+````````````````````
+
+Drop webfolder.war in auto deploy directory 
+or process manual deployment for your favorite
+app server. TJWS or Tomcat are recommended.
+Access: http://host_name/webfolder
+
+Instant run version
+```````````````````
+
+Use command: java -jar webfolder.jar
+unless your system start it by double click
+of .jar  in GUI file manager.
+
+Access it using a link from systray, or
+http://host_name:8000/webfolder
+
+Admin screens access
+Login: admin
+Password: admin
+Change password after for better security.
+
+Change top directory to C:\ or some other
+drive on Windows, the program is coming
+precofigured for Linux top directory /
+
+Java 7 version utilizes new file io package,
+and as result allows manipulate with content 
+of zip archives, organize watches and other useful stuff. 

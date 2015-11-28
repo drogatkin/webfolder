@@ -1,0 +1,14 @@
+<!-- mobile version  -->
+<form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@">
+<div>Editing: @model.file@</div>
+<input type="hidden" name="file" value="@model.file@">
+<div>@.ui.field*(content,java.lang.Object^@model@)*@</div>
+
+<hr/>
+<div>@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+&nbsp;
+<input type="submit" name="submit" value="Save">
+&nbsp;&nbsp;&nbsp;
+<a href="@request.getHeader*(referer)*@">Discard</a>
+</div>
+</form>

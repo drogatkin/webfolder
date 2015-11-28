@@ -1,0 +1,3 @@
+wget https://raw.githubusercontent.com/ajaxorg/ace-builds/master/src-min-noconflict/ace.js
+and additions can be taken from here:
+https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict

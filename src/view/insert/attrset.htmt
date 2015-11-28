@@ -1,0 +1,91 @@
+<div style="position:absolute;background-color:#c6d5e1;display:none;z-index:99;border:1px solid black" id="attrs_div">
+<div style="width:100%;text-align:right;cursor:pointer" onclick="getElement('attrs_div').style.display='none'">x</div> 
+  <form name="attr_form">
+  <table border="0" id="attrs_tbl">
+     <tr>
+       <th>R</th>
+       <th>W</th>
+       <th>X</th>
+       <th>&nbsp;</th>
+       <th>R</th>
+       <th>W</th>
+       <th>X</th>
+       <th>&nbsp;</th>
+       <th>R</th>
+       <th>W</th>
+       <th>X</th>
+     </tr>
+     <tr id="attrs_row">
+        <td><input type="checkbox" name="attr_0" value="OWNER_READ" /></td>
+        <td><input type="checkbox" name="attr" value="OTHERS_WRITE" /></td>
+        <td><input type="checkbox" name="attr" value="OWNER_EXECUTE" /></td>
+        <td>&nbsp;</td>
+        <td><input type="checkbox" name="attr" value="GROUP_READ" /></td>
+        <td><input type="checkbox" name="attr" value="GROUP_WRITE" /></td>
+        <td><input type="checkbox" name="attr" value="GROUP_EXECUTE" /></td>
+        <td>&nbsp;</td>
+        <td><input type="checkbox" name="attr" value="OTHERS_READ" /></td>
+        <td><input type="checkbox" name="attr" value="OTHERS_WRITE" /></td>
+        <td><input type="checkbox" name="attr" value="OTHERS_EXECUTE" /></td>
+     </tr>
+  </table>
+  <input type="hidden" name="path" value="">
+  <div><input type="text" name="owner" value=""></div>
+  <div><input type="button" value="Update" onclick="processUpdAttrs()"></div>
+  </form>
+</div>
+<script>
+   var upf;
+   function updateAttrs(el,p,as) {
+      upf = el;
+      var ad = getElement('attrs_div');
+		ad.style.left =  (el.offsetParent.offsetLeft + el.offsetLeft - 28) + 'px';
+		ad.style.top =   (el.offsetParent.offsetTop + el.offsetTop + 18) + 'px'; // todo use only parent offset since in sane div
+		document.forms.attr_form.owner.value=el.title;
+		document.forms.attr_form.path.value=p;
+		var ar = getElement('attrs_row');
+		if (as.length > 1) {
+		    var c = 0;
+		   for(var i=1; i<as.length; i++) {
+		      if (c == 3 || c == 7)
+		        c++;
+		      if (c < ar.cells.length) 
+		        ar.cells[c++].firstChild.checked=as.charAt(i) != '-';
+		   }
+		}
+		ad.style.display='block';
+   }
+   
+   function processUpdAttrs() {
+       var ar = getElement('attrs_row');
+       var at = '';
+       at += getGroup(0,ar);
+       at += getGroup(4,ar);
+       at += getGroup(8,ar);
+       makeGenericAjaxCall(wf_uri+'/ajax/Chmod', 'path='+encodeURIComponent(document.forms.attr_form.path.value)+'&attr='+at+'&owner='+encodeURIComponent(document.forms.attr_form.owner.value), true, 
+	     function(res) {
+	         if(res != 'error' && upf) {
+	           upf.innerHTML=res;
+	           //upf.title=
+	         }
+	         getElement('attrs_div').style.display='none';
+	     });
+   }
+   function getGroup(i,ar) {
+     var result = '';
+     if (ar.cells[i].firstChild.checked)
+          result+='r';
+       else
+          result += '-';
+      if (ar.cells[i+1].firstChild.checked)
+          result+='w';
+       else
+          result += '-';
+      if (ar.cells[i+2].firstChild.checked)
+          result+='x';
+       else
+          result += '-';
+       return result;
+    }           
+     
+</script>
