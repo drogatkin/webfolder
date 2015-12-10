@@ -235,9 +235,11 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				if (editFile != null) {
 					Path editPath = path.resolve(editFile);
 					if (Files.isDirectory(editPath) == false) {
+						String p = getStringParameterValue("path", "", 0);
+						if (p.endsWith("/") == false)
+							p += "/";
 						try {
-							navigation = "Editor?file=" + URLEncoder.encode(
-									getStringParameterValue("path", "", 0)+'/'+editPath.getFileName().toString(), "UTF-8");
+							navigation = "Editor?file=" + URLEncoder.encode(p+editPath.getFileName().toString(), "UTF-8");
 							//log("navigation: %s path %s", null, navigation, editPath);
 							return null;
 						} catch (Exception ie) {
@@ -475,7 +477,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			Files.move(sfrom, sto, StandardCopyOption.ATOMIC_MOVE);
 			//log("anala:"+sto, null);
 			if (Files.isRegularFile(sto))
-				if (sto.getFileName().toString().endsWith(ZIP_EXT))
+				if (sto.getFileName().toString().toLowerCase().endsWith(ZIP_EXT))
 					return "oka";
 				else
 					return "okn";
@@ -624,7 +626,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				path = path.substring(tp.length() + a);
 			else
 				path = tp;
-			archive = Files.isRegularFile(p) && name.endsWith(ZIP_EXT) && p.getFileSystem().equals(FileSystems.getDefault());
+			archive = Files.isRegularFile(p) && name.toLowerCase().endsWith(ZIP_EXT) && p.getFileSystem().equals(FileSystems.getDefault());
 			try {
 				//Files.readAttributes(p, DosFileAttributes.class);
 				Map<String, Object> fa = Files.readAttributes(p,
@@ -914,10 +916,12 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		}
 		
 		sp = DataConv.ifNull(webPath, "");
+		String spl = sp.toLowerCase();
+		// TODO consider zip not case sensitive
 		// startsWith can be used
 		if (skipZip == false)
 		// TODO make it work for mixed case		
-		for (int zp = sp.indexOf(ZIP_EXT); zp > 0; zp = sp.indexOf(ZIP_EXT, zp + 1)) {
+		for (int zp = spl.indexOf(ZIP_EXT); zp > 0; zp = spl.indexOf(ZIP_EXT, zp + 1)) {
 			if (sp.length() > zp + ZIP_EXT.length())
 				if (sp.charAt(zp + ZIP_EXT.length()) == '/')
 					result.transPath = fs.getPath(topPath, sp.substring(0, zp + ZIP_EXT.length()).replace('/', psc));
