@@ -33,4 +33,14 @@ body {font:11px Verdana,Arial; margin:25px; background:#fff url(@contextpath@/im
 .page {margin-top:2px; font-style:italic}
 #selectedrow td {background:#c6d5e1}
 textarea#content {width:90%}
+@midori(
+input[type=submit]
+{
+  background-color: #DDDDDD; 
+}
+input[type=file]
+{
+  background-color: #DDDDDD; 
+})@
+.button { background-color: gray}
 /* ]]> */-->

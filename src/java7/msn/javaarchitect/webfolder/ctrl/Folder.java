@@ -448,6 +448,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			WatchUpdater wu = assureWatchUpdater();
 			pageModel.put("page-mark", wu.newMark());
 		}
+		if (userAgent != null && userAgent.toLowerCase().indexOf("midori")>= 0)
+			pageModel.put("midori", true);
 		return pageModel;
 	}
 
