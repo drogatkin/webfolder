@@ -42,5 +42,4 @@ input[type=file]
 {
   background-color: #DDDDDD; 
 })@
-.button { background-color: gray}
 /* ]]> */-->
