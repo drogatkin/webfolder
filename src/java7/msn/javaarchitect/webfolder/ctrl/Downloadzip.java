@@ -58,9 +58,9 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 						resp.setContentType("application/octet-stream"); // since going to download
 						if (userAgent.indexOf("MSIE") > 0)
 							name = URLEncoder.encode(name, CharSet.UTF8).replace('+', ' ');
-						if (name.length() > 77)
-							name = HttpUtils.quoted_printableEncode(name, Folder.DEF_CHARSET);
-						resp.setHeader("Content-disposition", "attachment; filename=\"" + name + '"');
+						//if (name.length() > 77)
+							//name = HttpUtils.quoted_printableEncode(name, Folder.DEF_CHARSET);
+						resp.setHeader("Content-disposition", "attachment; filename=\"" + name + "\"; filename*=UTF-8'"+URLEncoder.encode(name, "UTF-8"));
 					} else {
 						// figure first if type is supported
 						String ct = Files.probeContentType(p);
