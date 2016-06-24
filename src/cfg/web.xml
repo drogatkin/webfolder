@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	metadata-complete="true">
-	<description>Remote web interfaced file managerr (version 1.2)</description>
+	<description>Remote web interfaced file manager (version 1.6)</description>
 
         <filter>
 		<filter-name>BasicAuth</filter-name>
@@ -17,10 +17,16 @@
 			<param-name>PASSWORD</param-name>
 			<param-value>admin</param-value>
 		</init-param>
+		<init-param>
+			<param-name>REALM</param-name>
+			<param-value>WebFolder</param-value>
+		</init-param>
         </filter>
 	<filter-mapping>
 		<filter-name>BasicAuth</filter-name>
-	<!--	<servlet-name>webapp</servlet-name> -->
+	<!--  uncomment for full protection 
+   		<servlet-name>webapp</servlet-name>
+        -->
 		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
 
