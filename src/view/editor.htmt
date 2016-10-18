@@ -41,7 +41,7 @@ function store() {
 <div>
 <input type="submit" name="submit" value="Save">
 &nbsp;
-@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+@.ui.check*(as_text,java.lang.Object^@model@)*@ As text
 &nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@">Discard</a>
 </div>

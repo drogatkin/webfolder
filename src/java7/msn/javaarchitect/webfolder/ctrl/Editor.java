@@ -11,10 +11,14 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -59,18 +63,38 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				if (Files.isReadable(filePath)) {
 					if (Files.isDirectory(filePath) == false) {
 						//log("as  text %b%n", null, model.as_text);
-						try (InputStream is = Files.newInputStream(filePath)) {
-							long sz = Files.size(filePath);
-							model.content = Stream.streamToString(is, model.as_text ? "UTF-8" : "ISO-8859-1", maxSize);
-							if (sz >= maxSize) {
-								model.content += "\r\n<Content of the file was truncated>";
-								model.partial = true;
+						if (model.tail) {
+							try (SeekableByteChannel sbc = Files.newByteChannel(filePath, StandardOpenOption.READ)) {
+								long shift = sbc.size() - maxSize;
+								ByteBuffer bb = null;
+								if (shift > 0) {
+									sbc.position(shift);
+									model.partial = true;
+									bb = ByteBuffer.allocate(maxSize);
+								} else
+									bb = ByteBuffer.allocate((int) sbc.size());
+
+								sbc.read(bb);
+								if (model.partial)
+									model.content = "\r\n<Content of the file was truncated>";
+								else
+									model.content = "";
+								model.content += new String(bb.array(), model.as_text ? "UTF-8" : "ISO-8859-1");
 							}
-						} catch (IOException ioe) {
-							log("", ioe);
-							// MalformedInputException
-							model.content = "" + ioe;
-						}
+						} else
+							try (InputStream is = Files.newInputStream(filePath)) {
+								long sz = Files.size(filePath);
+								model.content = Stream.streamToString(is, model.as_text ? "UTF-8" : "ISO-8859-1",
+										maxSize);
+								if (sz >= maxSize) {
+									model.content += "\r\n<Content of the file was truncated>";
+									model.partial = true;
+								}
+							} catch (IOException ioe) {
+								log("", ioe);
+								// MalformedInputException
+								model.content = "" + ioe;
+							}
 					} else {
 						model.content = "The file isn't readable";
 					}
@@ -94,6 +118,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 	@Override
 	protected Object storeModel(editing model) {
 		if (model.file != null) {
+			if (model.partial)
+				return "Can't store a part without destroying rest of the file";
 			String topFolder = getConfigValue(Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
 			try (Folder.RequestTransalated rt = Folder.translateReq(topFolder,
 					model.file.replace(File.separatorChar, '/'));) {
@@ -154,6 +180,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public boolean as_text;
 		public String editor;
 		public boolean partial;
+		@FormField
+		public boolean tail;
 	}
 
 }
