@@ -1,8 +1,7 @@
 <script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
 <script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <script type="text/javascript" src="@contextpath@/js/ui.js"></script>
-<div style="position:fixed;left:20px;top:54px;"><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/>  &nbsp;&nbsp;@total@</div>
-<div><h3 style="display:inline">@parents(<a class="reg_ref" href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</h3>
+<div style="padding-bottom:3px;padding-top:3px"><h3 style="display:inline">@parents(<a class="reg_ref" href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</h3>
 <div id="refresh_btn" style="display:inline;border:solid black 1px;margin-left:1em;visibility:hidden"><a class="reg_ref" href="@contextpath@@servletpath@/Folder@:path@"> Refresh</a></div></div>
 <form name="folder" method="post" action="@request.getRequestURI*()*@">
 
@@ -21,7 +20,7 @@
       <input type="submit" name="submit" value="Paste">&nbsp;
       <input type="submit" name="submit" value="Delete">&nbsp;      
   </div>
-<div style="height:74%;overflow-y: scroll; overflow-x: hidden;position:fixed;width:100%">
+<div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;">
 <table class="tinytable" id="folder_table">
   <thead>
   <tr>
@@ -29,7 +28,7 @@
     <th><h3>name </h3> </th><th><h3>size</h3></th><th><h3>modified</h3></th><th><h3>attrs</h3></th>
   </tr>
   </thead>
-  <tbody style="overflow-y: scroll; overflow-x: hidden; height:72%;position:fixed">
+  <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto">
   @model(<tr>
     <td><input type="checkbox" name="files" value="@element.path@" @element.unaccessible{@true(disabled)@}@></td>
     <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
@@ -40,10 +39,10 @@
   </tr>)@
   </tbody>
 </table>
-</form>
-
-@%'insert/attrset.htmt'@
 </div>
+</form>
+@%'insert/attrset.htmt'@
+
 <script>
   <!-- //
     var wf_uri = '@contextpath@@request.getServletPath*()*@/Folder';

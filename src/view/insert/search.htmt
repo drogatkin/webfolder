@@ -1,0 +1,1 @@
+<input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/>&nbsp;&nbsp;@total@

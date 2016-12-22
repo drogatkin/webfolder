@@ -573,6 +573,15 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		} // else if (viewName.endsWith(".html"))
 		return super.getContentType(viewName);
 	}
+	
+	@Override
+	protected Object applySideEffects(Object modelData) {
+		modelData = super.applySideEffects(modelData);
+		if (modelData instanceof Map && !((Map)modelData).containsKey(SEARCH_BLOCK)) {
+			((Map)modelData).put(SEARCH_BLOCK, "insert/search.htmt");
+		}
+		return modelData;
+	}
 
 	@Override
 	public boolean useForward() {
