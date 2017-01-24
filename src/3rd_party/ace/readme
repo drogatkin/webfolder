@@ -1,3 +1,6 @@
 wget https://raw.githubusercontent.com/ajaxorg/ace-builds/master/src-min-noconflict/ace.js
 and additions can be taken from here:
 https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict
+
+All syntax highlight file extensions have to be provided in config property ace_edit_exts=. to activate it
+File src/html/edit_modes.json has to be edited to add corresponding entry

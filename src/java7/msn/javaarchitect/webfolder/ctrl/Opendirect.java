@@ -32,7 +32,7 @@ public class Opendirect extends Stream {
 			}
 			if (Files.isRegularFile(fp) == false || Files.isReadable(fp) == false) {
 				resp.setContentType("text/plain; charset=UTF-8");
-				os.write("The file can't be read.".getBytes(Folder.DEF_CHARSET));
+				os.write(("The "+fp+" can't be read").getBytes(Folder.DEF_CHARSET));
 				return;
 			}
 			//log("Loading " + fp, null);
