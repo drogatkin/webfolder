@@ -35,17 +35,46 @@ function store() {
 } 
 </script>
 )@
-@(<div style="margin:auto;width:100%">@.ui.field*(content,java.lang.Object^@model@)*@</div>)@}@
+@(
+<script>
+function store() {
+   return !@model.partial@
+}
+</script>
+<div style="margin:auto;width:100%">@.ui.field*(content,java.lang.Object^@model@)*@</div>)@}@
 
 <hr/>
 <div>
 <input type="submit" name="submit" value="Save">
+&nbsp;
+<a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" >Save and continue</a>
 &nbsp;
 @.ui.check*(as_text,java.lang.Object^@model@)*@ As text
 &nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@">Discard</a>
 </div>
 </form>
+<script>
+function saveInBkgd() {
+   // check if saving in progress and ignore
+   if (!store())
+      return
+   
+   var xhr = new XMLHttpRequest()
+   var formData = new FormData(document.forms[0])
+   formData.append('submit', 'Save');
+   xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
+   xhr.onload = function () {
+      if (xhr.status === 200) {
+          document.getElementById('bkgUpl').innerHTML = 'Save and continue';
+       } else {
+          alert('An error occurred!')
+       }
+    }
+    document.getElementById('bkgUpl').innerHTML = 'Saving...';
+    xhr.send(formData)
+}
+</script>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
 <div>&nbsp;</div>
