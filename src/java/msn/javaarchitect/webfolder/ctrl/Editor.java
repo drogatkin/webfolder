@@ -41,8 +41,10 @@ public class Editor extends Form<Editor.editing, AppModel> {
 							try {
 								model.content = Stream.streamToString(fis = new FileInputStream(editFile), "UTF-8",
 										maxSize);
-								if (editFile.length() > maxSize)
+								if (editFile.length() > maxSize) {
 									model.content += "\r\n<Content of the file was truncated>";
+									model.partial = true;
+								}
 							} catch (IOException ioe) {
 								model.content = "" + ioe;
 							} finally {
@@ -125,6 +127,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public File file;
 		@FormField(formFieldName="as text")
 		public boolean as_text;
+		public boolean partial;
 	}
 
 	public static class File2Str implements FieldConverter<File> {

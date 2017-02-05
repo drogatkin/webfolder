@@ -11,6 +11,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.aldan3.model.TemplateProcessor;
@@ -380,6 +381,15 @@ public class Folder extends Tabular {
 		return super.getContentType(viewName);
 	}
 
+	@Override
+	protected Object applySideEffects(Object modelData) {
+		modelData = super.applySideEffects(modelData);
+		if (modelData instanceof Map && !((Map)modelData).containsKey(SEARCH_BLOCK)) {
+			((Map)modelData).put(SEARCH_BLOCK, "insert/search.htmt");
+		}
+		return modelData;
+	}
+	
 	@Override
 	public boolean useForward() {
 		return true;
