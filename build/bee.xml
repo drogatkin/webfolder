@@ -309,6 +309,10 @@
                 <parameter value="src/3rd_party/js" type="path"/>
                 <parameter value="&build_directory;/&webapp_file;" type="path"/>
              </function>
+             <function name="anynewer">
+                <parameter value="src/js" type="path"/>
+                <parameter value="&build_directory;/&webapp_file;" type="path"/>
+             </function>
           </operator>
        </expression>
     </dependency>

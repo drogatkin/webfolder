@@ -4,8 +4,10 @@
           document.forms.folder.elements.files.checked = document.forms.folder.elements.files.checked == false;
        else  
          for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
-            document.forms.folder.elements.files[el].checked =
-               document.forms.folder.elements.files[el].checked == false;
+           if (//window.getComputedStyle(document.forms.folder.elements.files[el]).visibility !== "hidden" || 
+               document.forms.folder.elements.files[el].parentNode.parentNode.style.display !== "none")
+              document.forms.folder.elements.files[el].checked =
+                 document.forms.folder.elements.files[el].checked == false;
                }
     }
 
