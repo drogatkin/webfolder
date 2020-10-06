@@ -4,5 +4,5 @@ lib/
 *.war
 *.bak
 .classpath
-3rd_party/ace
+src/3rd_party/ace
 .project
