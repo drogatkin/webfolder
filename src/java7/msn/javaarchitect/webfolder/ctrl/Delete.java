@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 
 import org.aldan3.util.DataConv;
 
@@ -29,7 +30,7 @@ public class Delete extends Message {
 		if (selection.length == 0)
 			return;
 		String tps = getConfigValue(Folder.TOPFOLDER, File.separator);
-		//log("Selection :%s", null, selection[0]);
+		//log("Selection :%s", null, Arrays.toString(selection));
 		if (selection.length == 1) {
 			Path p = FileSystems.getDefault().getPath(tps, selection[0]);
 			if (Files.isRegularFile(p)) {

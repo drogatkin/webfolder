@@ -2,3 +2,7 @@ lib/
 *.class
 *.jar
 *.war
+*.bak
+.classpath
+3rd_party/ace
+.project

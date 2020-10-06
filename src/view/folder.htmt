@@ -20,7 +20,7 @@
       <input type="submit" name="submit" value="Paste">&nbsp;
       <input type="submit" name="submit" value="Delete">&nbsp;      
   </div>
-<div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;">
+<div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;" onresize="adjContHeight()">
 <table class="tinytable" id="folder_table">
   <thead>
   <tr>
@@ -81,6 +81,8 @@
 	   }
 	   didUpdate = true;
 	}
+	function adjContHeight() {
+	}
 	@watchservice(
 	function initFields() { 
         handlerUrl = wf_uri+'/ajax/CheckForModifications'+wf_path+'?page-mark='+encodeURIComponent(pageMark);
@@ -94,6 +96,9 @@
 	         if(res == 'ok')
 	         ;
 	     });
+     }
+     
+     function adjSize () {
      }
   // -->
 </script>
