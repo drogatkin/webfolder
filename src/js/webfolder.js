@@ -66,8 +66,15 @@
 	function renameFile(fid, folder) {
 	   var tdel = getElement(fid);
 	   var name = tdel.getAttribute('fileName');
-	   getElement(fid).innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="processRename(\''+name+'\', this.value, \''+fid+'\','+folder+')">';
+	   getElement(fid).innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="processRename(\''+name+'\', this.value, \''+fid+'\','+folder+
+         ')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+')">'
 	   //getElement('rename_input').focus();
+	}
+	
+	function renameOnEnter(name, newname, fid, folder) {
+		if(event.key === 'Enter') {
+			processRename(name, newname, fid, folder)
+		}
 	}
 	
 	function processRename(name, newname, fid, folder) {

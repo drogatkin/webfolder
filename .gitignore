@@ -4,5 +4,6 @@ lib/
 *.war
 *.bak
 .classpath
-src/3rd_party/ace
+src/3rd_party/ace/*.js
+src/3rd_party/ace/readme
 .project

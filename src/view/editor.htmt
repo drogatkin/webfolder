@@ -26,7 +26,7 @@ makeJSONAjaxCall(window.location.origin+'@contextpath@/edit_modes.json', '', tru
 	         }
 	     });
 editor.setAutoScrollEditorIntoView(false);
-editor.setOption("maxLines", 34);
+editor.setOption("maxLines", 60);
 editor.setReadOnly(@model.partial@);
 
 function store() {
