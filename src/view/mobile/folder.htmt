@@ -49,20 +49,22 @@
   // -->
 </script>
 
-<div><input type="submit" name="submit" value="Get file links">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;
+<div class="ctrline"><input type="submit" name="submit" value="Get file links">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;
       <input type="submit" name="submit" value="Download">&nbsp;</div>
+      
+      <div  class="ctrline">
+         <fieldset> <input type="file" size="4" name="file" multiple="multiple">&nbsp;
+           <input type="submit" name="submit" value="Upload" onclick="return upload()"></fieldset>&nbsp;
       <div>
-      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em"> <input type="file" size="8" name="file" multiple="multiple">&nbsp;
-      <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
-      </div><div>
-      <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
-      <input type="submit" name="submit" value="Edit">&nbsp;
-      <input type="text" name="folder" size="10">&nbsp;<input type="submit" name="submit" value="New folder">
+      <div  class="ctrline">
+         <fieldset>
+            <input type="submit" name="submit" value="Edit">&nbsp;
+            <input type="text" name="folder" size="20">&nbsp;<input type="submit" name="submit" value="New folder">
+         </fieldset>
       </div>
-      </div>
-      <div>
-      <input type="submit" name="submit" value="Copy">&nbsp;
-      <input type="submit" name="submit" value="Paste">&nbsp;
-      <input type="submit" name="submit" value="Delete">&nbsp;
-       </div>
+      <div  class="ctrline">
+         <input type="submit" name="submit" value="Copy">&nbsp;
+         <input type="submit" name="submit" value="Paste">&nbsp;
+         <input type="submit" name="submit" value="Delete">&nbsp;
+     </div>
 </form>
