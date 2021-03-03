@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <html>
 <head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
 <title>WebFolder: HTTP headers and Thread Dump</title>
 </head>

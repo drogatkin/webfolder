@@ -158,7 +158,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 			}
 		}
 
-		return "Can't save file, wrong location";
+		return "Can't save file, a wrong location";
 	}
 
 	@Override

@@ -1,4 +1,31 @@
 <!-- mobile version  -->
+<script>
+// figure how reuse desktop code
+function store() {
+   return !@model.partial@
+}
+function saveInBkgd() {
+   // check if saving in progress and ignore
+   if (!store())
+      return
+   
+   var xhr = new XMLHttpRequest()
+   var formData = new FormData(document.forms[0])
+   formData.append('submit', 'Save');
+   xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
+   xhr.onload = function () {
+      if (xhr.status === 200) {
+          document.getElementById('bkgUpl').innerHTML = 'Save and continue';
+          // TODO use a special return template with only status text like 'ok' or error...
+          // alert(xhr.responseText);
+       } else {
+          alert('An error occurred!')
+       }
+    }
+    document.getElementById('bkgUpl').innerHTML = 'Saving...';
+    xhr.send(formData)
+}
+</script>
 <form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@">
 <div>Editing: @model.file@</div>
 <input type="hidden" name="file" value="@model.file@">
@@ -8,6 +35,8 @@
 <div>@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
 &nbsp;
 <input type="submit" name="submit" value="Save">
+&nbsp;&nbsp;
+<button class="button" onclick="saveInBkgd(); return false;" id="bkgUpl">Save and continue</button>
 &nbsp;&nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@">Discard</a>
 </div>
