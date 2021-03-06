@@ -18,8 +18,8 @@ function saveInBkgd() {
       if (xhr.status === 200) {
           document.getElementById('bkgUpl').innerHTML = 'Save and continue';
           // TODO use a special return template with only status text like 'ok' or error...
-          // alert(xhr.responseText);
           var resp = xhr.responseText
+          //alert(resp)
           if (resp != '' || resp != 'OK') {
              getElement('status').innerHTML = resp
           } else

@@ -377,6 +377,8 @@
          <parameter type="path">src/view/*.txt</parameter>
          <parameter>A WEB-INF/view/insert</parameter>
          <parameter type="path">src/view/insert/*.htmt</parameter>
+         <parameter>A WEB-INF/view/background</parameter>
+         <parameter type="path">src/view/background/*.htmt</parameter>
          <parameter>A WEB-INF/view/mobile/</parameter>
          <parameter type="path">src/view/mobile/*.htmt</parameter>
          <!-- image resources -->
