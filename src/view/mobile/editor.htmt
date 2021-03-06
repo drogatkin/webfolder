@@ -5,19 +5,25 @@ function store() {
    return !@model.partial@
 }
 function saveInBkgd() {
-   // check if saving in progress and ignore
+   // TODO check if saving in progress and ignore
    if (!store())
       return
    
    var xhr = new XMLHttpRequest()
    var formData = new FormData(document.forms[0])
    formData.append('submit', 'Save');
+   formData.append('$$background', 'true');
    xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
    xhr.onload = function () {
       if (xhr.status === 200) {
           document.getElementById('bkgUpl').innerHTML = 'Save and continue';
           // TODO use a special return template with only status text like 'ok' or error...
           // alert(xhr.responseText);
+          var resp = xhr.responseText
+          if (resp != '' || resp != 'OK') {
+             getElement('status').innerHTML = resp
+          } else
+             getElement('status').innerHTML = 'OK'
        } else {
           alert('An error occurred!')
        }

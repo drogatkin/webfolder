@@ -20,6 +20,7 @@
   <script src="@contextpath@/js/common.js" language="Javascript"></script>
   <script src="@contextpath@/js/form.js" language="Javascript"></script>
   <script>
+      var errMsg = '@error@'
       function goto(loc) {
          document.location='@contextpath@@request.getServletPath*()*@/'+loc;
       }
@@ -30,6 +31,7 @@
   @%headextra@
 </head>
 <body onload="init()">
+<div id="status" onclick="getElement('status').style.visibility = 'hidden'">@error@</div>
 <div style="width:100%;text-align:right">@toplinks(<a href="javascript:void(0)" onclick="goto('@element.getAnchor*()*@')">@element.getTitle*()*@</a>&nbsp;|)@&nbsp;@%stationary@</div>
 @%request.INNER_VIEW@
 </body>
