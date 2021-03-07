@@ -63,10 +63,20 @@ function saveInBkgd() {
    var xhr = new XMLHttpRequest()
    var formData = new FormData(document.forms[0])
    formData.append('submit', 'Save');
+   formData.append('$$background', 'true')
    xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
    xhr.onload = function () {
       if (xhr.status === 200) {
           document.getElementById('bkgUpl').innerHTML = 'Save and continue';
+          var resp = xhr.responseText
+     
+          if (resp != '' || resp != 'OK') {
+             //getElement('status').style.visibility = 'visible'
+             getElement('status').classList.remove('#status')
+             getElement('status').style.display = 'block'
+             getElement('err_txt').innerHTML = resp
+          } else
+             getElement('status').style.visibility = 'hidden'
        } else {
           alert('An error occurred!')
        }

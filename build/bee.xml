@@ -232,6 +232,13 @@
         <value>/src/res/template/*.htmt</value>
      </operator>
   </expression>
+  
+  <expression name="WEBBEE_IMAGE">
+     <operator name="append">
+        <value variable="WEBBEE_HOME"/>
+        <value>/src/res/image/*.gif</value>
+     </operator>
+  </expression>
 
   <expression name="WEBBEE_LABELS">
      <operator name="append">
@@ -418,6 +425,9 @@
          <parameter type="path" variable="WEBBEE_CSS"></parameter>
          <parameter>A js/</parameter>
          <parameter type="path" variable="WEBBEE_JS"></parameter>
+         <!-- image resources -->
+         <parameter>A image/</parameter>
+         <parameter type="path" variable="WEBBEE_IMAGE"></parameter>
          <!-- 3rd parties (not yet) -->
          <parameter>A js/</parameter>
          <parameter type="path">src/3rd_party/ace/*.js</parameter>

@@ -127,6 +127,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				//log("editing %s in %s as %b", null, filePath, rt.reqPath, model.as_text);
 				if (Files.isDirectory(filePath) || Files.isWritable(filePath) == false && Files.exists(filePath))
 					return "The file isn't editable";
+				//if (model.content.length() > 10)
+					//return "Too big";
 				try (BufferedWriter osw = Files.newBufferedWriter(filePath, model.as_text ? Charset.forName("UTF-8")
 						: Charset.forName("ISO-8859-1"));) {
 					if (model.as_text)
