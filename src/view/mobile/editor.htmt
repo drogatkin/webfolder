@@ -20,7 +20,7 @@ function saveInBkgd() {
           // TODO use a special return template with only status text like 'ok' or error...
           var resp = xhr.responseText
           //alert(resp)
-          if (resp != '' || resp != 'OK') {
+          if (resp && resp.trim() && resp != 'OK') {
              getElement('status').innerHTML = resp
           } else
              getElement('status').innerHTML = 'OK'

@@ -70,7 +70,7 @@ function saveInBkgd() {
           document.getElementById('bkgUpl').innerHTML = 'Save and continue';
           var resp = xhr.responseText
      
-          if (resp != '' || resp != 'OK') {
+          if (resp && resp.trim() && resp != 'OK') {
              //getElement('status').style.visibility = 'visible'
              getElement('status').classList.remove('#status')
              getElement('status').style.display = 'block'
