@@ -8,12 +8,13 @@
   <input type="hidden" name="path" value="@path@">
   <div style="position:relative;background-color:#2B3C66;padding:2px 2px 2px 2px">
       <input type="submit" name="submit" value="Get file links">
-      <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true">text&nbsp;<input type="checkbox" name="tail" value="true">tail</div>
+      &nbsp;
       <input type="submit" name="submit" value="Download">&nbsp;
       <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em"> <input type="file" name="file" multiple="multiple">&nbsp;<!-- HTML5 check can be needed -->
       <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
       <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
       <input type="submit" name="submit" value="Edit">&nbsp;
+      <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true">text&nbsp;<input type="checkbox" name="tail" value="true">tail</div>
       <input type="text" name="folder" size="14">&nbsp;<input type="submit" name="submit" value="New folder">
       </div>&nbsp;
       <input type="submit" name="submit" value="Copy">&nbsp;

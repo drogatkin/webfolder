@@ -49,7 +49,7 @@
   // -->
 </script>
 
-<div class="ctrline"><input type="submit" name="submit" value="Get file links">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;
+<div class="ctrline"><input type="submit" name="submit" value="Get file links">&nbsp;&nbsp;
       <input type="submit" name="submit" value="Download">&nbsp;</div>
       
       <div  class="ctrline">
@@ -58,7 +58,7 @@
       <div>
       <div  class="ctrline">
          <fieldset>
-            <input type="submit" name="submit" value="Edit">&nbsp;
+            <input type="submit" name="submit" value="Edit">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;&nbsp;
             <input type="text" name="folder" size="20">&nbsp;<input type="submit" name="submit" value="New folder">
          </fieldset>
       </div>
