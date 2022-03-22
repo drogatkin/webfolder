@@ -2,7 +2,7 @@
 <script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
 <script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <div><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/> &nbsp;@total@</div>
-<div style="overflow:auto;width:100%">@parents(<a class="reg_ref" href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</div>
+<div style="overflow:auto;width:100%">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@</div>
 <div style="font-color:red">@error@</div>
 
 <form name="folder" method="POST">

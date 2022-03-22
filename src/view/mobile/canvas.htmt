@@ -5,6 +5,9 @@
   <title>@title@</title>
   <meta name="viewport" content="width=device-width, user-scalable=no" />
   <style type="text/css">
+     @%'mobile/headcss.htmt'@
+  </style>
+  <style type="text/css">
      <!--/* <![CDATA[ */
           @@import url(@contextpath@/css/base.css);
             BODY, TD, FONT, INPUT, SELECT, TEXTAREA, A { font-family: Lucida Grande,Verdana,Arial; font-size: 10pt; }
@@ -14,12 +17,17 @@
 		    body {
 		        background-color: black;
 		        color: white;
+		        background-image: none;
+		        background: linear-gradient(#222222, #020202);
 		    }
+		    .tinytable .evenrow td {background:#222}
+            .tinytable .oddrow td {background:#304648}
+            .tinytable td.evenselected {background:#103638}
+            .tinytable td.oddselected {background:#263238}
+            #selectedrow td {background:#41545a}
+            a {color: #aaaaaa;}
          }   
        /* ]]> */-->
-  </style>
-  <style type="text/css">
-     @%'mobile/headcss.htmt'@
   </style>
   <script src="@contextpath@/js/ajaxhelper.js" language="Javascript"></script>
   <script src="@contextpath@/js/common.js" language="Javascript"></script>
