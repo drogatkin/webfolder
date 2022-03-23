@@ -14,18 +14,20 @@
          body {height:100%}
          P {margin:0.2em 1em 0.1em 1em}
          @@media (prefers-color-scheme: dark) {
+            html {height:100%}
 		    body {
+		        height: 100%;
 		        background-color: black;
 		        color: white;
 		        background-image: none;
-		        background: linear-gradient(#222222, #020202);
+		        background: linear-gradient(#2c3840, #020202);
 		    }
-		    .tinytable .evenrow td {background:#222}
-            .tinytable .oddrow td {background:#304648}
-            .tinytable td.evenselected {background:#103638}
-            .tinytable td.oddselected {background:#263238}
-            #selectedrow td {background:#41545a}
-            a {color: #aaaaaa;}
+		    .tinytable .evenrow td {background:#3e5a6c}
+            .tinytable .oddrow td {background:#354d5d}
+            .tinytable td.evenselected {background:#304a5b}
+            .tinytable td.oddselected {background:#345264}
+            #selectedrow td {background:#3e5f75}
+            a {color: #bababa;}
          }   
        /* ]]> */-->
   </style>
