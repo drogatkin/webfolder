@@ -22,9 +22,9 @@
 		        background-image: none;
 		        background: linear-gradient(#2c3840, #020202);
 		    }
-		    .tinytable .evenrow td {background:#3e5a6c}
-            .tinytable .oddrow td {background:#354d5d}
-            .tinytable td.evenselected {background:#304a5b}
+		    .tinytable .evenrow td {background:#25323b}
+            .tinytable .oddrow td {background:#3e5a6c}
+            .tinytable td.evenselected {background:#2f424f}
             .tinytable td.oddselected {background:#345264}
             #selectedrow td {background:#3e5f75}
             a {color: #bababa;}
