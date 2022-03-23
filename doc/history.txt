@@ -9,6 +9,7 @@ Releases
 - persistent last sort selection
 - execute commands on target system
 - syntax highlight editor
+- dark mode
 
 1.7
 - fixed several bug including mobile misses
