@@ -21,6 +21,60 @@
       <input type="submit" name="submit" value="Paste">&nbsp;
       <input type="submit" name="submit" value="Delete">&nbsp;      
   </div>
+  <!-- separate bookmaks in an include and then use for a mobile view too-->
+  @bookmarks_section(
+  <section>
+     <ul class="bookmark"><li><h3 onclick="addLink()">+</h3></li>@bookmarks(<li class="bookmark_insert"><a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element@">@element@</a>
+         <span onclick="addLink(this/*'@^element@'*/)">&#x21C6;</span></li>)@</ul>
+  </section>
+  <script>
+     function addLink(old) {
+        if (noLinkYet()) {
+             var prevVal = ''
+             if (!old)
+                 old = ''
+             else {
+                  const ael = old.previousElementSibling
+                  prevVal = ael.text
+             }
+             const selectElement = document.forms.folder.querySelector('input[name="path"]')
+             const selectedValue = selectElement.value // document.forms.folder.path.value
+            makeGenericAjaxCall(wf_uri+'/ajax/Bookmark', 'bookmark='+encodeURIComponent(selectedValue)+'&old='+encodeURIComponent(prevVal), true, 
+	           function(res) {
+	              if(res == 'ok') {
+	                    const ul = document.querySelector('ul')
+	                    if (old) {
+	                       // 
+	                       const ael = old.previousElementSibling
+	                       ael.setAttribute('href',
+                               '@contextpath@@servletpath@/Folder'+selectedValue);
+                           ael.textContent = selectedValue
+	                    } else {
+	                        const li = document.createElement('li')
+	                        const form = document.forms[0] // use querySelector
+	            
+	                     //  li.appendChild(document.createTextNode(selectedValue))
+				            li.className = 'bookmark_insert'
+				            li.innerHTML = '<a href="@contextpath@@servletpath@/Folder'+selectedValue+
+				               '">'+selectedValue+'</a><span onclick="addLink(this)">&#x21C6;</span>'
+				            ul.appendChild(li)
+			            }
+	              } else {
+	                  // display message
+	              }
+	             
+	           }, 
+			     function (res) {
+			        // display error
+			     })
+        }
+     }
+     
+     function noLinkYet() {
+        return true
+     }
+  </script>
+  )@
 <div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;" onresize="adjContHeight()">
 <table class="tinytable" id="folder_table">
   <thead>

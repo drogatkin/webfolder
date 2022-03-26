@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -43,6 +44,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +80,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	public static final String CLIPBOARD = "clipboard";
 
 	public static final String TOPFOLDER = "TOPFOLDER";
+	
+	public static final String BOOKMARKS = "BOOKMARKS";
 	
 	public static final String CLIPBOARD_TOPFOLDER = CLIPBOARD+TOPFOLDER;
 	
@@ -452,6 +457,13 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		}
 		if (userAgent != null && userAgent.toLowerCase().indexOf("midori")>= 0)
 			pageModel.put("midori", true);
+		if ("true".equalsIgnoreCase(getConfigValue(BOOKMARKS, "false"))) {
+			log("adding bookmarks", null);
+			pageModel.put("bookmarks_section", true);
+			String[] bookmarks = readBookmarks(frontController);
+			pageModel.put("bookmarks", bookmarks);
+		} else
+			log("no bookmarks", null);
 		return pageModel;
 	}
 
@@ -504,6 +516,29 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		}
 
 		return null;
+	}
+	
+	public String processBookmarkCall() {
+		String repBM = getParameterValue("old", "", 0);
+		String BM = getParameterValue("bookmark", "", 0);
+		if (BM .isEmpty())
+			return "no bookmark";
+		String bookmarks[] = readBookmarks(frontController);
+		boolean contains = Arrays.stream(bookmarks).anyMatch(BM::equals);
+		if (contains)
+			return "already exists";
+		Set<String> bookmarkSet = new HashSet<>(Arrays.asList(bookmarks));
+		if (!repBM.isEmpty()) {
+			bookmarkSet.remove(repBM);
+		}
+		bookmarkSet.add(BM);
+		try {
+			writeBookmark(bookmarkSet.toArray(String[]::new), frontController);
+			return "ok";
+		} catch (Exception e) {
+			
+		}
+		return "error";
 	}
 	
 	public String processReleaseWatchRequestCall() {
@@ -613,6 +648,41 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			}
 		}
 		return configProps.getProperty(name, defVal);
+	}
+	
+	static String[] readBookmarks(FrontController frontController) {
+		String bookmarkscfg = getConfigValue(frontController, BOOKMARKS, "");
+		if ("true".equals(bookmarkscfg)) {
+			Properties props = new Properties();
+			try (FileInputStream is = new FileInputStream(getBookmarksFile(frontController))) {
+				props.loadFromXML(is);
+				ArrayList<String> names = new ArrayList<>();
+				for(String name:props.stringPropertyNames()) {
+					names.add(props.getProperty(name));
+				}
+				return names.toArray(String[]::new);
+			} catch (Exception e) {
+				frontController.log("exception:", e);
+			}
+			return new String[0];
+		}
+		//frontController.log("bookmaks not allowed", null);
+		return null;
+	}
+	
+	static void writeBookmark(String[] bookmarks, FrontController frontController) throws IOException {
+		Properties props = new Properties();
+		for(int ind=0; ind < bookmarks.length; ind++) {
+			props.setProperty("bm"+(ind+1), bookmarks[ind]);
+		}
+		props.storeToXML(new FileOutputStream(getBookmarksFile(frontController)), "Bookmars "+bookmarks.length, "UTF-8");
+	}
+	
+	static File getBookmarksFile(FrontController frontController) {
+		String homeDir = System.getProperty("user.home");
+		return new File(homeDir, ".bookmarks_" + frontController
+				.getServletContext().getContextPath().substring(1) // context "" (ROOT) is not allowed
+				+ ".properties");
 	}
 	
 	public static class Webelement {

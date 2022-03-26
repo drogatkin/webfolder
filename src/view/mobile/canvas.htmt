@@ -13,6 +13,9 @@
             BODY, TD, FONT, INPUT, SELECT, TEXTAREA, A { font-family: Lucida Grande,Verdana,Arial; font-size: 10pt; }
          body {height:100%}
          P {margin:0.2em 1em 0.1em 1em}
+         .bookmark_insert { display: flex; list-style: none;}
+         .bookmark {display:flex; list-style: none; flex-direction:row;}
+         
          @@media (prefers-color-scheme: dark) {
             html {height:100%}
 		    body {

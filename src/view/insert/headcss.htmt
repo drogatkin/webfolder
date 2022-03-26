@@ -42,4 +42,8 @@ input[type=file]
 {
   background-color: #DDDDDD; 
 })@
+.bookmark_insert { display: flex; list-style: none; cursor:pointer; margin-left:1em;}
+.bookmark {display:flex; list-style: none; flex-direction:row; flex-grow: 1;}
+.bookmark h3 {cursor:pointer;}
+.bookmark span {margin-left:0.5em}
 /* ]]> */-->

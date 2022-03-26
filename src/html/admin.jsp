@@ -28,6 +28,7 @@
 	String error = "";
 	String use_watch = "";
 	String sess_clpbrd = "";
+	String bookmarks = "";
 	pass = request.getParameter("pass");
 	String going_back = request.getParameter("going_back");
 	if (going_back == null)
@@ -38,15 +39,18 @@
 		top_folder = configProps.getProperty("TOPFOLDER", "");
 		use_watch = "true".equalsIgnoreCase(configProps.getProperty("WATCHSERVICE", "false"))?"checked":"";
 		sess_clpbrd = "true".equalsIgnoreCase(configProps.getProperty("SESSIONCLIPBOARD", "false"))?"checked":"";
+		bookmarks = "true".equalsIgnoreCase(configProps.getProperty("BOOKMARKS", "false"))?"checked":"";
 	} else {
 		configProps.setProperty("TOPFOLDER",
 				request.getParameter("top_folder"));
+		// TODO ! check if config file location is inside the top folder and refuse
 		if (pass.equals(unchangedPass) == false
 				&& pass.equals(request.getParameter("pass2"))) {
 			configProps.setProperty("PASSWORD", pass);
 		}
 		configProps.setProperty("WATCHSERVICE", request.getParameter("watchservice") == null?"false":"true");
 		configProps.setProperty("SESSIONCLIPBOARD", request.getParameter("sessionclipbrd") == null?"false":"true");
+		configProps.setProperty("BOOKMARKS", request.getParameter("bookmarks") == null?"false":"true");
 		try {
 			FileOutputStream fos;
 
@@ -87,6 +91,7 @@
      </tr>
      <tr><td>Maintain clipboard<br /> in session</td><td colspan="2"><input type="checkbox" name="sessionclipbrd" value="true" <%=sess_clpbrd %>></input></td></tr> 
      <tr><td>Use Watch service</td><td colspan="2"><input type="checkbox" name="watchservice" value="true" <%=use_watch %>></input></td></tr>
+     <tr><td>Use directory bookmarks</td><td colspan="2"><input type="checkbox" name="bookmarks" value="true" <%=bookmarks %>></input></td></tr>
 </table>
 <input type="hidden" name="going_back" value="<%=going_back%>"/>
 <input type="submit" value="Apply"/>
