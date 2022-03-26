@@ -135,8 +135,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						model.content = model.content.replaceAll("(\\r)?\\n", System.getProperty("line.separator"));
 					osw.write(model.content);
 					osw.flush();
-					//log("rp %s p: %s", null, rt.reqPath, filePath);
 					Path rp = FileSystems.getDefault().getPath(topFolder);
+					log("tf/tffs: %s::%s rt: %s p: %s", null, topFolder, rp, rt.reqPath, filePath);
 					if (rt.reqPath.isEmpty())
 						navigation = "Folder/"
 								+ URLEncoder.encode(rp.relativize(filePath.getParent()).toString().replace('\\', '/'),
@@ -151,7 +151,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 
 					return "";
 				} catch (IOException e) {
-					log("", e);
+					log("Exception at saving file", e);
 					return "Exception at saving file: " + e;
 				}
 			} catch (Exception e) {
