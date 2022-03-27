@@ -14,17 +14,25 @@
                   prevVal = ael.text
              }
              const selectElement = document.forms.folder.querySelector('input[name="path"]')
-             const selectedValue = selectElement.value // document.forms.folder.path.value
+             var selectedValue = selectElement.value // document.forms.folder.path.value
+             if (selectedValue == prevVal)
+                  selectedValue = ''
             makeGenericAjaxCall(wf_uri+'/ajax/Bookmark', 'bookmark='+encodeURIComponent(selectedValue)+'&old='+encodeURIComponent(prevVal), true, 
 	           function(res) {
 	              if(res == 'ok') {
 	                    const ul = document.querySelector('ul')
 	                    if (old) {
 	                       // 
-	                       const ael = old.previousElementSibling
-	                       ael.setAttribute('href',
-                               '@contextpath@@servletpath@/Folder'+selectedValue);
-                           ael.textContent = selectedValue
+	                       if (selectedValue) {
+		                       const ael = old.previousElementSibling
+		                       ael.setAttribute('href',
+	                               '@contextpath@@servletpath@/Folder'+selectedValue);
+	                           ael.textContent = selectedValue
+                           } else {
+                              // remove parent li
+                              const li = old.parentNode
+                              li.parentNode.removeChild(li)
+                           }
 	                    } else {
 	                        const li = document.createElement('li')
 	                        const form = document.forms[0] // use querySelector

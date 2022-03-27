@@ -518,20 +518,24 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		return null;
 	}
 	
+	/** add, replace or remove a bookmark
+	 * 
+	 * @return
+	 */
 	public String processBookmarkCall() {
 		String repBM = getParameterValue("old", "", 0);
 		String BM = getParameterValue("bookmark", "", 0);
-		if (BM .isEmpty())
-			return "no bookmark";
-		String bookmarks[] = readBookmarks(frontController);
-		boolean contains = Arrays.stream(bookmarks).anyMatch(BM::equals);
-		if (contains)
-			return "already exists";
-		Set<String> bookmarkSet = new HashSet<>(Arrays.asList(bookmarks));
+
+		if (BM .isEmpty()) {
+			if (repBM.isEmpty())
+				return "no bookmark";
+		}
+		Set<String> bookmarkSet = new HashSet<>(Arrays.asList(readBookmarks(frontController)));
 		if (!repBM.isEmpty()) {
 			bookmarkSet.remove(repBM);
 		}
-		bookmarkSet.add(BM);
+		if (!BM .isEmpty() && !bookmarkSet.add(BM)) 
+			return "already exists";
 		try {
 			writeBookmark(bookmarkSet.toArray(String[]::new), frontController);
 			return "ok";
@@ -671,6 +675,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	}
 	
 	static void writeBookmark(String[] bookmarks, FrontController frontController) throws IOException {
+		if (bookmarks.length > DataConv.toIntWithDefault(frontController.getProperty("max_bookmarks", "8"), 8))
+			throw new IOException("too many elements");
 		Properties props = new Properties();
 		for(int ind=0; ind < bookmarks.length; ind++) {
 			props.setProperty("bm"+(ind+1), bookmarks[ind]);

@@ -136,7 +136,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					osw.write(model.content);
 					osw.flush();
 					Path rp = FileSystems.getDefault().getPath(topFolder);
-					log("tf/tffs: %s::%s rt: %s p: %s", null, topFolder, rp, rt.reqPath, filePath);
+					//log("tf/tffs: %s::%s rt: %s p: %s", null, topFolder, rp, rt.reqPath, filePath);
 					if (rt.reqPath.isEmpty())
 						navigation = "Folder/"
 								+ URLEncoder.encode(rp.relativize(filePath.getParent()).toString().replace('\\', '/'),
