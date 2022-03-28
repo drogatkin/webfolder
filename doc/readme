@@ -6,7 +6,7 @@ WAR deployed version
 
 Drop webfolder.war in auto deploy directory 
 or process manual deployment for your favorite
-app server. TJWS or Tomcat are recommended.
+app server. TJWS, JBOSS or Tomcat are recommended.
 Access: http://host_name/webfolder
 
 Instant run version

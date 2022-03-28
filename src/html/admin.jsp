@@ -4,6 +4,7 @@
 <%@ page import="java.io.File"  %>
 <%@ page import="java.io.FileInputStream"  %>
 <%@ page import="java.io.FileOutputStream"  %>
+<%@ page import="java.nio.file.FileSystems"  %>
 <%!public Properties getConfigProperties() {
 		Properties result = new Properties();
 		FileInputStream fis = null;
@@ -36,10 +37,11 @@
 	Properties configProps = getConfigProperties();
 	if (pass == null) {
 		pass = unchangedPass;
-		top_folder = configProps.getProperty("TOPFOLDER", "");
+		top_folder = configProps.getProperty("TOPFOLDER", FileSystems.getDefault()
+				.getSeparator());
 		use_watch = "true".equalsIgnoreCase(configProps.getProperty("WATCHSERVICE", "false"))?"checked":"";
 		sess_clpbrd = "true".equalsIgnoreCase(configProps.getProperty("SESSIONCLIPBOARD", "false"))?"checked":"";
-		bookmarks = "true".equalsIgnoreCase(configProps.getProperty("BOOKMARKS", "false"))?"checked":"";
+		bookmarks = "true".equalsIgnoreCase(configProps.getProperty("BOOKMARKS", "true"))?"checked":"";
 	} else {
 		configProps.setProperty("TOPFOLDER",
 				request.getParameter("top_folder"));

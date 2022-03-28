@@ -457,7 +457,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		}
 		if (userAgent != null && userAgent.toLowerCase().indexOf("midori")>= 0)
 			pageModel.put("midori", true);
-		if ("true".equalsIgnoreCase(getConfigValue(BOOKMARKS, "false"))) {
+		if ("true".equalsIgnoreCase(getConfigValue(BOOKMARKS, "true"))) {
 			log("adding bookmarks", null);
 			pageModel.put("bookmarks_section", true);
 			String[] bookmarks = readBookmarks(frontController);
@@ -537,7 +537,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		if (!BM .isEmpty() && !bookmarkSet.add(BM)) 
 			return "already exists";
 		try {
-			writeBookmark(bookmarkSet.toArray(String[]::new), frontController);
+			writeBookmark(bookmarkSet.toArray(new String[0]), frontController);
 			return "ok";
 		} catch (Exception e) {
 			
@@ -655,7 +655,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	}
 	
 	static String[] readBookmarks(FrontController frontController) {
-		String bookmarkscfg = getConfigValue(frontController, BOOKMARKS, "");
+		String bookmarkscfg = getConfigValue(frontController, BOOKMARKS, "true");
 		if ("true".equals(bookmarkscfg)) {
 			Properties props = new Properties();
 			try (FileInputStream is = new FileInputStream(getBookmarksFile(frontController))) {
@@ -664,7 +664,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				for(String name:props.stringPropertyNames()) {
 					names.add(props.getProperty(name));
 				}
-				return names.toArray(String[]::new);
+				return names.toArray(new String[0]);
 			} catch (Exception e) {
 				frontController.log("exception:", e);
 			}

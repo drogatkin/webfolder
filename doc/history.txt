@@ -4,10 +4,13 @@ Web interfaced remote or local file system manager
 
 Releases 
 
+1.9
+
+
 1.8
 - bookmarking directories
 - persistent last sort selection
-- execute commands on target system
+- >>>>execute commands on target system
 - syntax highlight editor
 - dark mode
 

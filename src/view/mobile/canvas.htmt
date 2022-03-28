@@ -31,6 +31,10 @@
             .tinytable td.oddselected {background:#345264}
             #selectedrow td {background:#3e5f75}
             a {color: #bababa;}
+            .bookmark_insert {background-color:#3e5a6c;}
+            input[type="text"], input[type="button"], input[type=submit],  textarea {background-color:#3e5a6c;color:#ccc;}
+            input[type=file] {background-color:#3e5a6c;color:#ccc;}
+            input[type="checkbox"] {accent-color: #3e5a6c; background-color:#3e5a6c;color:#ccc;}
          }   
        /* ]]> */-->
   </style>

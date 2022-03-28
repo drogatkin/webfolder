@@ -49,4 +49,10 @@ input[type=file] {padding: 6px 8px;}
   color: black;
 }
 
+.bookmark_insert { display: flex; list-style: none; cursor:pointer; margin-left:1em;background-color:#ecf2f6;}
+.bookmark {display:flex; list-style: none; flex-direction:row; flex-grow: 1; overflow-x:auto;}
+.bookmark h3 {cursor:pointer;}
+.bookmark span {margin-left:0.5em}
+.bookmark_insert a { text-overflow: ellipsis; width: 108px; direction: rtl; white-space: nowrap; overflow: hidden;}
+
 /* ]]> */-->
