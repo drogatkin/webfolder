@@ -15,7 +15,7 @@
          P {margin:0.2em 1em 0.1em 1em}
          .bookmark_insert { display: flex; list-style: none;}
          .bookmark {display:flex; list-style: none; flex-direction:row;}
-         
+         /* eventually move in headcss and swap positions */
          @@media (prefers-color-scheme: dark) {
             html {height:100%}
 		    body {
@@ -32,8 +32,8 @@
             #selectedrow td {background:#3e5f75}
             a {color: #bababa;}
             .bookmark_insert {background-color:#3e5a6c;}
-            input[type="text"], input[type="button"], input[type=submit],  textarea {background-color:#3e5a6c;color:#ccc;}
-            input[type=file] {background-color:#3e5a6c;color:#ccc;}
+            input[type="text"],  textarea {background-color:#232426; color:#ddd;}
+            input[type=file],  input[type="button"], input[type=submit], button.button {background-color:#3e5a6c;color:#ccc;}
             input[type="checkbox"] {accent-color: #3e5a6c; background-color:#3e5a6c;color:#ccc;}
          }   
        /* ]]> */-->
