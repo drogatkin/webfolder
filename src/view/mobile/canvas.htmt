@@ -17,7 +17,7 @@
          .bookmark {display:flex; list-style: none; flex-direction:row;}
          /* eventually move in headcss and swap positions */
          @@media (prefers-color-scheme: dark) {
-            html {height:100%}
+            html {min-height:100%}
 		    body {
 		        height: 100%;
 		        background-color: black;
