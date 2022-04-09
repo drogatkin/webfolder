@@ -54,8 +54,14 @@
    }
    
    function sendEnter() {
-       if (wskt && wskt.readyState===WebSocket.OPEN)
-		          wskt.send('\r\n')
+       if (wskt && wskt.readyState===WebSocket.OPEN) {
+            const inpu = document.querySelector('input[type=text]')
+            if (inpu && inpu.value)
+                wskt.send(inpu.value)
+		    wskt.send('\n')
+		    if (inpu && inpu.value)
+		          inpu.value = ''
+		}
    }
    function sendCtrlZ() {
        if (wskt && wskt.readyState===WebSocket.OPEN)
@@ -68,9 +74,10 @@
  </script>      
 
 <h2>Console</h2>
-<input type="text" size="50" onkeydown="sendCommand(this)"> 
+<input type="text" size="50" onkeydown="sendCommand(this)" autofocus> 
+<button type="button" onclick="sendEnter()">^M</button> 
   <button type="button" onclick="sendCtrlC()">^C</button>  <button type="button" onclick="sendCtrlZ()">^Z</button> 
-   <button type="button" onclick="sendEnter()">^M</button> 
+   
 <div id="terminal">
 <code></code>
 </div>

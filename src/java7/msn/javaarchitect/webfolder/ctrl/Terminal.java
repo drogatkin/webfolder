@@ -75,9 +75,10 @@ public class Terminal {
 			case 10:
 				if (consoleStream != null) {
 					try {
-						consoleStream.write(10);
+						consoleStream.write('\n');
+						consoleStream.flush();
 						// echo
-						s.getBasicRemote().sendText("\n");
+						//s.getBasicRemote().sendText("\n");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
