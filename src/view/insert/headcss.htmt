@@ -49,4 +49,9 @@ input[type=file]
 .bookmark_insert a { text-overflow: ellipsis; max-width: 108px; direction: rtl; white-space: nowrap; overflow: hidden;}
 #terminal {font-family: monospace, monospace;  background: #202B33;
       color: #F5F8FA;}
+h2 + input[type=text] {
+  box-sizing: border-box;
+  border: none;
+  border-left: 2px solid;
+}
 /* ]]> */-->

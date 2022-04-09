@@ -24,8 +24,7 @@
                const newline = document.createElement("code")
 			   newline.innerText = line
                cons.appendChild(newline)
-               if (curr == lines.lengh -1 && !eolEnded) {
-               } else {
+               if (curr < lines.lengh -1 || eolEnded) {
 	               const lnBreak = document.createElement("br")
             	   cons.appendChild(lnBreak)
                }
