@@ -29,6 +29,7 @@
 	               const lnBreak = document.createElement("br")
             	   cons.appendChild(lnBreak)
                }
+               return true
             })
          }
          wskt.onclose = function(e) {
@@ -52,11 +53,24 @@
 	    }
    }
    
-   
+   function sendEnter() {
+       if (wskt && wskt.readyState===WebSocket.OPEN)
+		          wskt.send('\r\n')
+   }
+   function sendCtrlZ() {
+       if (wskt && wskt.readyState===WebSocket.OPEN)
+		          wskt.send('\u001A')
+   }
+   function sendCtrlC() {
+       if (wskt && wskt.readyState===WebSocket.OPEN)
+		          wskt.send('\x03')
+   }
  </script>      
 
 <h2>Console</h2>
-&nbsp;$<input type="text" size="50" onkeydown="sendCommand(this)">
+<input type="text" size="50" onkeydown="sendCommand(this)"> 
+  <button type="button" onclick="sendCtrlC()">^C</button>  <button type="button" onclick="sendCtrlZ()">^Z</button> 
+   <button type="button" onclick="sendEnter()">^M</button> 
 <div id="terminal">
 <code></code>
 </div>
