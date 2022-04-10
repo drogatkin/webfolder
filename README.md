@@ -71,7 +71,7 @@ The program keeps compatibility with Java 8, but can run on any Java from 6 to 1
 1. Support editable file extensions are configured in webfolder.properties as property **ace_edit_exts**
         predefined value looks like: **ace_edit_exts**=*.java.js.xml.h.html.diff.c.cpp.bat.sh.json.jsp.diff.properties*
 2. Modify the property above providing a desirable file extensions list. Specifying the property as empty or removing it will disable ACE extension</li>
-3. Edit [edit_modes.json[(https://github.com/drogatkin/webfolder/blob/master/src/html/edit_modes.json) specify JSON mapping entries for file extension and ACE mode
+3. Edit [edit_modes.json](https://github.com/drogatkin/webfolder/blob/master/src/html/edit_modes.json) specify JSON mapping entries for file extension and ACE mode
 4. Copy addtional ACE modes files as needed to ace/ directory when build the project
 
 ## Screens
