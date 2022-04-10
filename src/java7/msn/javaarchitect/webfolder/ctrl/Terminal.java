@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -39,8 +40,17 @@ public class Terminal {
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
 		String sep = FileSystems.getDefault().getSeparator();
-		//topFolder = getConfigValue(Folder.TOPFOLDER, sep);
-		pwd = "/"+path;
+		if (Console.TOP_DIRECTORY == null) {
+			try {
+				System.err.printf("Top directory was't set\n");
+				s.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		pwd = Console.TOP_DIRECTORY+path;
 	}
 
 	@OnMessage
@@ -106,7 +116,7 @@ public class Terminal {
 		if ("cd".equals(cc[0])) {
 			String newpwd = SLASH; // getTopDir()
 			if (cc.length == 1) {
-				pwd = System.getProperty("user.home");
+				newpwd = System.getProperty("user.home");
 			} else {
 				if (cc[1].startsWith(SLASH))
 					newpwd = cc[1];
@@ -114,13 +124,17 @@ public class Terminal {
 					newpwd = pwd+SLASH+cc[1];	
 			}
 			try {
-				if (Files.isDirectory(Paths.get(newpwd))) {
-					pwd = Paths.get(newpwd).toAbsolutePath().normalize().toString();
+				Path newpath = Paths.get(newpwd);
+				Paths.get(Console.TOP_DIRECTORY).relativize(newpath);
+				if (Files.isDirectory(newpath)) {
+					pwd = newpath.toAbsolutePath().normalize().toString();
 					out += pwd+"\n";
 				} else 
 					throw new InvalidPathException(newpwd, "The path isn't a directory");
 			} catch(InvalidPathException e) {
 				out += e.getReason()+"\n";
+			} catch( IllegalArgumentException e) {
+				out += e.getMessage()+"\n";
 			}
 		} else if ("pwd".equals(cc[0])) {
 			if (cc.length == 1) {

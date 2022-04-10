@@ -9,8 +9,8 @@ Releases
 
 1.8
 - bookmarking directories
-- persistent last sort selection
-- >>>>execute commands on target system
+- >>>>> persistent last sort selection
+- execute commands on the target system
 - syntax highlight editor
 - dark mode
 
