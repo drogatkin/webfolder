@@ -12,7 +12,9 @@ import com.beegman.webbee.model.AppModel;
 import com.beegman.webbee.util.PageRef;
 
 public class Console extends BaseBlock<AppModel> {
-
+    
+	public static String TOP_DIRECTORY = null;
+	
 	@Override
 	protected Object doControl() {
 		throw new UnsupportedOperationException();
@@ -20,6 +22,7 @@ public class Console extends BaseBlock<AppModel> {
 
 	@Override
 	protected Object getModel() {
+		TOP_DIRECTORY = getConfigValue(Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
 		HashMap<String, Object> pageModel = new HashMap<String, Object>(10);
 		pageModel.put("user", System.getProperty("user.name"));
 		
@@ -36,7 +39,13 @@ public class Console extends BaseBlock<AppModel> {
 				 };
 		pageModel.put(TOPLINKS, toplinks);
 		pageModel.put("path", webPath);
+		//pageModel.put("title", "WebFolder: terminal");
 		return pageModel;
+	}
+	
+	@Override
+	protected String getTitle() {
+		return "WebFolder: terminal";
 	}
 
 	@Override
