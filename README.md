@@ -75,3 +75,6 @@ The program keeps compatibility with Java 8, but can run on any Java from 6 to 1
 4. Copy addtional ACE modes files as needed to ace/ directory when build the project
 
 ## Screens
+
+![a directory view](https://github.com/drogatkin/webfolder/blob/master/doc/screen%20shot1.png?raw=true)
+![a console view](https://github.com/drogatkin/webfolder/blob/master/doc/screen%20shot2.png?raw=true)
