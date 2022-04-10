@@ -78,7 +78,7 @@ public class Terminal {
 						consoleStream.write('\n');
 						consoleStream.flush();
 						// echo
-						//s.getBasicRemote().sendText("\n");
+						s.getBasicRemote().sendText("\n");
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -87,12 +87,11 @@ public class Terminal {
 				return;
 			}
 		}
-		if (consoleStream != null) {
+		if (consoleStream != null && currentProcess != null && currentProcess.isAlive()) {
 			try {
 				consoleStream.write(command.getBytes("UTF-8"));
 				// echo
 				s.getBasicRemote().sendText(command);
-				
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -135,7 +134,7 @@ public class Terminal {
 				executor.execute(() -> {
 					try {
 						streamProcessor.execute(() -> {
-							try (InputStreamReader in = new InputStreamReader(currentProcess.getErrorStream())) {
+							try (InputStreamReader in = new InputStreamReader(currentProcess.getInputStream())) {
 				                char[] buf = new char[256];
 				                int rc = 0;                      
 				                while ((rc  = in.read(buf, 0, buf.length-1)) > 0) {
@@ -146,7 +145,7 @@ public class Terminal {
 				            }
 						});
 						streamProcessor.execute(() -> {
-							 try (InputStreamReader in = new InputStreamReader(currentProcess.getInputStream())) {
+							 try (InputStreamReader in = new InputStreamReader(currentProcess.getErrorStream())) {
 					                char[] buf = new char[256];
 					                int rc = 0;                      
 					                while ((rc  = in.read(buf, 0, buf.length-1)) > 0) {
@@ -166,12 +165,12 @@ public class Terminal {
 					} finally {
 						// null global output stream
 						consoleStream = null;
-						currentProcess = null;
+						//currentProcess = null;
 					}
 				});
 			} catch (IOException e) {
 				//e.printStackTrace();
-				out += "" + e.getMessage();// + "\n";
+				out += "" + e.getMessage() + "\n";
 			}
 		}
 		if (out != null)

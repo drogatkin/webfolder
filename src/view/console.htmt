@@ -5,6 +5,8 @@
     var notifRecon = 0
       var maxReconn = 16 * 1000
       var ws_url
+    const commandBuffer = []
+    var cmdBufPos = -1
 	function extra_actions(s, ctx) {
 	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal'+pwd1
 	    setup()
@@ -20,16 +22,22 @@
             const eolEnded = e.data.endsWith('\n')
             const cons = document.querySelector('#terminal')
             
-            lines.every(function(line, curr) {
+            for(var i=0; i<lines.length -1; i++) {
                const newline = document.createElement("code")
-			   newline.innerText = line
+			   newline.innerText = lines[i]
                cons.appendChild(newline)
-               if (curr < lines.lengh -1 || eolEnded) {
 	               const lnBreak = document.createElement("br")
             	   cons.appendChild(lnBreak)
-               }
-               return true
-            })
+            }
+            if (lines[lines.length -1]) {
+               const newline = document.createElement("code")
+			   newline.innerText = lines[lines.length -1]
+               cons.appendChild(newline)
+            } else {
+               const lnBreak = document.createElement("br")
+               cons.appendChild(lnBreak)
+       	   }
+            
          }
          wskt.onclose = function(e) {
             if (notifRecon == 0)
@@ -43,13 +51,32 @@
          }
 	}
    function sendCommand(cmd) {
-	   if(event.key === 'Enter') {
-	           if (wskt && wskt.readyState===WebSocket.OPEN)
+	   switch (event.key) {
+	    case 'Enter':
+	         if (wskt && wskt.readyState===WebSocket.OPEN)
 		          wskt.send(cmd.value)
 		      else
-		         console.log('websocket closed')    
-		      cmd.value = ''  
-	    }
+		         console.log('websocket closed')  
+		      commandBuffer.push(cmd.value)  
+		      cmd.value = ''
+	        break;
+	    case 'ArrowUp':
+	        if (commandBuffer) {
+	           cmdBufPos--
+	           if (cmdBufPos < 0)
+	              cmdBufPos = commandBuffer.length-1
+	           cmd.value = commandBuffer[cmdBufPos]
+	        }
+	        break;
+	    case 'ArrowDown':
+	        if (commandBuffer) {
+	           cmdBufPos++
+	           if (cmdBufPos > commandBuffer.length-1)
+	              cmdBufPos = 0
+	           cmd.value = commandBuffer[cmdBufPos]
+	        }
+	        break;
+	  }
    }
    
    function sendEnter() {
@@ -63,8 +90,10 @@
 		}
    }
    function sendCtrlZ() {
-       if (wskt && wskt.readyState===WebSocket.OPEN)
+       if (wskt && wskt.readyState===WebSocket.OPEN) {
 		          wskt.send('\u001A')
+		          cmd.value = ''
+	   }
    }
    function sendCtrlC() {
        if (wskt && wskt.readyState===WebSocket.OPEN)
