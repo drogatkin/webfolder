@@ -39,7 +39,7 @@ I am not a big fan of command line tools however I am not big fan of GUI either.
 12. Edit/create files of a remote system               
 13. Delete files and directories                                       
 14. Inspect HTTP headers sent by a browser              
-15. Password protected access<                          
+15. A password protected access                          
 16. Multi windows work                                 
 17. No limitation on uploaded or downloaded file size  
 18. Editing file attributes, time and owner           
