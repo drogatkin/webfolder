@@ -5,7 +5,7 @@ Web interfaced remote or local file system manager
 Releases 
 
 1.9
-
+- a configurable line ending
 
 1.8
 - bookmarking directories

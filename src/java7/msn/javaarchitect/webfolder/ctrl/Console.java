@@ -33,7 +33,7 @@ public class Console extends BaseBlock<AppModel> {
 		FileSystem defFS = FileSystems.getDefault();
 		Path path = defFS.getPath(webPath.replace('/', defFS.getSeparator().charAt(0)));
 		PageRef[] toplinks = new PageRef[] {
-				PageRef.create(req, "Folder", "Folder"+webPath),
+				PageRef.create(req, "Folder", "Folder"+HttpUtils.urlEncode(webPath)),
 				PageRef.create(req, "Info", "../sysinfo.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())),
 				PageRef.create(req, "Admin", "../admin.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI()))
 				 };

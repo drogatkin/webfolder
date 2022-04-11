@@ -20,16 +20,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import org.aldan3.annot.FormField;
 import org.aldan3.annot.FormField.FieldType;
+import org.aldan3.data.DODelegator;
 import org.aldan3.data.util.FieldConverter;
+import org.aldan3.data.util.FieldFiller;
 import org.aldan3.util.Stream;
 import org.aldan3.util.DataConv;
 
 import com.beegman.webbee.block.Form;
 import com.beegman.webbee.model.AppModel;
+import com.beegman.webbee.util.GenericResourceOptions;
+import com.beegman.webbee.util.Option;
+
+import org.aldan3.model.Coordinator;
 
 /**
  * Java 7 based Editor implementation
@@ -129,10 +137,28 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					return "The file isn't editable";
 				//if (model.content.length() > 10)
 					//return "Too big";
+				if (model.as_text && !model.eol_type.equals("N")) {
+					
+				}
 				try (BufferedWriter osw = Files.newBufferedWriter(filePath, model.as_text ? Charset.forName("UTF-8")
 						: Charset.forName("ISO-8859-1"));) {
-					if (model.as_text)
-						model.content = model.content.replaceAll("(\\r)?\\n", System.getProperty("line.separator"));
+					if (model.as_text) {
+						String sep;
+						switch(model.eol_type) {
+						case "W":
+							sep = "\r\n";
+							break;
+						case "L":
+							sep = "\n";
+							break;
+						case "M":
+							sep =  "\r";
+							break;
+					    default:
+					    	sep = System.getProperty("line.separator");
+						}
+						model.content = model.content.replaceAll("(\\r)?\\n", sep);
+					}
 					osw.write(model.content);
 					osw.flush();
 					Path rp = FileSystems.getDefault().getPath(topFolder);
@@ -184,6 +210,17 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public boolean partial;
 		@FormField
 		public boolean tail;
+		@FormField(presentFiller=EolFiller.class)
+		public String eol_type;
+	}
+	
+	public static final class EolFiller implements FieldFiller<DODelegator[], Object> {
+		public DODelegator[] fill(Object modelObject, String filter) {
+			return new DODelegator[] { new DODelegator(new Option<String, String>("N","As OS")),
+					new DODelegator(new Option<String, String>("W","Windows")),
+							new DODelegator(new Option<String, String>("L","Linux")),
+									new DODelegator(new Option<String, String>("M", "Old Mac"))};
+		}
 	}
 
 }

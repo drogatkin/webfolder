@@ -50,6 +50,8 @@ function store() {
 <a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" >Save and continue</a>
 &nbsp;
 @.ui.check*(as_text,java.lang.Object^@model@)*@ As text
+@.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
+&nbsp;
 &nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@">Discard</a>
 </div>

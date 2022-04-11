@@ -34,8 +34,16 @@ public class Terminal {
 	OutputStream consoleStream;
 	Process currentProcess = null;
 	
-	Executor executor = Executors.newSingleThreadExecutor();
-	Executor streamProcessor = Executors.newFixedThreadPool(2);
+	Executor executor = Executors.newSingleThreadExecutor((Runnable r) -> {
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        return t;
+    });
+	Executor streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        return t;
+    });
 	
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
@@ -51,6 +59,7 @@ public class Terminal {
 			return;
 		}
 		pwd = Console.TOP_DIRECTORY+path;
+		//System.out.printf("Connected : %s%n", pwd);
 	}
 
 	@OnMessage
@@ -111,17 +120,19 @@ public class Terminal {
 			}
 			return;
 		}
-		String cc[] = command.split(" ");
+		int bi = command.indexOf(" ");
+		String cmd = bi < 0?command:command.substring(0, bi);
+		String args = bi < 0?"":command.substring(bi+1).trim();
 		String out = PROMPT+command+"\n";
-		if ("cd".equals(cc[0])) {
+		if ("cd".equals(cmd)) {
 			String newpwd = SLASH; // getTopDir()
-			if (cc.length == 1) {
+			if (args.isEmpty()) {
 				newpwd = System.getProperty("user.home");
 			} else {
-				if (cc[1].startsWith(SLASH))
-					newpwd = cc[1];
+				if (args.startsWith(SLASH))
+					newpwd = args;
 				else
-					newpwd = pwd+SLASH+cc[1];	
+					newpwd = pwd+SLASH+args;	
 			}
 			try {
 				Path newpath = Paths.get(newpwd);
@@ -136,8 +147,8 @@ public class Terminal {
 			} catch( IllegalArgumentException e) {
 				out += e.getMessage()+"\n";
 			}
-		} else if ("pwd".equals(cc[0])) {
-			if (cc.length == 1) {
+		} else if ("pwd".equals(cmd)) {
+			if (args.isEmpty()) {
 				out += pwd+"\n";
 			}
 		} else {
@@ -148,10 +159,11 @@ public class Terminal {
 				executor.execute(() -> {
 					try {
 						streamProcessor.execute(() -> {
-							try (InputStreamReader in = new InputStreamReader(currentProcess.getInputStream())) {
+							try (InputStreamReader in = new InputStreamReader(currentProcess.getInputStream(), "UTF-8")) {
 				                char[] buf = new char[256];
 				                int rc = 0;                      
 				                while ((rc  = in.read(buf, 0, buf.length-1)) > 0) {
+				                	//System.out.printf("Sending %s\n", new String(buf, 0, rc));
 				                	s.getBasicRemote().sendText(new String(buf, 0, rc));                       
 				                }
 				            } catch (Exception e) {
@@ -159,7 +171,7 @@ public class Terminal {
 				            }
 						});
 						streamProcessor.execute(() -> {
-							 try (InputStreamReader in = new InputStreamReader(currentProcess.getErrorStream())) {
+							 try (InputStreamReader in = new InputStreamReader(currentProcess.getErrorStream(), "UTF-8")) {
 					                char[] buf = new char[256];
 					                int rc = 0;                      
 					                while ((rc  = in.read(buf, 0, buf.length-1)) > 0) {

@@ -434,7 +434,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		pageModel.put("parents", splitPath(path == null ? "" : path.toString()));
 		pageModel.put(OPEN_URL, getBaseUrl());
 		PageRef[] toplinks = new PageRef[] {
-				PageRef.create(req, "Console", "Console"+webPath),
+				PageRef.create(req, "Console", "Console"+HttpUtils.urlEncode(webPath)),
 				PageRef.create(req, "Info", "../sysinfo.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())),
 				PageRef.create(req, "Admin", "../admin.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())),
 				PageRef.create(req, "Headers",

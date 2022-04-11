@@ -8,7 +8,7 @@
     const commandBuffer = []
     var cmdBufPos = -1
 	function extra_actions(s, ctx) {
-	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal'+pwd1
+	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal'+encodeURI(pwd1)
 	    setup()
 	}
 	function setup() { 
@@ -99,13 +99,22 @@
        if (wskt && wskt.readyState===WebSocket.OPEN)
 		          wskt.send('\x03')
    }
+   function clearScreen() {
+       const cons = document.querySelector('#terminal')
+       cons.replaceChildren();
+   }
+   function removeAllChildNodes(parent) {
+	    while (parent.firstChild) {
+	        parent.removeChild(parent.firstChild);
+	    }
+   }
  </script>      
 
 <h2>Console</h2>
 <input type="text" size="50" onkeydown="sendCommand(this)" autofocus> 
 <button type="button" onclick="sendEnter()">^M</button> 
   <button type="button" onclick="sendCtrlC()">^C</button>  <button type="button" onclick="sendCtrlZ()">^Z</button> 
-   
+   <button type="button" onclick="clearScreen()">Clr</button>
 <div id="terminal">
 <code></code>
 </div>
