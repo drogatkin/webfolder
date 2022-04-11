@@ -1,33 +1,33 @@
 # WebFolder
 
 ## Purpose
-Explore and operate on a remote file system using web interface.
+Explore and operate on a remote file system using a web interface.
 
 ## Overview
 As a software professional I always need to manage more than one computer and it is a 
 very common running different OSes and platforms on different hardware. 
 I am not a big fan of command line tools however I am not big fan of GUI either.
- My favorite tool is the FAR file manager which generally works well even across network, 
- but you still need to manage to install some ftp server to make access more unified. 
- So finally I came to an idea utilize web browser. Mostly every imaginable platform can run it, 
- so only one part was under question is server side. 
+
+>My favorite tool is the FAR file manager which generally works well even across network, 
+but you still need to manage to install some ftp server to make access more unified. 
+So finally I came to an idea utilize web browser. Mostly every imaginable platform can run it, 
+so only one part was under question is server side. 
  
-    Certainly I do not have luxury to install a full blown app server to run a certain 
-    server side program as PHP or Python module. Even Node.js, considering tons of
-    security problems was't a good option for me. Using Java servlets brings you even 
-    more trouble as installing some sophisticated tools as Tomcat and Spring. So I 
-    decided to come with something really light weight, which you can carry on a single 
-    diskette.
-    
-    I think I could achieve my goal and WebFolder is simple one file program as big 
-    as 1MB and runs on all operation systems but iOS. I do not see big deal with 
-    iOS, because the OS design prevents managing a sharable file space anyway.
+Certainly I do not have luxury to install a full blown app server to run a certain 
+server side program as PHP or Python module, and even Node.js. Using Java servlets brings you even 
+more trouble as installing some sophisticated tools as Tomcat/Jboss and Spring. So I 
+decided to come with something a really light weight, which you can carry on a single 
+diskette. (BTW a serverless approach can perfectly work too)
+
+I think I could achieve my goal and WebFolder is simple one file program as big 
+as 1MB and runs on all operation systems but iOS. I do not see big deal with 
+iOS, because the OS design prevents managing a sharable file space anyway.
     
 ## Features
 
 1. Browse content of a remote machine file system     
 2. Sorting files view by name, size and date                                                                   
-3. Create directory                              
+3. Create a directory                              
 4. Upload and download files                        
 5. Multiple files download including directories           
 6. Manipulate with ZIP content (Java 7 required)
@@ -44,6 +44,7 @@ I am not a big fan of command line tools however I am not big fan of GUI either.
 17. No limitation on uploaded or downloaded file size  
 18. Editing file attributes, time and owner           
 19. Execution commands on a target system
+20. Change a line ending, very useful for Linux scripts
 
 ## Design
 
@@ -65,14 +66,17 @@ The program keeps compatibility with Java 8, but can run on any Java from 6 to 1
 
 
 ## Configuring ACE programmer editor
-    WebFolder is coming with preconfigured ACE editor for Java, JavaScript, batch and other common format files. However if you desire
-    to modify the set as adding new modes, or modifying existing ones then you can use the guide.
+WebFolder is coming with preconfigured ACE editor for Java, JavaScript, batch and other common format files. However if you desire
+to modify the set as adding new modes, or modifying existing ones then you can use the guide.
 
 1. Support editable file extensions are configured in webfolder.properties as property **ace_edit_exts**
         predefined value looks like: **ace_edit_exts**=*.java.js.xml.h.html.diff.c.cpp.bat.sh.json.jsp.diff.properties*
 2. Modify the property above providing a desirable file extensions list. Specifying the property as empty or removing it will disable ACE extension</li>
 3. Edit [edit_modes.json](https://github.com/drogatkin/webfolder/blob/master/src/html/edit_modes.json) specify JSON mapping entries for file extension and ACE mode
 4. Copy addtional ACE modes files as needed to ace/ directory when build the project
+
+## Version
+The current version is 1.8. A work on 1.9 has started.
 
 ## Screens
 

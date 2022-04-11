@@ -12,6 +12,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.websocket.OnClose;
@@ -34,16 +35,8 @@ public class Terminal {
 	OutputStream consoleStream;
 	Process currentProcess = null;
 	
-	Executor executor = Executors.newSingleThreadExecutor((Runnable r) -> {
-        Thread t = new Thread(r);
-        t.setDaemon(true);
-        return t;
-    });
-	Executor streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
-        Thread t = new Thread(r);
-        t.setDaemon(true);
-        return t;
-    });
+	ExecutorService executor;
+	ExecutorService streamProcessor;
 	
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
@@ -60,6 +53,16 @@ public class Terminal {
 		}
 		pwd = Console.TOP_DIRECTORY+path;
 		//System.out.printf("Connected : %s%n", pwd);
+		streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
+	        Thread t = new Thread(r);
+	        t.setDaemon(true);
+	        return t;
+	    });
+		executor = Executors.newSingleThreadExecutor((Runnable r) -> {
+	        Thread t = new Thread(r);
+	        t.setDaemon(true);
+	        return t;
+	    });
 	}
 
 	@OnMessage
@@ -210,6 +213,7 @@ public class Terminal {
 	
 	@OnClose
 	public void cancel() {
-		
+		executor.shutdown();
+		streamProcessor.shutdown();
 	}
 }
