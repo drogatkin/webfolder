@@ -43,7 +43,7 @@ public class Terminal {
 		String sep = FileSystems.getDefault().getSeparator();
 		if (Console.TOP_DIRECTORY == null) {
 			try {
-				System.err.printf("Top directory was't set\n");
+				//System.err.printf("Top directory wasn't set\n");
 				s.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

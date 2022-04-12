@@ -98,8 +98,8 @@
    }
    function sendCtrlZ() {
        if (wskt && wskt.readyState===WebSocket.OPEN) {
-		          wskt.send('\u001A')
-		          cmd.value = ''
+		   wskt.send('\u001A')
+		   document.querySelector('input[type=text]').value=''
 	   }
    }
    function sendCtrlC() {
