@@ -8,7 +8,7 @@
     const commandBuffer = []
     var cmdBufPos = -1
 	function extra_actions(s, ctx) {
-	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal'+encodeURI(pwd1)
+	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal/'+encodeURIComponent(pwd1.substring(1))
 	    setup()
 	}
 	function setup() { 

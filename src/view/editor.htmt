@@ -57,6 +57,11 @@ function store() {
 </div>
 </form>
 <script>
+function extra_actions(s, ctx) {
+    document.querySelector('input[type=checkbox]').addEventListener('change', e => {
+        document.querySelector('input[type=checkbox] + select').disabled= !e.target.checked
+    })
+}
 function saveInBkgd() {
    // check if saving in progress and ignore
    if (!store())

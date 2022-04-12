@@ -52,7 +52,7 @@ public class Terminal {
 			return;
 		}
 		pwd = Console.TOP_DIRECTORY+path;
-		//System.out.printf("Connected : %s%n", pwd);
+		System.out.printf("Connected : %s%n", pwd);
 		streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
 	        Thread t = new Thread(r);
 	        t.setDaemon(true);
@@ -213,7 +213,9 @@ public class Terminal {
 	
 	@OnClose
 	public void cancel() {
-		executor.shutdown();
-		streamProcessor.shutdown();
+		if (executor != null)
+			executor.shutdown();
+		if (streamProcessor != null)
+			streamProcessor.shutdown();
 	}
 }
