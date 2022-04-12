@@ -59,30 +59,31 @@
 		         console.log('websocket closed')  
 		      commandBuffer.push(cmd.value)  
 		      cmd.value = ''
-	        break;
+	        return
 	    case 'ArrowUp':
-	        if (commandBuffer) {
+	        if (commandBuffer.length) {
 	           cmdBufPos--
 	           if (cmdBufPos < 0)
 	              cmdBufPos = commandBuffer.length-1
-	           cmd.value = commandBuffer[cmdBufPos]
-	           const end = cmd.value.length
-               cmd.setSelectionRange(end, end)
-  				cmd.focus()
 	        }
-	        break;
+	        break
 	    case 'ArrowDown':
-	        if (commandBuffer) {
+	        if (commandBuffer.length) {
 	           cmdBufPos++
 	           if (cmdBufPos > commandBuffer.length-1)
-	              cmdBufPos = 0
-	           cmd.value = commandBuffer[cmdBufPos]
-	           const end = cmd.value.length
-               cmd.setSelectionRange(end, end)
-  				cmd.focus()
+	              cmdBufPos = 0 
 	        }
-	        break;
+	        break
+	    default:
+	       return
 	  }
+	  if (commandBuffer.length) {
+	 	 cmd.value = commandBuffer[cmdBufPos]
+	       const end = cmd.value.length
+	       cmd.setSelectionRange(end, end)
+			cmd.focus()
+	  }
+	  event.preventDefault()
    }
    
    function sendEnter() {
