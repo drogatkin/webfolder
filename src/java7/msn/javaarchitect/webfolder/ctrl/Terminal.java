@@ -197,6 +197,8 @@ public class Terminal {
 						//currentProcess = null;
 					}
 				});
+			} catch (IllegalArgumentException iae) {
+				out += "" + iae.getMessage() + "\n";
 			} catch (IOException e) {
 				//e.printStackTrace();
 				out += "" + e.getMessage() + "\n";

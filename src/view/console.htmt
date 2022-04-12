@@ -53,7 +53,7 @@
    function sendCommand(cmd) {
 	   switch (event.key) {
 	    case 'Enter':
-	         if (wskt && wskt.readyState===WebSocket.OPEN)
+	         if (wskt && wskt.readyState===WebSocket.OPEN && cmd.value)
 		          wskt.send(cmd.value)
 		      else
 		         console.log('websocket closed')  
