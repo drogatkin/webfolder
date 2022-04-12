@@ -58,6 +58,7 @@ function store() {
 </form>
 <script>
 function extra_actions(s, ctx) {
+    document.querySelector('input[type=checkbox] + select').disabled=!document.querySelector('input[type=checkbox]').checked
     document.querySelector('input[type=checkbox]').addEventListener('change', e => {
         document.querySelector('input[type=checkbox] + select').disabled= !e.target.checked
     })
