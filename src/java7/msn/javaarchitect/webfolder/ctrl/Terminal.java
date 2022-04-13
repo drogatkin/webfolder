@@ -1,17 +1,17 @@
 package msn.javaarchitect.webfolder.ctrl;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,7 +32,7 @@ public class Terminal {
 	
 	String topFolder = "";
 	
-	OutputStream consoleStream;
+	PrintWriter consoleStream;
 	Process currentProcess = null;
 	
 	ExecutorService executor;
@@ -52,7 +52,7 @@ public class Terminal {
 			return;
 		}
 		pwd = Console.TOP_DIRECTORY+path;
-		System.out.printf("Connected : %s%n", pwd);
+		// System.out.printf("Connected : %s%n", pwd);
 		streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
 	        Thread t = new Thread(r);
 	        t.setDaemon(true);
@@ -97,8 +97,8 @@ public class Terminal {
 			case 10:
 				if (consoleStream != null) {
 					try {
-						consoleStream.write('\n');
-						consoleStream.flush();
+						consoleStream.println();
+						//consoleStream.flush();
 						// echo
 						s.getBasicRemote().sendText("\n");
 					} catch (IOException e) {
@@ -111,7 +111,7 @@ public class Terminal {
 		}
 		if (consoleStream != null && currentProcess != null && currentProcess.isAlive()) {
 			try {
-				consoleStream.write(command.getBytes("UTF-8"));
+				consoleStream.print(command);
 				// echo
 				s.getBasicRemote().sendText(command);
 			} catch (UnsupportedEncodingException e) {
@@ -185,10 +185,15 @@ public class Terminal {
 					            }
 						});
 						assert(consoleStream == null);
-						consoleStream = currentProcess.getOutputStream();
+						consoleStream = new PrintWriter(new OutputStreamWriter(currentProcess.getOutputStream(), "UTF-8"), true);
+						if (consoleStream == null && System.console() != null)
+							consoleStream = System.console().writer();
 						// make global var for output stream
 						currentProcess.waitFor();
 					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} finally {
