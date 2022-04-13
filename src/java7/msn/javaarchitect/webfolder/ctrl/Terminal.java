@@ -185,7 +185,8 @@ public class Terminal {
 					            }
 						});
 						assert(consoleStream == null);
-						consoleStream = new PrintWriter(new OutputStreamWriter(currentProcess.getOutputStream(), "UTF-8"), true);
+						if (currentProcess.getOutputStream() != null)
+							consoleStream = new PrintWriter(new OutputStreamWriter(currentProcess.getOutputStream(), "UTF-8"), true);
 						if (consoleStream == null && System.console() != null)
 							consoleStream = System.console().writer();
 						// make global var for output stream
@@ -220,6 +221,9 @@ public class Terminal {
 	
 	@OnClose
 	public void cancel() {
+		if (currentProcess != null && currentProcess.isAlive()) {
+			currentProcess.destroyForcibly();
+		}
 		if (executor != null)
 			executor.shutdown();
 		if (streamProcessor != null)
