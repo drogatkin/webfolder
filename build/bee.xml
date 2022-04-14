@@ -233,13 +233,6 @@
      </operator>
   </expression>
   
-  <expression name="WEBBEE_VIEWS1">
-     <operator name="append">
-        <value variable="WEBBEE_HOME"/>
-        <value>/src/res/template</value>
-     </operator>
-  </expression>
-  
   <expression name="WEBBEE_IMAGE">
      <operator name="append">
         <value variable="WEBBEE_HOME"/>
@@ -334,7 +327,7 @@
     <dependency>
        <expression>
           <function name="anynewer">
-             <parameter variable="WEBBEE_VIEWS1" type="path"/>
+             <parameter variable="WEBBEE_VIEWS"/>
              <parameter value="&build_directory;/&webapp_file;" type="path"/>
           </function>
        </expression>
