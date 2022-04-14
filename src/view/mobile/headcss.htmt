@@ -1,6 +1,6 @@
 <!--/* <![CDATA[ */
 * {margin:0; padding:0; outline:0}
-body {font:11px Verdana,Arial; margin:25px; background:#fff url(@contextpath@/image/bg.gif) repeat-x}
+body {font:11px Verdana,Arial; background:#fff url(@contextpath@/image/bg.gif) repeat-x}
 #tablewrapper {width:980px; margin:0 auto}
 #tableheader {height:55px}
 .search {float:left; padding:6px; border:1px solid #c6d5e1; background:#fff}

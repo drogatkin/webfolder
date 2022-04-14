@@ -41,7 +41,7 @@ function store() {
    return !@model.partial@
 }
 </script>
-<div style="margin:auto;width:100%">@.ui.field*(content,java.lang.Object^@model@)*@</div>)@}@
+<div style="margin:auto;width:100%;">@.ui.field*(content,java.lang.Object^@model@)*@</div>)@}@
 
 <hr/>
 <div>

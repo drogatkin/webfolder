@@ -200,7 +200,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 	}
 
 	public static final class editing {
-		@FormField(presentSize = 120, presentRows = 34, presentStyle = "style=\"width:86%;margin-left:auto;margin-right:auto\"")
+		@FormField(presentSize = 120, presentRows = 42, presentStyle = "style=\"width:96%;margin-left:auto;margin-right:auto\"")
 		public String content;
 		@FormField
 		public String file;
