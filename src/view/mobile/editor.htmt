@@ -1,6 +1,12 @@
 <!-- mobile version  -->
 <script>
 // figure how reuse desktop code
+function extra_actions(s, ctx) {
+    document.querySelector('input[type=checkbox] + select').disabled=!document.querySelector('input[type=checkbox]').checked
+    document.querySelector('input[type=checkbox]').addEventListener('change', e => {
+        document.querySelector('input[type=checkbox] + select').disabled= !e.target.checked
+    })
+}
 function store() {
    return !@model.partial@
 }
@@ -33,13 +39,15 @@ function saveInBkgd() {
     xhr.send(formData)
 }
 </script>
-<form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@">
+<form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@" style="height:100%;">
 <div>Editing: @model.file@</div>
 <input type="hidden" name="file" value="@model.file@">
-<div>@.ui.field*(content,java.lang.Object^@model@)*@</div>
+<div style="width:98%;height:98%;display: flex; align-items: center;">@.ui.field*(content,java.lang.Object^@model@)*@</div>
 
 <hr/>
-<div>@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+<div style="display: flex; align-items: center;margin-left: 1em;">@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+&nbsp;
+@.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
 &nbsp;
 <input type="submit" name="submit" value="Save">
 &nbsp;&nbsp;
