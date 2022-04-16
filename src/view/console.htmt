@@ -120,10 +120,12 @@
  </script>      
 
 <h2>Console</h2>
+<div style="position:fixed">
 <input type="text" size="50" onkeydown="sendCommand(this)" autofocus> 
 <button type="button" onclick="sendEnter()">^M</button> 
   <button type="button" onclick="sendCtrlC()">^C</button>  <button type="button" onclick="sendCtrlZ()">^Z</button> 
    <button type="button" onclick="clearScreen()">Clr</button>
+</div>
 <div id="terminal">
 <code></code>
 </div>
