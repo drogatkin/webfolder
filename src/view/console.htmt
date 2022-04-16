@@ -36,6 +36,8 @@
             } else {
                const lnBreak = document.createElement("br")
                cons.appendChild(lnBreak)
+               cons.scrollIntoView({ behavior: "smooth", block: "end" })
+               
        	   }
             
          }

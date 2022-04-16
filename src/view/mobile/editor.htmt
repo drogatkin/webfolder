@@ -17,9 +17,9 @@ function saveInBkgd() {
    
    var xhr = new XMLHttpRequest()
    var formData = new FormData(document.forms[0])
-   formData.append('submit', 'Save');
-   formData.append('$$background', 'true');
-   xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
+   formData.append('submit', 'Save')
+   formData.append('$$background', 'true')
+   xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true)
    xhr.onload = function () {
       if (xhr.status === 200) {
           document.getElementById('bkgUpl').innerHTML = 'Save and continue';
@@ -35,7 +35,7 @@ function saveInBkgd() {
           alert('An error occurred!')
        }
     }
-    document.getElementById('bkgUpl').innerHTML = 'Saving...';
+    document.getElementById('bkgUpl').innerHTML = 'Saving...'
     xhr.send(formData)
 }
 </script>
