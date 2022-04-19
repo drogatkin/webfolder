@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.TimeZone;
 
 import org.aldan3.annot.FormField;
+import org.aldan3.annot.OptionMap;
 import org.aldan3.annot.FormField.FieldType;
 import org.aldan3.data.DODelegator;
 import org.aldan3.data.util.FieldConverter;
@@ -157,7 +158,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					    default:
 					    	sep = System.getProperty("line.separator");
 						}
-						model.content = model.content.replaceAll("(\\r)?\\n", sep);
+						model.content = model.content.replaceAll("\\R", sep);
 					}
 					osw.write(model.content);
 					osw.flush();
@@ -214,6 +215,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public String eol_type;
 	}
 	
+	@OptionMap(valueMap = "id")
 	public static final class EolFiller implements FieldFiller<DODelegator[], Object> {
 		public DODelegator[] fill(Object modelObject, String filter) {
 			return new DODelegator[] { new DODelegator(new Option<String, String>("N","As OS")),
