@@ -107,7 +107,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						model.content = "The file isn't readable";
 					}
 				} else {
-					model.content = String.format("You are editing new file %s which will be created upon saving",
+					model.content = String.format("You are editing a new file %s which will be created upon saving",
 							filePath);
 				}
 			} catch (Exception e) {
@@ -186,7 +186,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 			}
 		}
 
-		return "Can't save file, a wrong location";
+		return "Can't save the file, a wrong location";
 	}
 
 	@Override

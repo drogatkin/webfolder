@@ -47,7 +47,7 @@ function store() {
 <div>
 <input type="submit" name="submit" value="Save">
 &nbsp;
-<a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" >Save and continue</a>
+<a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" >Save &amp; continue</a>
 &nbsp;
 @.ui.check*(as_text,java.lang.Object^@model@)*@ As text
 @.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
@@ -75,7 +75,7 @@ function saveInBkgd() {
    xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
    xhr.onload = function () {
       if (xhr.status === 200) {
-          document.getElementById('bkgUpl').innerHTML = 'Save and continue';
+          document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue';
           var resp = xhr.responseText
      
           if (resp && resp.trim() && resp != 'OK') {

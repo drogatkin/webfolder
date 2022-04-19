@@ -22,7 +22,7 @@ function saveInBkgd() {
    xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true)
    xhr.onload = function () {
       if (xhr.status === 200) {
-          document.getElementById('bkgUpl').innerHTML = 'Save and continue';
+          document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue';
           getElement('status').style.visibility = 'visible'
           // TODO use a special return template with only status text like 'ok' or error...
           var resp = xhr.responseText
@@ -51,7 +51,7 @@ function saveInBkgd() {
 &nbsp;
 <input type="submit" name="submit" value="Save">
 &nbsp;&nbsp;
-<button class="button" onclick="saveInBkgd(); return false;" id="bkgUpl">Save and continue</button>
+<button class="button" onclick="saveInBkgd(); return false;" id="bkgUpl">Save &amp; continue</button>
 &nbsp;&nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@">Discard</a>
 </div>
