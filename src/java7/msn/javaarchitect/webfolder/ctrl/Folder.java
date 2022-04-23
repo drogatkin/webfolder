@@ -417,7 +417,6 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 
 	@Override
 	protected Object getModel() {
-		formList = false;
 		editFile = null;
 		HashMap<String, Object> pageModel = (HashMap) super.getModel();
 		String webPath = req.getPathInfo();
@@ -458,7 +457,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		if (userAgent != null && userAgent.toLowerCase().indexOf("midori")>= 0)
 			pageModel.put("midori", true);
 		if ("true".equalsIgnoreCase(getConfigValue(BOOKMARKS, "true"))) {
-			log("adding bookmarks", null);
+			//log("adding bookmarks", null);
 			pageModel.put("bookmarks_section", true);
 			String[] bookmarks = readBookmarks(frontController);
 			pageModel.put("bookmarks", bookmarks);
@@ -480,6 +479,11 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		return "(" + (req.getPathInfo() == null ? "" : req.getPathInfo()) + ")";
 	}
 
+	@Override
+	protected void start() {
+		formList = false;
+		super.start();
+	}
 	
 	public String processRenameCall() {
 		try {

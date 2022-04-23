@@ -66,9 +66,8 @@
 	function renameFile(fid, folder) {
 	   var tdel = getElement(fid);
 	   var name = tdel.getAttribute('fileName');
-	   getElement(fid).innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="processRename(\''+name+'\', this.value, \''+fid+'\','+folder+
-         ')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+')">'
-	   //getElement('rename_input').focus();
+	   getElement(fid).innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="restore(\''+name+'\', \''+fid+'\','+folder+')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+')">'
+	   getElement('rename_input').focus();
 	}
 	
 	function renameOnEnter(name, newname, fid, folder) {
@@ -82,7 +81,8 @@
 	       restore(name, fid, folder);
 	       return;
 	    }
-	     makeGenericAjaxCall(wf_uri+'/ajax/Rename', 'from='+encodeURIComponent(name)+'&to='+encodeURIComponent(newname)+'&path='+encodeURIComponent(document.forms.folder.path.value), true, 
+	    
+	    makeGenericAjaxCall(wf_uri+'/ajax/Rename', 'from='+encodeURIComponent(name)+'&to='+encodeURIComponent(newname)+'&path='+encodeURIComponent(document.forms.folder.path.value), true, 
 	     function(res) {
 	         if(res == 'ok')
 	            restore(newname, fid, folder);
@@ -95,7 +95,7 @@
 	     }, 
 	     function (res) {
 	        restore(name, fid, folder);
-	     });
+	     }) 
 	}
 	
 	function restore(name, fid, folder) {
@@ -118,6 +118,6 @@
 	    		break;
 	    	}
 	    }
-	    tde.id= 'td_'+name;
+	    tde.id= 'td_'+name
 	}
   // -->

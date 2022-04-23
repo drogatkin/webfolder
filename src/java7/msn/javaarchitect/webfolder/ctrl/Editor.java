@@ -179,11 +179,11 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					return "";
 				} catch (IOException e) {
 					log("Exception at saving file", e);
-					return "Exception at saving file: " + e;
+					return "Exception at saving a file: " + e;
 				}
 			} catch (Exception e) {
 				log("", e);
-				return "Exception at saving file: " + e;
+				return "Exception at saving a file: " + e;
 			}
 		}
 
