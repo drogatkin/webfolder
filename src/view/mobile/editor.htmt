@@ -45,7 +45,7 @@ function saveInBkgd() {
 <div style="width:98%;height:98%;display: flex; align-items: center;">@.ui.field*(content,java.lang.Object^@model@)*@</div>
 
 <hr/>
-<div style="display: flex; align-items: center;margin-left: 1em;">@.ui.check*(as_text,java.lang.Object^@model@)*@ <label for="as_text">as text</label>
+<div style="display: flex; align-items: center;margin-left: 1em;">@.ui.check*(as_text,java.lang.Object^@model@)*@ <label for="as text">as text</label>
 &nbsp;
 @.ui.select*(eol_type,java.lang.Object^@model@)*@ <label for="eol_type">EOL</label>
 &nbsp;
