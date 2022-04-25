@@ -2,9 +2,9 @@
 <script>
 // figure how reuse desktop code
 function extra_actions(s, ctx) {
-    document.querySelector('input[type=checkbox] + select').disabled=!document.querySelector('input[type=checkbox]').checked
+    document.querySelector('input[type=checkbox] + label + select').disabled=!document.querySelector('input[type=checkbox]').checked
     document.querySelector('input[type=checkbox]').addEventListener('change', e => {
-        document.querySelector('input[type=checkbox] + select').disabled= !e.target.checked
+        document.querySelector('input[type=checkbox] + label + select').disabled= !e.target.checked
     })
 }
 function store() {
@@ -45,9 +45,9 @@ function saveInBkgd() {
 <div style="width:98%;height:98%;display: flex; align-items: center;">@.ui.field*(content,java.lang.Object^@model@)*@</div>
 
 <hr/>
-<div style="display: flex; align-items: center;margin-left: 1em;">@.ui.check*(as_text,java.lang.Object^@model@)*@ as text
+<div style="display: flex; align-items: center;margin-left: 1em;">@.ui.check*(as_text,java.lang.Object^@model@)*@ <label for="as_text">as text</label>
 &nbsp;
-@.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
+@.ui.select*(eol_type,java.lang.Object^@model@)*@ <label for="eol_type">EOL</label>
 &nbsp;
 <input type="submit" name="submit" value="Save">
 &nbsp;&nbsp;

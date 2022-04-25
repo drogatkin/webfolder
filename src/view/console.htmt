@@ -42,9 +42,8 @@
          wskt.onclose = function(e) {
             if (notifRecon == 0)
               notifRecon = 500
-            notifRecon *= 2
-            if (notifRecon > maxReconn)
-              notifRecon= maxReconn;
+            if (notifRecon < maxReconn)
+              notifRecon *= 2
             if (console && console.log)
 	            console.log('Oops '+e + ' reconnecting in '+notifRecon+'ms')
             setTimeout(setup, notifRecon)
