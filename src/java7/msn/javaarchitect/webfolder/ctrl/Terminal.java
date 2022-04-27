@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -16,14 +17,26 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import javax.websocket.server.ServerEndpointConfig;
 
-@ServerEndpoint("/terminal/{path}")
+import org.aldan3.annot.Inject;
+import org.aldan3.model.Log;
+import org.aldan3.util.inet.Base64Codecs;
+
+import com.beegman.webbee.base.BaseBlock;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
+
+@ServerEndpoint(value = "/terminal/{path}", configurator = Terminal.InjectConfigurator.class)
 public class Terminal {
 
 	private static final String PROMPT = "$ ";
@@ -39,8 +52,13 @@ public class Terminal {
 	ExecutorService executor;
 	ExecutorService streamProcessor;
 
+	@Inject
+	public BaseBlock bb;
+
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
+		// consider ws(s)://user:password@host....
+
 		String sep = FileSystems.getDefault().getSeparator();
 		if (Console.TOP_DIRECTORY == null) {
 			try {
@@ -369,5 +387,51 @@ public class Terminal {
 			}
 		}
 		return result.toArray(new String[0]);
+	}
+
+	public static class InjectConfigurator extends ServerEndpointConfig.Configurator {
+
+		@Override
+		public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
+
+			return inject(super.getEndpointInstance(endpointClass));
+		}
+
+		@Override
+		public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
+			// HttpSession httpSession = (HttpSession) request.getHttpSession();
+			// getServletContext()
+			String auth = request.getParameterMap().get("Authorization").get(0); // Ok if exception
+			// readExtConfig(req.getServletContext());
+			auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
+			int i = auth.indexOf(':');
+			String u = auth.substring(0, i);
+			String p = auth.substring(i + 1);
+			System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
+			if (!u.equals(Console.USER) || !p.equals(Console.PASSWORD))
+				throw new RuntimeException();
+
+			super.modifyHandshake(sec, request, response);
+		}
+
+		public <T> T inject(T obj) {
+			if (obj == null) {
+				return null;
+			}
+			for (Field fl : obj.getClass().getDeclaredFields()) { // use cl.getFields() for public with inheritance
+				if (fl.getAnnotation(Inject.class) != null) {
+					try {
+						Class<?> type = fl.getType();
+						if (type == BaseBlock.class) {
+							// System.out.printf("injecting baseblock%n", "");
+						}
+					} catch (Exception e) {
+						Log.l.error("Exception in injection for " + fl, e);
+					}
+				}
+			}
+			return obj;
+		}
+
 	}
 }

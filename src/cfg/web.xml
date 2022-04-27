@@ -29,7 +29,7 @@
         -->
 		<url-pattern>*.jsp</url-pattern>
 		<url-pattern>/webapp/Console/*</url-pattern>
-		<url-pattern>/terminal/*</url-pattern>
+		<!--url-pattern>/terminal/*</url-pattern-->
 	</filter-mapping>
 
 	<servlet>

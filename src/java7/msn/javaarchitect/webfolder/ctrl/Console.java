@@ -5,6 +5,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.HashMap;
 
+import org.aldan3.util.inet.Base64Codecs;
 import org.aldan3.util.inet.HttpUtils;
 
 import com.beegman.webbee.base.BaseBlock;
@@ -15,6 +16,9 @@ public class Console extends BaseBlock<AppModel> {
     
 	public static String TOP_DIRECTORY = null;
 	
+	public static String USER = null;
+	public static String PASSWORD = null;
+	
 	@Override
 	protected Object doControl() {
 		throw new UnsupportedOperationException();
@@ -22,6 +26,14 @@ public class Console extends BaseBlock<AppModel> {
 
 	@Override
 	protected Object getModel() {
+		String auth = req.getHeader("Authorization"); // Ok if exception
+		//	readExtConfig(req.getServletContext());
+		auth = Base64Codecs.base64Decode(
+				auth.substring(auth.indexOf(' ') + 1),
+				Base64Codecs.UTF_8);
+		int i = auth.indexOf(':');
+		USER = auth.substring(0, i);
+		PASSWORD = auth.substring(i + 1);
 		TOP_DIRECTORY = getConfigValue(Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
 		HashMap<String, Object> pageModel = new HashMap<String, Object>(10);
 		pageModel.put("user", System.getProperty("user.name"));
