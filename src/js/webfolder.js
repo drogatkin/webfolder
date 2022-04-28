@@ -34,8 +34,8 @@
 
     		xhr.send(fd); 
     		return false;
-    	   }catch(e) {
-    		   alert(e);
+    	   } catch(e) {
+    		   alert(e)
     	   }
        }
        return true;
@@ -63,51 +63,53 @@
 		document.title = 'Upload error';
 	}
 		
-	function renameFile(fid, folder) {
+	function renameFile(fid, folder,mobile) {
 	   var tdel = getElement(fid);
 	   var name = tdel.getAttribute('fileName');
-	   getElement(fid).innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="restore(\''+name+'\', \''+fid+'\','+folder+')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+')">'
+	   var elem = getElement(fid)
+	   mobile = !!mobile
+	   if (mobile)
+	      elem =elem.firstChild
+	   elem.innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="restore(\''+name+'\', \''+fid+'\','+folder+','+mobile+')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+','+mobile+')">'
 	   getElement('rename_input').focus();
 	}
 	
-	function renameOnEnter(name, newname, fid, folder) {
+	function renameOnEnter(name, newname, fid, folder, mobile) {
 		if(event.key === 'Enter') {
-			processRename(name, newname, fid, folder)
+			processRename(name, newname, fid, folder, mobile)
+		} else if(event.key === "Escape") {
+			restore(name, fid, folder, mobile)
 		}
 	}
 	
-	function processRename(name, newname, fid, folder) {
+	function processRename(name, newname, fid, folder, mobile) {
 	    if(name == newname) {
-	       restore(name, fid, folder);
-	       return;
+	       restore(name, fid, folder, mobile)
+	       return
 	    }
 	    
 	    makeGenericAjaxCall(wf_uri+'/ajax/Rename', 'from='+encodeURIComponent(name)+'&to='+encodeURIComponent(newname)+'&path='+encodeURIComponent(document.forms.folder.path.value), true, 
 	     function(res) {
 	         if(res == 'ok')
-	            restore(newname, fid, folder);
+	            restore(newname, fid, folder, mobile);
 	         else if(res == 'oka')
-	        	 restore(newname, fid, true);
+	        	 restore(newname, fid, true, mobile);
 	         else if(res == 'okn')
-	        	 restore(newname, fid, false);
+	        	 restore(newname, fid, false, mobile);
 	         else
-	            restore(name, fid, folder);
+	            restore(name, fid, folder, mobile);
 	     }, 
 	     function (res) {
-	        restore(name, fid, folder);
+	        restore(name, fid, folder, mobile);
 	     }) 
 	}
 	
-	function restore(name, fid, folder) {
+	function restore(name, fid, folder, mobile) {
 		// TODO if mobile flag, then add <img src=..., src can be fixed in page script variable
 		// TODO folder flag can set or remove if name got .zip extension,
 		// like if (!folder && endsWith('.zip') -> folder 
 	    var tde = getElement(fid);
-	    if (folder) {
-	       tde.innerHTML='<a href="'+wf_uri+wf_path+encodeURIComponent(name)+'">'+name+'</a>';
-	    } else {
-	       tde.innerHTML=name; // html encoding ??
-	    }
+	    
 	    tde.setAttribute('fileName', name);
         // update also checkbox
 	    for (var ni = 0; ni<tde.parentNode.childNodes.length; ni++) {
@@ -119,5 +121,12 @@
 	    	}
 	    }
 	    tde.id= 'td_'+name
+	    if (mobile)
+	       tde = tde.firstChild
+	    if (folder) {
+	       tde.innerHTML='<a href="'+wf_uri+wf_path+encodeURIComponent(name)+'">'+name+'</a>';
+	    } else {
+	       tde.innerHTML=name; // html encoding ??
+	    }
 	}
   // -->

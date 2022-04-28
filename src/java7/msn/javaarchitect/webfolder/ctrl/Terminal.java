@@ -34,6 +34,7 @@ import org.aldan3.util.inet.Base64Codecs;
 import com.beegman.webbee.base.BaseBlock;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @ServerEndpoint(value = "/terminal/{path}", configurator = Terminal.InjectConfigurator.class)
@@ -401,13 +402,22 @@ public class Terminal {
 		public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
 			// HttpSession httpSession = (HttpSession) request.getHttpSession();
 			// getServletContext()
-			String auth = request.getParameterMap().get("Authorization").get(0); // Ok if exception
+			
+			String auth = null;
+			try {
+				//((HttpServletRequest)request.getClass().getMethod("getHttpRequest").invoke(request)).getServletContext();
+				auth = request.getHeaders().get("Authorization").get(0);
+			} catch(Exception e) {
+				
+			}
+            if (auth == null)
+                 auth =  request.getParameterMap().get("Authorization").get(0); // Ok if exception
 			// readExtConfig(req.getServletContext());
 			auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
 			int i = auth.indexOf(':');
 			String u = auth.substring(0, i);
 			String p = auth.substring(i + 1);
-			System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
+			///System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
 			if (!u.equals(Console.USER) || !p.equals(Console.PASSWORD))
 				throw new RuntimeException();
 
