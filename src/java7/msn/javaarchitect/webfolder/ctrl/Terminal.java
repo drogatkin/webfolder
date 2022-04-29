@@ -3,7 +3,6 @@ package msn.javaarchitect.webfolder.ctrl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.servlet.ServletContext;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -32,10 +32,6 @@ import org.aldan3.model.Log;
 import org.aldan3.util.inet.Base64Codecs;
 
 import com.beegman.webbee.base.BaseBlock;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @ServerEndpoint(value = "/terminal/{path}", configurator = Terminal.InjectConfigurator.class)
 public class Terminal {
@@ -59,7 +55,12 @@ public class Terminal {
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
 		// consider ws(s)://user:password@host....
-
+		try {
+			ServletContext ctx = (ServletContext) s.getContainer().getClass().getMethod("getAssociatedContext", Class.class).invoke(s.getContainer(), ServletContext.class);
+			System.out.printf("Context: %s%n", ctx);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 		String sep = FileSystems.getDefault().getSeparator();
 		if (Console.TOP_DIRECTORY == null) {
 			try {
@@ -402,7 +403,7 @@ public class Terminal {
 		public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
 			// HttpSession httpSession = (HttpSession) request.getHttpSession();
 			// getServletContext()
-			
+			super.modifyHandshake(sec, request, response);
 			String auth = null;
 			try {
 				//((HttpServletRequest)request.getClass().getMethod("getHttpRequest").invoke(request)).getServletContext();
@@ -413,15 +414,18 @@ public class Terminal {
             if (auth == null)
                  auth =  request.getParameterMap().get("Authorization").get(0); // Ok if exception
 			// readExtConfig(req.getServletContext());
-			auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
-			int i = auth.indexOf(':');
-			String u = auth.substring(0, i);
-			String p = auth.substring(i + 1);
-			///System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
-			if (!u.equals(Console.USER) || !p.equals(Console.PASSWORD))
-				throw new RuntimeException();
-
-			super.modifyHandshake(sec, request, response);
+			
+			if (auth != null && !auth.isBlank()) {
+				auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
+				int i = auth.indexOf(':');
+				String u = auth.substring(0, i);
+				String p = auth.substring(i + 1);
+				///System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
+				if (u.equals(Console.USER) && p.equals(Console.PASSWORD))
+					return;
+			}
+			response.getHeaders().put(HandshakeResponse.SEC_WEBSOCKET_ACCEPT, new ArrayList<String>());
+			//throw new RuntimeException();
 		}
 
 		public <T> T inject(T obj) {
