@@ -29,7 +29,9 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import org.aldan3.annot.Inject;
 import org.aldan3.model.Log;
+import org.aldan3.servlet.Constant.Property;
 import org.aldan3.util.inet.Base64Codecs;
+import org.aldan3.servlet.Constant;
 
 import com.beegman.webbee.base.BaseBlock;
 
@@ -49,16 +51,18 @@ public class Terminal {
 	ExecutorService executor;
 	ExecutorService streamProcessor;
 
-	@Inject
-	public BaseBlock bb;
+	@Inject("config")
+	public Property property;
 
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
 		// consider ws(s)://user:password@host....
 		try {
-			ServletContext ctx = (ServletContext) s.getContainer().getClass().getMethod("getAssociatedContext", Class.class).invoke(s.getContainer(), ServletContext.class);
+			ServletContext ctx = (ServletContext) s.getContainer().getClass()
+					.getMethod("getAssociatedContext", Class.class).invoke(s.getContainer(), ServletContext.class);
 			System.out.printf("Context: %s%n", ctx);
-		} catch(Exception e) {
+			inject(this, ctx);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String sep = FileSystems.getDefault().getSeparator();
@@ -395,8 +399,7 @@ public class Terminal {
 
 		@Override
 		public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
-
-			return inject(super.getEndpointInstance(endpointClass));
+			return inject(super.getEndpointInstance(endpointClass), null);
 		}
 
 		@Override
@@ -406,46 +409,53 @@ public class Terminal {
 			super.modifyHandshake(sec, request, response);
 			String auth = null;
 			try {
-				//((HttpServletRequest)request.getClass().getMethod("getHttpRequest").invoke(request)).getServletContext();
+				// ((HttpServletRequest)request.getClass().getMethod("getHttpRequest").invoke(request)).getServletContext();
 				auth = request.getHeaders().get("Authorization").get(0);
-			} catch(Exception e) {
-				
+			} catch (Exception e) {
+
 			}
-            if (auth == null)
-                 auth =  request.getParameterMap().get("Authorization").get(0); // Ok if exception
+			if (auth == null)
+				auth = request.getParameterMap().get("Authorization").get(0); // Ok if exception
 			// readExtConfig(req.getServletContext());
-			
+
 			if (auth != null && !auth.isBlank()) {
 				auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
 				int i = auth.indexOf(':');
 				String u = auth.substring(0, i);
 				String p = auth.substring(i + 1);
-				///System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc " + u + ", pc " + p);
+				/// System.err.println("us " + Console.USER + ",p " + Console.PASSWORD + " uc "
+				/// + u + ", pc " + p);
 				if (u.equals(Console.USER) && p.equals(Console.PASSWORD))
 					return;
 			}
 			response.getHeaders().put(HandshakeResponse.SEC_WEBSOCKET_ACCEPT, new ArrayList<String>());
-			//throw new RuntimeException();
+			// throw new RuntimeException();
 		}
+	}
 
-		public <T> T inject(T obj) {
-			if (obj == null) {
-				return null;
-			}
+	public static <T> T inject(T obj, ServletContext context) {
+		if (obj == null) {
+			return null;
+		}
+		if (context != null)
 			for (Field fl : obj.getClass().getDeclaredFields()) { // use cl.getFields() for public with inheritance
 				if (fl.getAnnotation(Inject.class) != null) {
 					try {
 						Class<?> type = fl.getType();
-						if (type == BaseBlock.class) {
+						if (type == Property.class) {
+							switch (fl.getAnnotation(Inject.class).value()) {
+							case "config":
+								fl.set(obj, context.getAttribute(Constant.ALDAN3_CONFIG));
+								break;
+							}
 							// System.out.printf("injecting baseblock%n", "");
 						}
 					} catch (Exception e) {
-						Log.l.error("Exception in injection for " + fl, e);
+						Log.l.error("Exception in an injection for " + fl, e);
 					}
 				}
 			}
-			return obj;
-		}
-
+		return obj;
 	}
+
 }

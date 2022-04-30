@@ -57,7 +57,7 @@ public class Console extends BaseBlock<AppModel> {
 	
 	@Override
 	protected String getTitle() {
-		return "WebFolder: terminal";
+		return "Terminal - WebFolder";
 	}
 
 	@Override
