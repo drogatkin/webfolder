@@ -13,6 +13,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +30,6 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import org.aldan3.annot.Inject;
 import org.aldan3.model.Log;
-import org.aldan3.servlet.Constant.Property;
 import org.aldan3.util.inet.Base64Codecs;
 import org.aldan3.servlet.Constant;
 
@@ -52,7 +52,7 @@ public class Terminal {
 	ExecutorService streamProcessor;
 
 	@Inject("config")
-	public Property property;
+	public Properties properties;
 
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
@@ -154,6 +154,7 @@ public class Terminal {
 		String out = PROMPT + command + "\n";
 		if ("cd".equals(cmd)) {
 			String newpwd = SLASH; // getTopDir()
+			System.out.printf("Top %s%n", properties.getProperty("TOPFOLDER"));
 			if (args.isEmpty()) {
 				newpwd = System.getProperty("user.home");
 			} else {
@@ -249,7 +250,8 @@ public class Terminal {
 
 	@OnClose
 	public void cancel() {
-		if (currentProcess != null && currentProcess.isAlive()) {
+		if (currentProcess != null && currentProcess.isAlive()) { // it can be not required for long running process and
+			// a possibility to reconnect to it can be added
 			currentProcess.destroyForcibly();
 		}
 		if (executor != null)
@@ -442,7 +444,7 @@ public class Terminal {
 				if (fl.getAnnotation(Inject.class) != null) {
 					try {
 						Class<?> type = fl.getType();
-						if (type == Property.class) {
+						if (type == Properties.class) {
 							switch (fl.getAnnotation(Inject.class).value()) {
 							case "config":
 								fl.set(obj, context.getAttribute(Constant.ALDAN3_CONFIG));
