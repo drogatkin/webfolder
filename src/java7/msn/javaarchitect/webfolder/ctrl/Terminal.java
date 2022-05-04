@@ -50,14 +50,14 @@ public class Terminal {
 
 	ExecutorService executor;
 	ExecutorService streamProcessor;
-	
+
 	String TOP_DIRECTORY;
 
 	@Inject(Folder.CONFIG_ATTR_NAME)
 	public Properties properties;
 
-	//@Inject("config")
-	//public Properties properties1;
+	// @Inject("config")
+	// public Properties properties1;
 
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
@@ -173,11 +173,14 @@ public class Terminal {
 			try {
 				Path newpath = Paths.get(newpwd);
 				Paths.get(TOP_DIRECTORY).relativize(newpath);
-				if (Files.isDirectory(newpath)) {
-					pwd = newpath.toAbsolutePath().normalize().toString();
-					out += pwd + "\n";
-				} else
-					throw new InvalidPathException(newpwd, "The path isn't a directory");
+				if (Files.exists(newpath))
+					if (Files.isDirectory(newpath)) {
+						pwd = newpath.toAbsolutePath().normalize().toString();
+						out += pwd + "\n";
+					} else
+						throw new InvalidPathException(newpwd, "The path isn't a directory");
+				else
+					throw new InvalidPathException(newpwd, "The path doesn't exist");
 			} catch (InvalidPathException e) {
 				out += e.getReason() + "\n";
 			} catch (IllegalArgumentException e) {
