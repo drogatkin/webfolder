@@ -14,7 +14,7 @@ import com.beegman.webbee.util.PageRef;
 
 public class Console extends BaseBlock<AppModel> {
     
-	public static String TOP_DIRECTORY = null;
+	private static String TOP_DIRECTORY = null;
 	
 	public static String USER = null;
 	public static String PASSWORD = null;
@@ -34,7 +34,7 @@ public class Console extends BaseBlock<AppModel> {
 		int i = auth.indexOf(':');
 		USER = auth.substring(0, i);
 		PASSWORD = auth.substring(i + 1);
-		TOP_DIRECTORY = getConfigValue(Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
+		TOP_DIRECTORY = Folder.getConfigValue(frontController, Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
 		HashMap<String, Object> pageModel = new HashMap<String, Object>(10);
 		pageModel.put("user", System.getProperty("user.name"));
 		

@@ -50,9 +50,14 @@ public class Terminal {
 
 	ExecutorService executor;
 	ExecutorService streamProcessor;
+	
+	String TOP_DIRECTORY;
 
-	@Inject("config")
+	@Inject(Folder.CONFIG_ATTR_NAME)
 	public Properties properties;
+
+	//@Inject("config")
+	//public Properties properties1;
 
 	@OnOpen
 	public void connect(Session s, @PathParam("path") String path) {
@@ -60,13 +65,14 @@ public class Terminal {
 		try {
 			ServletContext ctx = (ServletContext) s.getContainer().getClass()
 					.getMethod("getAssociatedContext", Class.class).invoke(s.getContainer(), ServletContext.class);
-			System.out.printf("Context: %s%n", ctx);
+			// System.out.printf("Context: %s%n", ctx);
 			inject(this, ctx);
+			TOP_DIRECTORY = properties.getProperty(Folder.TOPFOLDER);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String sep = FileSystems.getDefault().getSeparator();
-		if (Console.TOP_DIRECTORY == null) {
+		if (TOP_DIRECTORY == null) {
 			try {
 				// System.err.printf("Top directory wasn't set\n");
 				s.close();
@@ -76,7 +82,7 @@ public class Terminal {
 			}
 			return;
 		}
-		pwd = Console.TOP_DIRECTORY + path;
+		pwd = TOP_DIRECTORY + path;
 		// System.out.printf("Connected : %s%n", pwd);
 		streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
 			Thread t = new Thread(r);
@@ -154,7 +160,8 @@ public class Terminal {
 		String out = PROMPT + command + "\n";
 		if ("cd".equals(cmd)) {
 			String newpwd = SLASH; // getTopDir()
-			System.out.printf("Top %s%n", properties.getProperty("TOPFOLDER"));
+			if (properties != null)
+				System.out.printf("Top %s%n", properties.getProperty(Folder.TOPFOLDER));
 			if (args.isEmpty()) {
 				newpwd = System.getProperty("user.home");
 			} else {
@@ -165,7 +172,7 @@ public class Terminal {
 			}
 			try {
 				Path newpath = Paths.get(newpwd);
-				Paths.get(Console.TOP_DIRECTORY).relativize(newpath);
+				Paths.get(TOP_DIRECTORY).relativize(newpath);
 				if (Files.isDirectory(newpath)) {
 					pwd = newpath.toAbsolutePath().normalize().toString();
 					out += pwd + "\n";
@@ -449,6 +456,8 @@ public class Terminal {
 							case "config":
 								fl.set(obj, context.getAttribute(Constant.ALDAN3_CONFIG));
 								break;
+							default:
+								fl.set(obj, context.getAttribute(fl.getAnnotation(Inject.class).value()));
 							}
 							// System.out.printf("injecting baseblock%n", "");
 						}

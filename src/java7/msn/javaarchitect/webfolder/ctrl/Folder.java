@@ -649,6 +649,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			} catch (Exception e) {
 
 			} finally {
+				//frontController.log("store prop "+CONFIG_ATTR_NAME+" in " + configProps);
 				synchronized (frontController) {
 					frontController.getServletContext().setAttribute(CONFIG_ATTR_NAME, configProps);
 					frontController.getServletContext().removeAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME);

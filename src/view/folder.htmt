@@ -25,7 +25,7 @@
   
 <div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;" onresize="adjContHeight()">
 <table class="tinytable" id="folder_table">
-  <thead>
+  <thead style="position: sticky; top:0;">
   <tr>
      <th class="nosort"><div style="cursor:pointer" onclick="selectAll()"><h3>X</h3></div></th>
     <th><h3>name </h3> </th><th><h3>size</h3></th><th><h3>modified</h3></th><th><h3>attrs</h3></th>
