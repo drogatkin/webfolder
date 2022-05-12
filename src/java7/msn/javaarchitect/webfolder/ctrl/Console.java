@@ -14,10 +14,9 @@ import com.beegman.webbee.util.PageRef;
 
 public class Console extends BaseBlock<AppModel> {
     
-	private static String TOP_DIRECTORY = null;
 	
-	public static String USER = null;
-	public static String PASSWORD = null;
+	public static String USER;
+	public static String PASSWORD;
 	
 	@Override
 	protected Object doControl() {
@@ -26,19 +25,19 @@ public class Console extends BaseBlock<AppModel> {
 
 	@Override
 	protected Object getModel() {
-		String auth = req.getHeader("Authorization"); // Ok if exception
-		//	readExtConfig(req.getServletContext());
+		String auth = req.getHeader("Authorization"); // Ok if exception		
 		auth = Base64Codecs.base64Decode(
 				auth.substring(auth.indexOf(' ') + 1),
 				Base64Codecs.UTF_8);
 		int i = auth.indexOf(':');
 		USER = auth.substring(0, i);
 		PASSWORD = auth.substring(i + 1);
-		TOP_DIRECTORY = Folder.getConfigValue(frontController, Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
+		
+//		readExtConfig(req.getServletContext());
+        Folder.getConfigValue(frontController, Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
 		HashMap<String, Object> pageModel = new HashMap<String, Object>(10);
 		pageModel.put("user", System.getProperty("user.name"));
 		
-		//pageModel.put("test","this test");
 		String webPath = req.getPathInfo();
 		if (webPath == null)
 			webPath = "/";
@@ -51,7 +50,7 @@ public class Console extends BaseBlock<AppModel> {
 				 };
 		pageModel.put(TOPLINKS, toplinks);
 		pageModel.put("path", webPath);
-		//pageModel.put("title", "WebFolder: terminal");
+
 		return pageModel;
 	}
 	
