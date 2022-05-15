@@ -21,8 +21,7 @@
 
   <expression variable="javac">
      <operator name="append">
-        <value variable="JAVA_HOME"/>
-        <value>/bin/javac</value>
+        <value>${JAVA_HOME}/bin/javac</value>
      </operator>
   </expression>
 
@@ -48,9 +47,17 @@
   <expression variable="java sources">
   <if>
     <expression>
-       <operator name="lt"><value variable="comp target"/><value>1.7</value></operator>
+       <operator name="eq"><value variable="android"/><value>true</value></operator>
     </expression>
    <then>     <echo>Java 6</echo>
+        <if>
+            <expression>
+               <operator name="lt"><value>1.8</value><value variable="comp target"/></operator>
+            </expression>
+            <then>
+                <variable name="comp target">8</variable>
+            </then>
+        </if>
         <function name="newerwithdependency">
            <parameter value="&source_directory;/&domain;/.java" type="path"/>
            <parameter value="&build_directory;/&domain;/.class" type="path"/>
