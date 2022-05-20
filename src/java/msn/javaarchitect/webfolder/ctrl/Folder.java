@@ -346,6 +346,12 @@ public class Folder extends Tabular {
 	protected String getTitle() {
 		return "(" + (req.getPathInfo() == null ? "" : req.getPathInfo()) + ")";
 	}
+	
+	@Override
+	protected void start() {
+		formList = false;
+		super.start();
+	}
 
 	public String processRenameCall() {
 		String path = getParameterValue("path", "", 0);

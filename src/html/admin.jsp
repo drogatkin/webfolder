@@ -14,7 +14,7 @@
 			result.load(new FileInputStream(BasicAuthFilter
 					.getAuthPropertiesFile(getServletContext().getContextPath())));
 		} catch (Exception e) {
-			log("No props", e);
+			log("No props: " + e);
 		} finally {
 			if (fis != null)
 				try {
