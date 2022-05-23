@@ -268,35 +268,6 @@
      </operator>
   </expression>
   
-  <expression name="DX PATH">
-     <operator name="append">
-        <value variable="ANDROID_HOME"/>
-        <value>/platform-tools/lib/dx.jar</value>
-     </operator>
-  </expression>
-
-  <target name="dex" dir="PROJECT_HOME">
-      <dependency target="jar"/>
-      <dependency>
-          <expression>
-             <function name="anynewer">
-                <parameter value="&build_directory;/&build_file;" type="path"/>
-                <parameter value="&build_directory;/dex-&build_file;" type="path"/>
-             </function>
-          </expression>
-      </dependency>
-     <echo>Dex processing ..</echo>
-      <task name="dex_do" code="com.android.dx.command.Main" path="DX PATH">
-         <parameter>--dex</parameter>
-         <parameter>
-             <operator name="append">
-                 <value>--output=</value>
-                 <value type="path">&build_directory;/dex-&build_file;</value>
-             </operator></parameter>
-         <parameter value="&build_directory;/&build_file;" type="path"/>
-      </task>
-  </target>
-  
   <target name="war" dir="PROJECT_HOME">
     <dependency target="jar"/>
     <dependency>
@@ -413,6 +384,8 @@
          <parameter type="path">src/image/favicon.ico</parameter>
          <parameter>A js/</parameter>
          <parameter type="path">src/js/*.js</parameter>
+         <parameter>A css/</parameter>
+         <parameter type="path" value="src/html/style.css"/>
 
          <parameter>A</parameter>
          <parameter type="path">src/html/*.html</parameter>

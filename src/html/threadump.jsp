@@ -1,10 +1,14 @@
 <%@ page language="java" import="java.util.*,java.lang.Thread.*" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
 <title>WebFolder: HTTP headers and Thread Dump</title>
+<style>
+     <jsp:include page="css/style.css"/>
+</style>
 </head>
 <body>
 <h2> HTTP headers</h2>

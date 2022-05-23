@@ -3,6 +3,7 @@ lib/
 *.jar
 *.war
 *.bak
+*.apk
 .classpath
 src/3rd_party/ace/*.js
 src/3rd_party/ace/readme
