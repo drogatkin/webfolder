@@ -1,9 +1,11 @@
 /* dark mode */
 @media (prefers-color-scheme: dark) {
-		    body {
-		        background-color: #020202;
-		        color: #e2e2e4;
-		        background-image: none;
-		        background: linear-gradient(#2c3840, #020202);
-		    }
+	html {min-height:100%}
+    body {
+        height: 100%;
+        background-color: #020202;
+        color: #e2e2e4;
+        background-image: none;
+        background: linear-gradient(#2c3840, #020202);
+	    }
 }
