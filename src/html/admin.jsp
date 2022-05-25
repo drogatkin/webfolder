@@ -146,6 +146,7 @@
        %>   
   <tr>
      <td>Suggestions</td><td colspan="2"><select name="volumes" id="volume-select" onchange="selVal(this.value)">
+        <option value="">--Please select a drive--</option>
         <% for(File f: topDirs) {%>
             <option value="<%=f.getAbsolutePath()%>"><%=f.getAbsolutePath()%></option>
          <% } %>

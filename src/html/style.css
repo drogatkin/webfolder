@@ -8,4 +8,11 @@
         background-image: none;
         background: linear-gradient(#2c3840, #020202);
 	    }
+    a:visited {
+            color: pink; }
+    a  { color:#ccccdd;}
+    input[type="text"],  textarea, input[type=password] {background-color:#232426; color:#ddd;}
+    input[type="checkbox"] {accent-color: #3e5a6c; background-color:#3e5a6c;color:#ccc;}
+    select {background-color:#232426; color:#ddd;}
+    input[type=submit], button.button {background-color:#3e5a6c;color:#ccc;}
 }

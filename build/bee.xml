@@ -49,7 +49,7 @@
     <expression>
        <operator name="eq"><value variable="android"/><value>true</value></operator>
     </expression>
-   <then>     <echo>Java 6</echo>
+   <then>     <echo>Java IO/Android</echo>
         <if>
             <expression>
                <operator name="lt"><value>1.8</value><value variable="comp target"/></operator>
@@ -65,7 +65,7 @@
 	   <parameter value="&domain;"/>
         </function>
     </then>
-     <else><echo>Java 7+</echo>
+     <else><echo>Java NIO</echo>
         <function name="newerwithdependency">
            <parameter value="&source_directory;7/&domain;/.java" type="path"/>
            <parameter value="&build_directory;/&domain;/.class" type="path"/>
