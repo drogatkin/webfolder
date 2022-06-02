@@ -70,7 +70,7 @@
 	   mobile = !!mobile
 	   if (mobile)
 	      elem =elem.firstChild
-	   elem.innerHTML='<input id="rename_input" type="text" value="'+name+'" onblur="restore(\''+name+'\', \''+fid+'\','+folder+','+mobile+')" onkeydown="renameOnEnter(\''+name+'\', this.value, \''+fid+'\','+folder+','+mobile+')">'
+	   elem.innerHTML='<input id="rename_input" type="text" value="'+name+'" onkeydown="renameOnEnter(\''+escape(name)+'\', this.value, \''+escape(fid)+'\','+folder+','+mobile+')">'
 	   getElement('rename_input').focus();
 	}
 	
@@ -129,4 +129,9 @@
 	       tde.innerHTML=name; // html encoding ??
 	    }
 	}
+	
+	function escape(s) {
+ 	   return ('' + s)
+        .replace(/'/g, "\\&apos;")
+    }
   // -->
