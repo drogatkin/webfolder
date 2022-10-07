@@ -12,9 +12,9 @@
       <!ENTITY webapp_file "&project;.war"> 
       <!ENTITY projects_root "../..">
       ]>
-<!-- $Id: bee.xml,v 1.22 2015/02/28 05:53:27 cvs Exp $
-   Build script file for webfolder
-   Copyright (c) 2008-2015 Dmitriy Rogatkin    -->
+<!-- 
+   A build script file for webfolder
+   Copyright (c) 2008-2022 Dmitriy Rogatkin    -->
 
 <bee name="&project;" type="project" dir="..">
   &env;
