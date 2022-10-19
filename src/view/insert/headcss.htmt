@@ -54,4 +54,6 @@ h2 + input[type=text] {
   border: none;
   border-left: 2px solid;
 }
+
+@model.editor{@ace(#editor {font-size:16px;})@}@
 /* ]]> */-->
