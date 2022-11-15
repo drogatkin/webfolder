@@ -67,7 +67,7 @@ function saveInBkgd() {
    // check if saving in progress and ignore
    if (!store())
       return
-   
+   getElement('status').style.visibility = 'hidden'
    var xhr = new XMLHttpRequest()
    var formData = new FormData(document.forms[0])
    formData.append('submit', 'Save');
@@ -75,22 +75,30 @@ function saveInBkgd() {
    xhr.open('POST', '@contextpath@@servletpath@/@pageservicename@', true);
    xhr.onload = function () {
       if (xhr.status === 200) {
-          document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue';
           var resp = xhr.responseText
-     
           if (resp && resp.trim() && resp != 'OK') {
-             //getElement('status').style.visibility = 'visible'
-             getElement('status').classList.remove('#status')
-             getElement('status').style.display = 'block'
-             getElement('err_txt').innerHTML = resp
+          	showBkgStatus(resp)
           } else
-             getElement('status').style.visibility = 'hidden'
+             showBkgStatus()
        } else {
-          alert('An error occurred!')
+          showBkgStatus('An error occurred!')
        }
+    }
+    xhr.onerror = function () {
+    	showBkgStatus('Network error')
     }
     document.getElementById('bkgUpl').innerHTML = 'Saving...';
     xhr.send(formData)
+}
+
+function showBkgStatus(msg) {
+     document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue'
+     if (msg) {
+     	getElement('status').classList.remove('#status')
+         getElement('status').style.display = 'block'
+         getElement('err_txt').innerHTML = msg
+     } else
+     	getElement('status').style.visibility = 'hidden'
 }
 </script>
 <div>&nbsp;</div>
