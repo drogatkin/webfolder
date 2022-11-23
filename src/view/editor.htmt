@@ -26,8 +26,15 @@ makeJSONAjaxCall(window.location.origin+'@contextpath@/edit_modes.json', '', tru
 	         }
 	     });
 editor.setAutoScrollEditorIntoView(false)
-editor.setOption('maxLines', 80);
-editor.setReadOnly(@model.partial@);
+editor.setOption('maxLines', 80)
+editor.setReadOnly(@model.partial@)
+editor.commands.addCommand({
+    name: 'Save',
+    bindKey: {win: "Ctrl-S", "mac": "Cmd-S"},
+    exec: function(editor) {
+        saveInBkgd()
+    }
+})
 
 function store() {
   document.forms.editor.content.value = editor.getValue();
