@@ -53,12 +53,15 @@
    function sendCommand(cmd) {
 	   switch (event.key) {
 	    case 'Enter':
-	         if (wskt && wskt.readyState===WebSocket.OPEN && cmd.value)
-		          wskt.send(cmd.value)
+	         if (wskt && wskt.readyState===WebSocket.OPEN)
+		          wskt.send(cmd.textContent)
 		      else
 		         console.log('websocket closed')  
-		      commandBuffer.push(cmd.value)  
-		      cmd.value = ''
+		      if (cmd.textContent) {
+			      commandBuffer.push(cmd.textContent)    
+			  } else
+			  	sendEnter()
+			  cmd.textContent = ' '
 	        return
 	    case 'ArrowUp':
 	        if (commandBuffer.length) {
@@ -75,31 +78,37 @@
 	        }
 	        break
 	    default:
+	       if (event.ctrlKey) {
+	          if (event.keyCode = 67)
+	       	   sendCtrlC()
+	          else if (event.keyCode = 90)
+	          	sendCtrlZ()
+	          else if (event.keyCode = 76)
+	         	 clearScreen()
+	       }
 	       return
 	  }
 	  if (commandBuffer.length) {
-	 	 cmd.value = commandBuffer[cmdBufPos]
-	       const end = cmd.value.length
-	       cmd.setSelectionRange(end, end)
-			cmd.focus()
+	 	 cmd.innerText = commandBuffer[cmdBufPos]
+	     cmd.focus()
 	  }
 	  event.preventDefault()
    }
    
    function sendEnter() {
        if (wskt && wskt.readyState===WebSocket.OPEN) {
-            const inpu = document.querySelector('input[type=text]')
-            if (inpu && inpu.value)
-                wskt.send(inpu.value)
+            const inpu = document.querySelector('#commandarea')
+            if (inpu && inpu.textContent)
+                wskt.send(inpu.textContent)
 		    wskt.send('\n')
-		    if (inpu && inpu.value)
+		    if (inpu && inpu.textContent)
 		          inpu.value = ''
 		}
    }
    function sendCtrlZ() {
        if (wskt && wskt.readyState===WebSocket.OPEN) {
 		   wskt.send('\u001A')
-		   document.querySelector('input[type=text]').value=''
+		   document.querySelector('#commandarea').textContent=' '
 	   }
    }
    function sendCtrlC() {
@@ -118,12 +127,9 @@
  </script>      
 
 <h2>Console</h2>
-<div style="position:fixed">
-<input type="text" size="50" onkeydown="sendCommand(this)" autofocus> 
-<button type="button" onclick="sendEnter()">^M</button> 
-  <button type="button" onclick="sendCtrlC()">^C</button>  <button type="button" onclick="sendCtrlZ()">^Z</button> 
-   <button type="button" onclick="clearScreen()">Clr</button>
-</div>
 <div id="terminal">
 <code></code>
+</div>
+<div id="command2">
+&gt;<code contenteditable="true" id="commandarea" onkeydown="sendCommand(this)" autofocus>&nbsp;</code>
 </div>

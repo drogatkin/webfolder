@@ -154,6 +154,9 @@ public class Terminal {
 			}
 			return;
 		}
+		//command = command.trim();
+		command = rtrim(ltrim(command));
+		//System.err.println(">"+command);
 		int bi = command.indexOf(" ");
 		String cmd = bi < 0 ? command : command.substring(0, bi);
 		String args = bi < 0 ? "" : command.substring(bi + 1).trim();
@@ -470,6 +473,23 @@ public class Terminal {
 				}
 			}
 		return obj;
+	}
+	
+	public static String ltrim(String str) {
+		//System.err.printf("%04x", (int)str.charAt(0));
+		int i = 0;
+		while (i < str.length() && (Character.isWhitespace(str.charAt(i)) || str.charAt(i) == 0xA0)) {
+			i++;
+		}
+		return str.substring(i);
+	}
+	
+	public static String rtrim(String str) {
+		int i = str.length()-1;
+		while (i >= 0 && (Character.isWhitespace(str.charAt(i)) || str.charAt(i) == 0xA0)) {
+		    i--;
+		}
+		return str.substring(0,i+1);
 	}
 
 }
