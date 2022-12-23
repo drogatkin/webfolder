@@ -53,15 +53,16 @@
    function sendCommand(cmd) {
 	   switch (event.key) {
 	    case 'Enter':
-	         if (wskt && wskt.readyState===WebSocket.OPEN)
-		          wskt.send(cmd.textContent)
-		      else
-		         console.log('websocket closed')  
-		      if (cmd.textContent) {
-			      commandBuffer.push(cmd.textContent)    
-			  } else
+	         if (wskt && wskt.readyState===WebSocket.OPEN) {
+               if (cmd.textContent) {
+                  wskt.send(cmd.textContent)
+                  commandBuffer.push(cmd.textContent)
+			   } else
 			  	sendEnter()
 			  cmd.textContent = ' '
+			  event.preventDefault()
+		   } else
+		         console.log('websocket closed')  
 	        return
 	    case 'ArrowUp':
 	        if (commandBuffer.length) {
@@ -79,12 +80,23 @@
 	        break
 	    default:
 	       if (event.ctrlKey) {
-	          if (event.keyCode = 67)
+	          if (event.keyCode == 67) {
 	       	   sendCtrlC()
-	          else if (event.keyCode = 90)
+	       	   event.preventDefault()
+	          } else if (event.keyCode == 90){
 	          	sendCtrlZ()
-	          else if (event.keyCode = 76)
+	          	event.preventDefault()
+	          } else if (event.keyCode == 76) {
 	         	 clearScreen()
+	         	 event.preventDefault()
+	          } else if (event.keyCode == 13 || event.which == 13) {
+		          if (cmd.textContent) {
+	                  wskt.send(cmd.textContent)
+	                  commandBuffer.push(cmd.textContent)
+				   } else
+				  	sendEnter()
+				  	event.preventDefault()
+	          }
 	       }
 	       return
 	  }
