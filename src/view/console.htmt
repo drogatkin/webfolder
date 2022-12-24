@@ -54,12 +54,12 @@
 	   switch (event.key) {
 	    case 'Enter':
 	         if (wskt && wskt.readyState===WebSocket.OPEN) {
-               if (cmd.textContent) {
+               if (cmd.textContent && cmd.textContent != '\xa0') {
                   wskt.send(cmd.textContent)
                   commandBuffer.push(cmd.textContent)
 			   } else
 			  	sendEnter()
-			  cmd.textContent = ' '
+			  cmd.textContent = '\xa0'
 			  event.preventDefault()
 		   } else
 		         console.log('websocket closed')  
@@ -90,12 +90,13 @@
 	         	 clearScreen()
 	         	 event.preventDefault()
 	          } else if (event.keyCode == 13 || event.which == 13) {
-		          if (cmd.textContent) {
+		          if (cmd.textContent && cmd.textContent != '\xa0') {
 	                  wskt.send(cmd.textContent)
 	                  commandBuffer.push(cmd.textContent)
 				   } else
 				  	sendEnter()
-				  	event.preventDefault()
+				  cmd.textContent = '\xa0'
+				  event.preventDefault()
 	          }
 	       }
 	       return
@@ -113,14 +114,12 @@
             if (inpu && inpu.textContent)
                 wskt.send(inpu.textContent)
 		    wskt.send('\n')
-		    if (inpu && inpu.textContent)
-		          inpu.value = ''
 		}
    }
    function sendCtrlZ() {
        if (wskt && wskt.readyState===WebSocket.OPEN) {
 		   wskt.send('\u001A')
-		   document.querySelector('#commandarea').textContent=' '
+		   document.querySelector('#commandarea').textContent='\xa0'
 	   }
    }
    function sendCtrlC() {
