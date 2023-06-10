@@ -32,6 +32,7 @@
 	String use_watch = "";
 	String sess_clpbrd = "";
 	String bookmarks = "";
+	String autosave = "";
 	boolean Java7 = true;
 	pass = request.getParameter("pass");
 	String going_back = request.getParameter("going_back");
@@ -50,6 +51,7 @@
 		use_watch = "true".equalsIgnoreCase(configProps.getProperty("WATCHSERVICE", "false"))?"checked":"";
 		sess_clpbrd = "true".equalsIgnoreCase(configProps.getProperty("SESSIONCLIPBOARD", "false"))?"checked":"";
 		bookmarks = "true".equalsIgnoreCase(configProps.getProperty("BOOKMARKS", "true"))?"checked":"";
+		autosave = "true".equalsIgnoreCase(configProps.getProperty("AUTOSAVE", "true"))?"checked":"";
 	} else {
 		configProps.setProperty("TOPFOLDER",
 				request.getParameter("top_folder"));
@@ -61,6 +63,7 @@
 		configProps.setProperty("WATCHSERVICE", request.getParameter("watchservice") == null?"false":"true");
 		configProps.setProperty("SESSIONCLIPBOARD", request.getParameter("sessionclipbrd") == null?"false":"true");
 		configProps.setProperty("BOOKMARKS", request.getParameter("bookmarks") == null?"false":"true");
+		configProps.setProperty("AUTOSAVE", request.getParameter("autosave") == null?"false":"true");
 		try {
 			FileOutputStream fos;
 
@@ -157,6 +160,7 @@
      <tr><td>Maintain a clipboard<br /> in a session</td><td colspan="2"><input type="checkbox" name="sessionclipbrd" value="true" <%=sess_clpbrd %>></input></td></tr> 
      <tr><td>Use Watch service</td><td colspan="2"><input type="checkbox" name="watchservice" value="true" <%=use_watch %>></input></td></tr>
      <tr><td>Use directory bookmarks</td><td colspan="2"><input type="checkbox" name="bookmarks" value="true" <%=bookmarks %>></input></td></tr>
+     <tr><td>Auto save</td><td colspan="2"><input type="checkbox" name="autosave" value="true" <%=autosave %>></input></td></tr>
 </table>
 <input type="hidden" name="going_back" value="<%=going_back%>"/>
 <input type="submit" value="Apply"/>

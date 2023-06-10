@@ -47,6 +47,7 @@ import org.aldan3.model.Coordinator;
  *
  */
 public class Editor extends Form<Editor.editing, AppModel> {
+	public static final String AUTOSAVE = "AUTOSAVE";
 
 	@Override
 	protected editing loadModel(editing model) {
@@ -116,6 +117,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				model.content = "" + e;
 			}
 		}
+		model.do_autosave = getConfigValue(AUTOSAVE, "true");
 		return model;
 	}
 
@@ -213,6 +215,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public boolean tail;
 		@FormField(presentFiller=EolFiller.class)
 		public String eol_type;
+		@FormField
+		public String do_autosave;
 	}
 	
 	@OptionMap(valueMap = "id")

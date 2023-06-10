@@ -70,11 +70,14 @@ document.addEventListener('keydown', e => {
 </div>
 </form>
 <script>
+var autosave_on = "@model.do_autosave@" // from server
+
 function extra_actions(s, ctx) {
     document.querySelector('input[type=checkbox] + select').disabled=!document.querySelector('input[type=checkbox]').checked
     document.querySelector('input[type=checkbox]').addEventListener('change', e => {
         document.querySelector('input[type=checkbox] + select').disabled= !e.target.checked
     })
+    if(document.addEventListener) document.addEventListener("visibilitychange", autosave)
 }
 function saveInBkgd() {
    // check if saving in progress and ignore
@@ -112,6 +115,12 @@ function showBkgStatus(msg) {
          getElement('err_txt').innerHTML = msg
      } else
      	getElement('status').style.visibility = 'hidden'
+}
+   
+function autosave() {
+
+	if (autosave_on && document.hidden) 
+		saveInBkgd()
 }
 </script>
 <div>&nbsp;</div>
