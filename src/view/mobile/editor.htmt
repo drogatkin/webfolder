@@ -1,11 +1,13 @@
 <!-- mobile version  -->
 <script>
+var autosave_on = "@model.do_autosave@" // from server
 // figure how reuse desktop code
 function extra_actions(s, ctx) {
     document.querySelector('input[type=checkbox] + label + select').disabled=!document.querySelector('input[type=checkbox]').checked
     document.querySelector('input[type=checkbox]').addEventListener('change', e => {
         document.querySelector('input[type=checkbox] + label + select').disabled= !e.target.checked
     })
+    if(document.addEventListener) document.addEventListener("visibilitychange", autosave)
 }
 function store() {
    return !@model.partial@
@@ -44,6 +46,10 @@ function showSuccess(message) {
 	document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue'
 	getElement('status').style.visibility = 'visible'
 	getElement('status').innerHTML = message
+}
+function autosave() {
+	if (autosave_on && document.hidden) 
+		saveInBkgd()
 }
 </script>
 <form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@" style="height:100%;">
