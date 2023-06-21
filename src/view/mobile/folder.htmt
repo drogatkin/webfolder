@@ -59,7 +59,7 @@
       <div>
       <div  class="ctrline">
          <fieldset>
-            <input type="submit" name="submit" value="Edit">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true">text&nbsp;&nbsp;
+            <input type="submit" name="submit" value="Edit">&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true" checked>text&nbsp;&nbsp;
             <input type="text" name="folder" size="20">&nbsp;<input type="submit" name="submit" value="New folder">
          </fieldset>
       </div>
