@@ -119,7 +119,7 @@ function showBkgStatus(msg) {
    
 function autosave() {
 
-	if (autosave_on && document.hidden) 
+	if (autosave_on == 'true" && document.hidden) 
 		saveInBkgd()
 }
 </script>

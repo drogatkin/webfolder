@@ -48,7 +48,7 @@ function showSuccess(message) {
 	getElement('status').innerHTML = message
 }
 function autosave() {
-	if (autosave_on && document.hidden) 
+	if (autosave_on == 'true' && document.hidden) 
 		saveInBkgd()
 }
 </script>
