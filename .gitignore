@@ -6,5 +6,5 @@ lib/
 *.apk
 .classpath
 src/3rd_party/ace/*.js
-src/3rd_party/ace/readme
 .project
+src/3rd_party/ace/snippets
