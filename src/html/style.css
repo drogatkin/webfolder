@@ -1,3 +1,4 @@
+.table_back {background-color:#E7E7EF;border-color: black;}
 /* dark mode */
 @media (prefers-color-scheme: dark) {
 	html {min-height:100%}
@@ -15,4 +16,5 @@
     input[type="checkbox"] {accent-color: #3e5a6c; background-color:#3e5a6c;color:#ccc;}
     select {background-color:#232426; color:#ddd;}
     input[type=submit], button.button {background-color:#3e5a6c;color:#ccc;}
+    .table_back {background-color:#333324;border-color: coral;}
 }

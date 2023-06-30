@@ -30,14 +30,14 @@
 	}
 %>
  </table>
-<table width="100%" border="1" cellspacing="0" cellpadding="3" bordercolor="#000000">
+<table width="100%" border="1" cellspacing="0" cellpadding="3" class="table_back">
   <tr>
-     <td bgcolor="#E7E7EF" bordercolor="#000000" align="center" nowrap>
+     <td align="center" nowrap>
 	      <font face="Verdana" size="+1">Thread Dump&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
 	</td>
   </tr>
   <tr>
-	<td bgcolor="#E7E7EF" bordercolor="#000000">
+	<td >
 	
 ---------------------- Java Thread Dump----------------------------------<br>
 Generating Thread-Dump At:&nbsp;<%=new java.util.Date()%><BR>
