@@ -30,6 +30,7 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import org.aldan3.annot.Inject;
 import org.aldan3.model.Log;
+import org.aldan3.util.DataConv;
 import org.aldan3.util.inet.Base64Codecs;
 import org.aldan3.servlet.Constant;
 
@@ -421,7 +422,8 @@ public class Terminal {
 		public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
 			// HttpSession httpSession = (HttpSession) request.getHttpSession();
 			// getServletContext()
-			super.modifyHandshake(sec, request, response);
+			if (DataConv.javaVersion() > 10)
+				super.modifyHandshake(sec, request, response);
 			String auth = null;
 			try {
 				// ((HttpServletRequest)request.getClass().getMethod("getHttpRequest").invoke(request)).getServletContext();
@@ -433,7 +435,7 @@ public class Terminal {
 				auth = request.getParameterMap().get("Authorization").get(0); // Ok if exception
 			// readExtConfig(req.getServletContext());
 
-			if (auth != null && !auth.isBlank()) {
+			if (auth != null && !auth.trim().isEmpty()) {
 				auth = Base64Codecs.base64Decode(auth.substring(auth.indexOf(' ') + 1), Base64Codecs.UTF_8);
 				int i = auth.indexOf(':');
 				String u = auth.substring(0, i);

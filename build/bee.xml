@@ -360,7 +360,7 @@
          <parameter/>
          <parameter>L</parameter>
          <parameter variable="CUSTOM CP" type="array" separator="PATH SEPARATOR"/>
-         <parameter>jasper\.jar|.*servlet-.*\.jar</parameter>
+         <parameter>jasper\.jar|.*servlet-.*\.jar|.*websocket-api-.*\.jar</parameter>
          <parameter>A WEB-INF/config/</parameter>
          <parameter type="path">src/cfg/&project;.properties</parameter>
          <!--              template resources                    -->
