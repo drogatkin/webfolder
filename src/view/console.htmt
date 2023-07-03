@@ -9,7 +9,7 @@
     var cmdBufPos = -1
 	function extra_actions(s, ctx) {
 	    
-	    ws_url = 'ws'+s+'://'+location.hostname+':'+location.port+ctx+'/terminal/'+encodeURIComponent(pwd1.substring(1))+'?Authorization=@request.getHeader*(Authorization)*@'
+	    ws_url = 'ws'+s+'://'+location.hostname+(location.port == ''?'':':'+location.port)+ctx+'/terminal/'+encodeURIComponent(pwd1.substring(1))+'?Authorization=@request.getHeader*(Authorization)*@'
 	    setup()
 	}
 	function setup() { 
