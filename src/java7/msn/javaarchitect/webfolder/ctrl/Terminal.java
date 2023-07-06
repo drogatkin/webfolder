@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.servlet.ServletContext;
+import javax.websocket.CloseReason;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -76,7 +77,7 @@ public class Terminal {
 		if (TOP_DIRECTORY == null) {
 			try {
 				// System.err.printf("Top directory wasn't set\n");
-				s.close();
+				s.close(new CloseReason(CloseReason.CloseCodes.UNEXPECTED_CONDITION, "The top directory wasn't set"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
