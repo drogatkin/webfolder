@@ -40,13 +40,13 @@
        	   }
             cons.scrollIntoView({ behavior: "smooth", block: "end" })
          }
-         wskt.onclose = function(e) {
+         wskt.onclose = (event) => {
             if (notifRecon == 0)
               notifRecon = 500
             if (notifRecon < maxReconn)
               notifRecon *= 2
             if (console && console.log)
-	            console.log('Oops '+e + ' reconnecting in '+notifRecon+'ms')
+	            console.log('Oops '+event + ' reconnecting in '+notifRecon+'ms because '+event.reason)
             setTimeout(setup, notifRecon)
          }
 	}
