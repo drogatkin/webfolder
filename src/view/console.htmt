@@ -78,6 +78,11 @@
 	              cmdBufPos = 0 
 	        }
 	        break
+	    case 'Escape':
+	        if (wskt)
+	            wskt.close()
+	        wskt = null
+	        window.location = 'Folder' + pwd1
 	    default:
 	       if (event.ctrlKey) {
 	          if (event.keyCode == 67) {
