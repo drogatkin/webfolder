@@ -447,8 +447,12 @@
 
   <target name="deploy" dir="PROJECT_HOME">
       <dependency target="war"/>
-      <!-- dependency on deployed is older -->
-      <dependency>true</dependency>
+      <dependency>
+          <function name="newerthan"> 
+			  <parameter value="${APP DEPLOY DROP}/&webapp_file;" type="path"/>
+              <parameter value="&build_directory;/&webapp_file;" type="path"/>
+          </function>
+      </dependency>
       <block>
         <echo>Deploying &build_directory;/&webapp_file;</echo>
         <function name="cp">
