@@ -36,6 +36,18 @@
             input[type=file],  input[type="button"], input[type=submit], button.button {background-color:#3e5a6c;color:#ccc;}
             input[type="checkbox"] {accent-color: #3e5a6c; background-color:#3e5a6c;color:#ccc;}
          }   
+         
+        @@media (orientation:landscape) {
+             .hide-on-landscape {
+                display: none;
+             }
+         }
+
+        @@media (orientation:portrait) {
+             .hide-on-portrait {
+                  display: none;
+             }
+        }
        /* ]]> */-->
   </style>
   <script src="@contextpath@/js/ajaxhelper.js" language="Javascript"></script>
