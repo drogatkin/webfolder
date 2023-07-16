@@ -3,7 +3,10 @@
 <script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <div><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/> &nbsp;@total@</div>
 <div style="overflow:auto;width:100%">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@
-   &nbsp;&nbsp;<img class="hide-on-portrait" src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()"></div>
+   &nbsp;&nbsp;
+   <picture>
+      <source srcset="@contextpath@/image/copy-ivory.png" media="(prefers-color-scheme: dark)"><img class="hide-on-portrait" src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()"></div>
+   </picture>
 <div style="font-color:red">@error@</div>
  @%'insert/bookmark.htmt'@
 <form name="folder" method="POST">
