@@ -11,8 +11,15 @@ resources ="${domain}.${project}.resources"
 manifestf =""
 main_class= "${domain}.${project}.Main"
 
-websocket jar=${~cwd~}/.temp_repo/javax.websocket-api-1.1.jar
-servlet jar=${~cwd~}/.temp_repo/javax.servlet-api-3.1.0.jar
+websocket jar=${build_directory}/.temp_repo/javax.websocket-api-1.1.jar
+servlet jar=${build_directory}/.temp_repo/javax.servlet-api-3.1.0.jar
+
+aldan3_home="/home/dmitriy/projects/aldan3"
+aldan3=${aldan3_home}${~separator~}build${~separator~}aldan3.jar
+aldan3-jdo=${aldan3_home}-jdo${~separator~}build${~separator~}aldan3-jdo.jar
+webbee="/home/dmitriy/projects/Webbee/build/out/webbee.jar"
+
+cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}${~path_separator~}${aldan3-jdo}${~path_separator~}${webbee}${~path_separator~}${build_directory}
 
 target clean {
     dependency {true}
@@ -26,11 +33,12 @@ target clean {
 target dep_dir {
   dependency {
      eq {
-        timestamp(${build_directory}/.temp_repo)
+        timestamp(${build_directory}${~separator~}.temp_repo)
      }
    }
+   display(Dir ${build_directory}${~separator~}.temp_repo)
    exec mkdir (
-        ${build_directory}/.temp_repo
+        ${build_directory}${~separator~}.temp_repo
    )
 }
 
@@ -51,6 +59,7 @@ target get_deps {
           timestamp(websocket jar)
        }
        then {
+         display(Loading WS)
          websocket_api="javax.websocket:javax.websocket-api:1.1":rep-maven
          as_url(websocket_api)
          exec wget (
@@ -94,8 +103,8 @@ target compile:. {
        exec javac (
          -d,
          ${build_directory},
-        -cp,
-         ${build_directory},
+        -classpath,
+         ${cp},
          main src
        )     
       if {
@@ -123,5 +132,20 @@ target jar {
             ${build_directory},
             ${domain}
           )
+     }
+}
+
+target test {
+     dependency {
+          target(jar)
+     }
+     dependency {
+         true }
+     {    display(Testing ${build_file} ...)
+          exec java (
+            -cp,
+            ${cp},
+            msn.javaarchitect.webfolder.ctrl.Folder
+         )
      }
 }
