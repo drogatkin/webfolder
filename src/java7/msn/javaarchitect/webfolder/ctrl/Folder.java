@@ -21,7 +21,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardWatchEventKinds;
@@ -43,6 +45,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
@@ -87,7 +90,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	
 	static final String DEF_CHARSET = CharSet.UTF8;
 	
-	static final String ZIP_EXT = ".zip";
+	static final String ZIP_EXT[] = {".zip", ".war", ".jar", ".apk", ".ipa", ".odt", ".ods", ".odp" };
 
 	private boolean formList;
 
@@ -495,7 +498,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			Files.move(sfrom, sto, StandardCopyOption.ATOMIC_MOVE);
 			//log("anala:"+sto, null);
 			if (Files.isRegularFile(sto))
-				if (sto.getFileName().toString().toLowerCase().endsWith(ZIP_EXT))
+				if (isZip(sto.getFileName().toString()))
 					return "oka";
 				else
 					return "okn";
@@ -718,7 +721,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				path = path.substring(tp.length() + a);
 			else
 				path = tp;
-			archive = Files.isRegularFile(p) && name.toLowerCase().endsWith(ZIP_EXT) && p.getFileSystem().equals(FileSystems.getDefault());
+			archive = Files.isRegularFile(p) && isZip(name) && p.getFileSystem().equals(FileSystems.getDefault());
 			try {
 				//Files.readAttributes(p, DosFileAttributes.class);
 				Map<String, Object> fa = Files.readAttributes(p,
@@ -980,6 +983,13 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				}
 			transPath = null;
 		}
+		
+		@Override
+		public String toString() {
+			return "RequestTransalated [reqPath=" + reqPath + ", transPath=" + transPath + ", transPaths="
+					+ Arrays.toString(transPaths) + "]";
+		}
+		
 	}
 	
 	/** processes web arguments and translate them in local file system
@@ -992,70 +1002,68 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	 * all path are part of same file system. reqPath keeps path to new file system as a single file
 	 * @throws IOException
 	 */
-	public static RequestTransalated translateReq(String topPath, String webPath,  String ...webPaths) throws IOException {
-		if (webPaths != null && webPaths.length > 0 && webPaths[0] != webPath)
-			throw new IllegalArgumentException("Inconsistency in using argumes, non var argument has to match var argument at index 0");
+	public static RequestTransalated translateReq(String topPath, String ...webPaths) throws IOException {
+		if (webPaths == null || webPaths.length == 0 )
+			throw new IllegalArgumentException("Inconsistency in using arguments, no web paths specified");
 		RequestTransalated result = new RequestTransalated();
 		FileSystem fs = FileSystems.getDefault();
 		char psc = fs.getSeparator().charAt(0);
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
-		//System.err.printf("common:%s%n", sp);
-		boolean skipZip = false;
+		
+		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			if (Files.isDirectory(fs.getPath(topPath, sp)))
-				skipZip = true;
+				partsOfDir = true;
 		}
-		
-		sp = DataConv.ifNull(webPath, "");
-		String spl = sp.toLowerCase();
-		// TODO consider zip not case sensitive
-		// startsWith can be used
-		if (skipZip == false)
-		// TODO make it work for mixed case		
-		for (int zp = spl.indexOf(ZIP_EXT); zp > 0; zp = spl.indexOf(ZIP_EXT, zp + 1)) {
-			if (sp.length() > zp + ZIP_EXT.length())
-				if (sp.charAt(zp + ZIP_EXT.length()) == '/')
-					result.transPath = fs.getPath(topPath, sp.substring(0, zp + ZIP_EXT.length()).replace('/', psc));
-				else
-					continue;
-			else
-				result.transPath = fs.getPath(topPath, sp.replace('/', psc));
-			if (Files.isRegularFile(result.transPath)) {
-				HashMap<String, String> env = new HashMap<>();
+		if (!partsOfDir) {
+			String[] begParts = sp.split("/");
+			sanitize(begParts);
+			String[] zipParts = new String[0];			// find first zip in the path
+			do {
 				try {
-					// TODO may need locking mechanism for multi threaded use
-					fs = FileSystems.newFileSystem(result.transPath, null);
-					//new Exception(String.format(">>>FS %s created%n", fs)).printStackTrace();
-					result.reqPath = result.transPath.toString();
-					if (sp.length() > zp + ZIP_EXT.length())
-						result.transPath = fs.getPath(sp.substring(zp + ZIP_EXT.length()));
-					else
-						result.transPath = fs.getPath(fs.getSeparator());
-					if (webPaths != null && webPaths.length > 0) {
-						result.transPaths = new Path[webPaths.length];
-						result.transPaths[0] = result.transPath;
-						for(int i=1; i<webPaths.length;i++) {
-							sp = DataConv.ifNull(webPaths[i], "");
-							result.transPaths [i] = fs.getPath(sp.substring(zp + ZIP_EXT.length()));
+					Path p = Paths.get(topPath, begParts);
+					//System.out.printf("Parts from %s are %s%n", p, Arrays.toString(begParts));
+					if (Files.exists(p)) {
+						if (Files.isRegularFile(p)) {
+							// check if it's zip
+							if (isZip(p.getFileName().toString())) {
+								result.transPath = p;
+								fs = FileSystems.newFileSystem(result.transPath, null);
+								result.reqPath = result.transPath.toString();
+								break;
+							}
 						}
-					}
-					break;
-				} catch (IOException e) {
-					throw e;
+					} //else {
+						zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
+						//System.out.printf("Zip parts are %s after inserting %s%n", Arrays.toString(zipParts), begParts[begParts.length - 1]);
+						begParts = removeLast(begParts);
+					//}
+				} catch(InvalidPathException ipe) {
+					//zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
+					// reduce number of parts
+					//begParts = removeLast(begParts);
 				}
-			}	else
-				result.transPath = null;
-		}
-		if (result.transPath == null) {
-			result.transPath = fs.getPath(topPath, sp.replace('/', psc));
-			if (webPaths != null && webPaths.length > 0) {
-				result.transPaths = new Path[webPaths.length];
-				result.transPaths[0] = result.transPath;
-				for(int i=1; i<webPaths.length;i++) {
-					sp = DataConv.ifNull(webPaths[i], "");
-					result.transPaths [i] = fs.getPath(topPath, sp.replace('/', psc));
-				}
+			} while (begParts.length > 1);
+			// based that real path parts and inside zip parts transPaths
+			result.transPath = fs.getPath(topPath, begParts);
+			result.transPaths = new Path[webPaths.length];
+			//result.transPaths [0] = fs.getPath("/", zipParts);
+			for(int i=0; i<webPaths.length;i++) {
+				String parts[] = webPaths[i].split("/");
+				//System.out.printf("Parts %d of %s%n", parts.length, Arrays.toString(parts));
+				parts = Arrays.copyOfRange(parts, begParts.length, parts.length); // can be an exception
+				//System.out.printf("Zip parts are %s after inserting %s%n",
+				sanitize(parts);
+				result.transPaths [i] = fs.getPath("", parts);
+			}
+		} else {
+			result.transPath = fs.getPath(topPath, sp);
+			result.transPaths = new Path[webPaths.length];
+			
+			for(int i=0; i<webPaths.length;i++) {
+				sp = DataConv.ifNull(webPaths[i], "");
+				result.transPaths [i] = fs.getPath(topPath, sp.replace('/', psc));
 			}
 		}
 		return result;
@@ -1091,9 +1099,61 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		return result.substring(0,m);
 	}
 	
-	public static void main(String...args) {
+	public static boolean isZip(String name) {
+		name = name.toLowerCase();
+		for (String ext : ZIP_EXT)
+			if (name.endsWith(ext))
+					return true;
+		return false;
+	}
+	
+	public static void sanitize(String[] parts) throws IOException {
+		for (String part: parts)
+			if (part.equals(".") || part.equals(".."))
+				throw new IOException("Invalid path element with dots");
+	}
+	
+	// these methods have to be parts of util
+	
+	public static String[] removeLast(String[] original) {
+		return removeElement(original, original.length-1);
+	}
+	
+	public static String[] insertFirst(String[] original, String element) {
+		return insertElement(original, element, 0);
+	}
+	
+	public static String[] removeElement(String[] original, int element){
+		if (original.length == 0)
+			throw new IllegalArgumentException("The array is alredy empty");
+	    String[] result = new String[original.length - 1];
+	    System.arraycopy(original, 0, result, 0, element );
+	    if (element < original.length-1)
+	    System.arraycopy(original, element+1, result, element, original.length - element-1);
+	    return result;
+	}
+	
+	public static String[] insertElement(String[] original, String element, int index){
+		if (index > original.length || index < 0)
+			throw new IllegalArgumentException("Invalid index");
+	    String[] result = new String[original.length + 1];
+	    System.arraycopy(original, 0, result, index+1, index );
+	    result[index] = element;
+	    System.out.printf("Setting %s ar %d%n", element, index);
+	    if (index < original.length)
+	    System.arraycopy(original, index, result, index + 1, original.length - index);
+	    return result;
+	}
+	
+	public static void main(String...args) throws IOException {
 		System.out.printf("%s,  %s, %s, %s%n", DataConv.toStringInUnits(387l), 
 				 DataConv.toStringInUnits(387*1000l), DataConv.toStringInUnits(387*1000*1000l),
 				 DataConv.toStringInUnits(387*1000*1000*1000l));
+		System.out.printf("Enter blank separated web paths%n");
+		Scanner sc= new Scanner(System.in); 
+		String str= sc.nextLine();   
+		String webparts[] = str.split(";") ;
+		RequestTransalated rt = translateReq("/", webparts);
+		System.out.printf("Processed %s%n", rt);
 	}
 }
