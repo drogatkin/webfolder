@@ -42,7 +42,7 @@ public class Delete extends Message {
 				return;
 			}
 		}
-		try (Folder.RequestTransalated rt = Folder.translateReq(tps, selection[0], selection);) {
+		try (Folder.RequestTransalated rt = Folder.translateReq(tps, selection);) {
 			/*if (selection.length == 1 && rt.reqPath.isEmpty() == false && rt.transPaths[0].getParent() == null) {
 				rt.close();
 				Files.delete(FileSystems.getDefault().getPath(rt.reqPath));

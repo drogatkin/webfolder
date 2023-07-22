@@ -66,7 +66,7 @@ document.addEventListener('keydown', e => {
 @.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
 &nbsp;
 &nbsp;&nbsp;
-<a href="@request.getHeader*(referer)*@">Discard</a>
+<a href="@request.getHeader*(referer)*@" onclick="autosave_on='false'">Discard</a>
 </div>
 </form>
 <script>

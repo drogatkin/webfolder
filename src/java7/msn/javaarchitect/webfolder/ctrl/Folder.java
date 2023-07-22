@@ -1005,14 +1005,20 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	public static RequestTransalated translateReq(String topPath, String ...webPaths) throws IOException {
 		if (webPaths == null || webPaths.length == 0 )
 			throw new IllegalArgumentException("Inconsistency in using arguments, no web paths specified");
+		//System.out.printf("translated called top %s, paths %s%n", topPath, Arrays.toString(webPaths));
 		RequestTransalated result = new RequestTransalated();
 		FileSystem fs = FileSystems.getDefault();
 		char psc = fs.getSeparator().charAt(0);
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
-		
+		//System.out.printf("common %s --- %s%n", sp, result.reqPath);
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
+			Path p = fs.getPath(topPath, sp);
+			if (Files.isRegularFile(p)) {
+				if (!isZip(p.getFileName().toString()))
+					partsOfDir = true;
+			}
 			if (Files.isDirectory(fs.getPath(topPath, sp)))
 				partsOfDir = true;
 		}
@@ -1046,7 +1052,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				}
 			} while (begParts.length > 1);
 			// based that real path parts and inside zip parts transPaths
-			result.transPath = fs.getPath(topPath, begParts);
+			// result.transPath = fs.getPath(topPath, begParts);
 			result.transPaths = new Path[webPaths.length];
 			//result.transPaths [0] = fs.getPath("/", zipParts);
 			for(int i=0; i<webPaths.length;i++) {
@@ -1055,17 +1061,20 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				parts = Arrays.copyOfRange(parts, begParts.length, parts.length); // can be an exception
 				//System.out.printf("Zip parts are %s after inserting %s%n",
 				sanitize(parts);
-				result.transPaths [i] = fs.getPath("", parts);
+				result.transPaths [i] = fs.getPath("/", parts);
+				if (i == 0)
+					result.transPath = result.transPaths [i];
 			}
 		} else {
 			result.transPath = fs.getPath(topPath, sp);
 			result.transPaths = new Path[webPaths.length];
-			
+			//System.out.printf("ordinary %s --- %s%n", sp, result.transPath);
 			for(int i=0; i<webPaths.length;i++) {
 				sp = DataConv.ifNull(webPaths[i], "");
 				result.transPaths [i] = fs.getPath(topPath, sp.replace('/', psc));
 			}
 		}
+		//System.out.printf("Trans returned %s%n", result);
 		return result;
 	}
 	
@@ -1139,7 +1148,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	    String[] result = new String[original.length + 1];
 	    System.arraycopy(original, 0, result, index+1, index );
 	    result[index] = element;
-	    System.out.printf("Setting %s ar %d%n", element, index);
+	    //System.out.printf("Setting %s at %d%n", element, index);
 	    if (index < original.length)
 	    System.arraycopy(original, index, result, index + 1, original.length - index);
 	    return result;

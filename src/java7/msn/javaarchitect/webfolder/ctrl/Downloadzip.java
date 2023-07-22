@@ -39,7 +39,7 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 		}
 		// for(String el:selection)
 		// log("downloading.."+el, null);
-		try (Folder.RequestTransalated rt = Folder.translateReq(topf, selection[0], selection);) {
+		try (Folder.RequestTransalated rt = Folder.translateReq(topf, selection);) {
 			Path p = rt.transPath;
 
 			if (selection.length == 1) {

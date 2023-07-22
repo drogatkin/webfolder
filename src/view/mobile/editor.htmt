@@ -66,6 +66,6 @@ function autosave() {
 &nbsp;&nbsp;
 <button class="button" onclick="saveInBkgd(); return false;" id="bkgUpl">Save &amp; continue</button>
 &nbsp;&nbsp;&nbsp;
-<a href="@request.getHeader*(referer)*@">Discard</a>
+<a href="@request.getHeader*(referer)*@" onclick="autosave_on='false'">Discard</a>
 </div>
 </form>
