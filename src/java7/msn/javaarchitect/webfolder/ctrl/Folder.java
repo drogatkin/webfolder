@@ -1018,8 +1018,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			if (Files.isRegularFile(p)) {
 				if (!isZip(p.getFileName().toString()))
 					partsOfDir = true;
-			}
-			if (Files.isDirectory(fs.getPath(topPath, sp)))
+			} else if (Files.isDirectory(p))
 				partsOfDir = true;
 		}
 		if (!partsOfDir) {

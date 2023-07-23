@@ -7,6 +7,7 @@ Releases
 1.9
 - a configurable line ending
 - auto save
+- a flexible extension of zip files
 
 1.8
 - bookmarking directories
