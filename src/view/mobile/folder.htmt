@@ -7,7 +7,7 @@
    <picture>
       <source srcset="@contextpath@/image/copy-ivory.png" media="(prefers-color-scheme: dark)"><img class="hide-on-portrait" src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()"></div>
    </picture>
-<div style="font-color:red">@error@</div>
+
  @%'insert/bookmark.htmt'@
 <form name="folder" method="POST">
   <input type="hidden" name="path" value="@path@">

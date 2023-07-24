@@ -84,7 +84,19 @@ public class Terminal {
 			}
 			return;
 		}
-		pwd = TOP_DIRECTORY + path;
+		try {
+			Folder.RequestTransalated rt = Folder.translateReq(TOP_DIRECTORY, path);
+			//System.out.printf("trans: %s%n",  rt);
+			Path reqPath = rt.reqPath.isEmpty()? rt.transPath : Paths.get(rt.reqPath);
+			
+			if (Files.isRegularFile(reqPath))
+				pwd = reqPath.getParent().toString();
+			else
+				pwd = reqPath.toString(); //TOP_DIRECTORY + path;
+		} catch (Exception e) {
+			pwd = TOP_DIRECTORY;
+			e.printStackTrace();
+		}
 		// System.out.printf("Connected : %s%n", pwd);
 		streamProcessor = Executors.newFixedThreadPool(2, (Runnable r) -> {
 			Thread t = new Thread(r);

@@ -353,7 +353,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			else
 				ffrom = rtf.transPath;
 			final Path fto = path.resolve(ffrom.getFileName().toString());
-			//log("paste %s to %s fs: %s",null, ffrom, fto, path.getFileSystem());
+			//log("paste %s to %s fs: %s (trans:%s)",null, ffrom, fto, path.getFileSystem(), rtf.transPath);
 			Files.walkFileTree(ffrom, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE,
 					new SimpleFileVisitor<Path>() {
 						@Override
