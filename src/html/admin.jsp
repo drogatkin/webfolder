@@ -39,13 +39,13 @@
 	if (going_back == null)
 		going_back = request.getHeader("referer");
 	Properties configProps = getConfigProperties();
+	try {
+			Class.forName("java.nio.file.FileSystems");
+	} catch(ClassNotFoundException cnf) {
+		Java7 = false;
+	}
 	if (pass == null) {
 		pass = unchangedPass;
-		try {
-			Class.forName("java.nio.file.FileSystems");
-		} catch(ClassNotFoundException cnf) {
-			Java7 = false;
-		}
 		top_folder = configProps.getProperty("TOPFOLDER", Java7?java.nio.file.FileSystems.getDefault()
 				.getSeparator():"/sdcard");
 		use_watch = "true".equalsIgnoreCase(configProps.getProperty("WATCHSERVICE", "false"))?"checked":"";
@@ -73,11 +73,14 @@
 									.getContextPath()))),
 					"Updated from  IP "
 							+ request.getRemoteAddr()+" / "+request.getRemoteHost());
-			fos.close();
-			getServletContext().setAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME, Boolean.TRUE);
+			fos.close(); 
+			if (request.getSession(false) != null)
+				request.getSession(false).setAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME, Boolean.TRUE);
+			else
+				getServletContext().setAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME, Boolean.TRUE);
 			//log("Properties updated");
 		} catch (Exception e) {
-			log("Propblem to save", e);
+			log("Problem to save", e);
 		}
 		//log("Redirecting:"+going_back);
 		response.sendRedirect(going_back);
