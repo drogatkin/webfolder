@@ -60,9 +60,9 @@ document.addEventListener('keydown', e => {
 
 <hr/>
 <div>
-<input type="submit" name="submit" value="Save" @model.partial(disabled)@>
+<input type="submit" name="submit" value="Save" @model.partial{@true(disabled)@}@>
 &nbsp;
-<a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" @model.partial(aria-disabled="true" role="link")@>Save &amp; continue</a>
+<a href="javascript:void(0)" onclick="saveInBkgd()" id="bkgUpl" @model.partial{@true(aria-disabled="true" role="link")@}@>Save &amp; continue</a>
 &nbsp;
 @.ui.check*(as_text,java.lang.Object^@model@)*@ As text
 @.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
