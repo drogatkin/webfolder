@@ -86,7 +86,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 
 								sbc.read(bb);
 								if (model.partial)
-									model.content = "\r\n<Content of the file was truncated>";
+									model.content = "<Content of the file was truncated>\r\n";
 								else
 									model.content = "";
 								model.content += new String(bb.array(), model.as_text ? "UTF-8" : "ISO-8859-1");
@@ -94,12 +94,16 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						} else
 							try (InputStream is = Files.newInputStream(filePath)) {
 								long sz = Files.size(filePath);
-								model.content = Stream.streamToString(is, model.as_text ? "UTF-8" : "ISO-8859-1",
-										maxSize);
 								if (sz >= maxSize) {
-									model.content += "\r\n<Content of the file was truncated>";
 									model.partial = true;
 								}
+								if (model.partial)
+									model.content = "<Content of the file was truncated>\r\n";
+								else
+									model.content = "";
+								model.content += Stream.streamToString(is, model.as_text ? "UTF-8" : "ISO-8859-1",
+										maxSize);
+								
 							} catch (IOException ioe) {
 								log("", ioe);
 								// MalformedInputException
