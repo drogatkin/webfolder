@@ -1020,7 +1020,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 					partsOfDir = true;
 			} else if (Files.isDirectory(p))
 				partsOfDir = true;
-		}
+		} else
+			partsOfDir = true;
 		if (!partsOfDir) {
 			String[] begParts = sp.split("/");
 			sanitize(begParts);
@@ -1086,7 +1087,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	}
 	
 	static String getLongestBegining(String...s) {
-		if (s == null || s.length == 0)
+		if (s == null || s.length == 0 || s[0] == null)
 			return "";
 		String result = s[0];
 		int m = result.length();
