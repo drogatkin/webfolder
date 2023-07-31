@@ -36,8 +36,9 @@ target dep_dir {
         timestamp(${build_directory}${~separator~}.temp_repo)
      }
    }
-   display(Dir ${build_directory}${~separator~}.temp_repo)
+   display(Dir ${build_directory}${~separator~}.temp_repo -p)
    exec mkdir (
+        -p,
         ${build_directory}${~separator~}.temp_repo
    )
 }
