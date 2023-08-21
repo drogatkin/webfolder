@@ -373,7 +373,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 						public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 							Path targetfile = fto.resolve(fto.getFileSystem()
 									.getPath(ffrom.relativize(file).toString()));
-							if (file.equals(targetfile))
+							// check if target already exists
+							if (Files.exists(targetfile))
 								targetfile = targetfile.resolveSibling("Copy of "+file.getFileName());
 							Files.copy(file, targetfile, StandardCopyOption.COPY_ATTRIBUTES);
 							return FileVisitResult.CONTINUE;
