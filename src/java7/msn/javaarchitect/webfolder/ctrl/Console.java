@@ -34,7 +34,7 @@ public class Console extends BaseBlock<AppModel> {
 		PASSWORD = auth.substring(i + 1);
 		
 //		readExtConfig(req.getServletContext());
-        Folder.getConfigValue(frontController, Folder.TOPFOLDER, FileSystems.getDefault().getSeparator());
+        Folder.getConfigValue(frontController, Folder.TOPFOLDER, FileSystems.getDefault().getSeparator(), req);
 		HashMap<String, Object> pageModel = new HashMap<String, Object>(10);
 		pageModel.put("user", System.getProperty("user.name"));
 		

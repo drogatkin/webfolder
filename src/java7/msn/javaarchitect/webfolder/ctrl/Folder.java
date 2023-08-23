@@ -51,6 +51,7 @@ import java.util.HashSet;
 import java.util.Arrays;
 
 import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -436,12 +437,13 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		
 		pageModel.put("parents", splitPath(path == null ? "" : path.toString()));
 		pageModel.put(OPEN_URL, getBaseUrl());
-		PageRef[] toplinks = new PageRef[] {
+		
+		PageRef[] toplinks =  new PageRef[] {
 				PageRef.create(req, "Console", "Console"+HttpUtils.urlEncode(webPath)),
 				PageRef.create(req, "Info", "../sysinfo.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())),
 				PageRef.create(req, "Admin", "../admin.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())),
 				PageRef.create(req, "Headers",
-						"../threadump.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())) };
+						"../threadump.jsp?going_back=" + HttpUtils.urlEncode(req.getRequestURI())) } ;
 		pageModel.put(TOPLINKS, toplinks);
 		String[] selection = null;
 		if ("true".equalsIgnoreCase(getConfigValue("SESSIONCLIPBOARD", "false"))) {
@@ -638,12 +640,14 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 
 	@Override
 	protected String getConfigValue(String name, String defVal) {
-		return getConfigValue(frontController, name, super.getConfigValue(name, defVal));
+		return getConfigValue(frontController, name, super.getConfigValue(name, defVal), req);
 	}
 
-	static String getConfigValue(FrontController frontController, String name, String defVal) {
+	static String getConfigValue(FrontController frontController, String name, String defVal, HttpServletRequest _req) {
 		Properties configProps = (Properties) frontController.getAttribute(CONFIG_ATTR_NAME);
-		if (configProps == null || frontController.getAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME) != null) {
+		if (configProps == null || frontController.getAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME) != null ||
+				(_req != null && _req.getSession(false) != null &&
+					_req.getSession(false).getAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME) != null)) {
 			configProps = new Properties();
 			FileInputStream fis;
 			try {
@@ -657,6 +661,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				synchronized (frontController) {
 					frontController.getServletContext().setAttribute(CONFIG_ATTR_NAME, configProps);
 					frontController.getServletContext().removeAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME);
+					if (_req != null && _req.getSession(false) != null) 
+							_req.getSession(false).removeAttribute(BasicAuthFilter.REQUPDATE_ATTR_NAME);
 				}
 			}
 		}
@@ -664,7 +670,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	}
 	
 	static String[] readBookmarks(FrontController frontController) {
-		String bookmarkscfg = getConfigValue(frontController, BOOKMARKS, "true");
+		String bookmarkscfg = getConfigValue(frontController, BOOKMARKS, "true", null);
 		if ("true".equals(bookmarkscfg)) {
 			Properties props = new Properties();
 			try (FileInputStream is = new FileInputStream(getBookmarksFile(frontController))) {

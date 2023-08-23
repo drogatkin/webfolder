@@ -87,7 +87,7 @@ public class Delete extends Message {
 	
 	@Override
 	protected String getConfigValue(String name, String defVal) {
-		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal));
+		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal), req);
 	}
 
 	@Override

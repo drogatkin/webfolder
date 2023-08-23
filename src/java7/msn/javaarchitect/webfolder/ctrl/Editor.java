@@ -203,7 +203,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 
 	@Override
 	protected String getConfigValue(String name, String defVal) {
-		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal));
+		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal), req);
 	}
 
 	public static final class editing {

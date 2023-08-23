@@ -114,7 +114,7 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 
 	@Override
 	protected String getConfigValue(String name, String defVal) {
-		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal));
+		return Folder.getConfigValue(frontController, name, super.getConfigValue(name, defVal), req);
 	}
 
 	protected void message(OutputStream os, String m, Object...params) throws IOException {
