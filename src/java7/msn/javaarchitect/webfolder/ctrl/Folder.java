@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.ProviderNotFoundException;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardWatchEventKinds;
@@ -115,19 +116,33 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		final ArrayList<Webfile> result = new ArrayList<>(size <= 0 ? 100 : size);
 		try (RequestTransalated rt = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), req.getPathInfo());
 				DirectoryStream<Path> stream = Files.newDirectoryStream(rt.transPath);) {
-			//log("display: %s", null, rt.transPath.getFileSystem());
+			//log("display: %s for %s", null, rt.transPath.getFileSystem(), rt);
+			//System.err.printf("display: %s %n", rt);
 			long total = 0;
 			Webfile wf;
 			for (Path entry : stream) {
 				result.add(wf = new Webfile(entry, rt.reqPath));
 				total += wf.size;
+			}			
+			try {
+				String totals = DataConv.toStringInUnits(total);
+				Class fscl = Class.forName("android.os.StatFs");
+				Object fs = fscl.getConstructor(String.class).newInstance(rt.transPath.toString());
+				long bls = ((Integer)fscl.getMethod("getBlockSize").invoke(fs)).longValue();
+				
+				totals += "/"+DataConv.toStringInUnits(bls*(int)(Integer)fscl.getMethod("getBlockCount").invoke(fs));
+				totals += "/"+DataConv.toStringInUnits(bls*(int)(Integer)fscl.getMethod("getAvailableBlocks").invoke(fs));
+				modelInsert("total", totals);
+			} catch(Exception e) {
+				//e.printStackTrace();
+				FileStore fst = Files.getFileStore(rt.transPath);
+				modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+" / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
+						+" / "+DataConv.toStringInUnits(total)); 
 			}
-			FileStore fst = Files.getFileStore(rt.transPath);
-			modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+" / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
-					+" / "+DataConv.toStringInUnits(total));
-
 		} catch (Exception ioe) {
-			log("", ioe);
+			//log("", ioe);
+			//getResult("" + ioe);
+			modelInsert(Variable.ERROR, ioe);
 			/*if (req.getPathInfo().endsWith("/favicon.ico")) {
 				try {
 					req.getRequestDispatcher("/favicon.ico").forward(req, resp);
@@ -1042,7 +1057,11 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 							// check if it's zip
 							if (isZip(p.getFileName().toString())) {
 								result.transPath = p;
-								fs = FileSystems.newFileSystem(result.transPath, null);
+								try {
+									fs = FileSystems.newFileSystem(result.transPath, null);
+								} catch(ProviderNotFoundException pnfe) {
+									throw new IOException("File system not found for " + result.transPath, pnfe);
+								}
 								result.reqPath = result.transPath.toString();
 								break;
 							}
