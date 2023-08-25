@@ -8,7 +8,7 @@ Releases
 - a configurable line ending
 - auto save
 - a flexible extension of zip files
-- depreciated io version in the favor of nio
+- depreciated io version in favor of nio
 
 1.8
 - bookmarking directories
