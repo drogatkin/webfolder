@@ -51,6 +51,7 @@
                   display: none;
              }
         }
+        ul.bookmark li {margin-left:0.6em;}
        /* ]]> */-->
   </style>
   <script src="@contextpath@/js/ajaxhelper.js" language="Javascript"></script>
