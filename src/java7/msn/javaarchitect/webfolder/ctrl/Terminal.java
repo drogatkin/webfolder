@@ -297,21 +297,27 @@ public class Terminal {
 		char[] ca = command.toCharArray();
 		int as = 0;
 		String accum = null;
+		char quoteChar = 0;
 		for (int i = 0, n = ca.length; i < n; ++i) {
 			// char ch
 			switch (ca[i]) {
+			case '\'':
 			case '"':
 				switch (st) {
 				case blank:
 					st = States.startQuote;
+					quoteChar = ca[i];
 					break;
 				case quotedArgument:
-					st = States.endQuote;
-					if (accum == null)
-						result.add(new String(ca, as, i - as));
-					else {
-						result.add(accum + new String(ca, as, i - as));
-						accum = null;
+					if (ca[i] == quoteChar) {
+						st = States.endQuote;
+						if (accum == null)
+							result.add(new String(ca, as, i - as));
+						else {
+							result.add(accum + new String(ca, as, i - as));
+							accum = null;
+						}
+						quoteChar = 0;
 					}
 					break;
 				case escape:
@@ -354,7 +360,7 @@ public class Terminal {
 					break;
 				case quotedEscape:
 					st = States.quotedArgument;
-					as = i;
+					as = i-1;
 					break;
 				default:
 					// throw new IllegalArgumentException("Blank found in an argument at "+i);
