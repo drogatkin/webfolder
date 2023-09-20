@@ -511,8 +511,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			Path path = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), getParameterValue("path", "", 0)).transPath;
 
 			Path sfrom = path.resolve(getParameterValue("from", "", 0));
-
 			Path sto = path.resolve(getParameterValue("to", "", 0));
+			//System.out.printf("ren %s to %s%n",sfrom, sto);
 			Files.move(sfrom, sto, StandardCopyOption.ATOMIC_MOVE);
 			//log("anala:"+sto, null);
 			if (Files.isRegularFile(sto))

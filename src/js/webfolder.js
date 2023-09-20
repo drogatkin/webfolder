@@ -70,16 +70,23 @@
 	   mobile = !!mobile
 	   if (mobile)
 	      elem =elem.firstChild
-	   elem.innerHTML='<input id="rename_input" type="text" value="'+name+'" onkeydown="renameOnEnter(\''+escape(name)+'\', this.value, \''+escape(fid)+'\','+folder+','+mobile+')">'
+	   const edith = '<input id="rename_input" type="text" value="'+escape2(name)+'" onkeydown="renameOnEnter(\''+escape3(name)+'\', this.value, \''+escape3(fid)+'\','+folder+','+mobile+')">'
+	   console.log(edith)
+	   elem.innerHTML=edith
 	   getElement('rename_input').focus();
 	}
 	
 	function renameOnEnter(name, newname, fid, folder, mobile) {
 		if(event.key === 'Enter') {
+		    event.preventDefault()
 			processRename(name, newname, fid, folder, mobile)
+			return false
 		} else if(event.key === "Escape") {
+		    event.preventDefault()
 			restore(name, fid, folder, mobile)
+			return false
 		}
+		return true
 	}
 	
 	function processRename(name, newname, fid, folder, mobile) {
@@ -134,4 +141,15 @@
  	   return ('' + s)
         .replace(/'/g, "\\&apos;")
     }
+    
+    function escape2(s) {
+ 	   return ('' + s)
+        .replace(/&/g, "\\&amp;").replace(/"/g, "&quot;")
+    }
+    
+    function escape3(s) {
+ 	   return ('' + s)
+        .replace(/&/g, "\\&amp;").replace(/\\/g, "\\\\").replace(/'/g, "\\&apos;").replace(/"/g, "\\&quot;")
+    }
+    
   // -->
