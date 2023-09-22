@@ -133,7 +133,7 @@
 	    if (folder) {
 	       tde.innerHTML='<a href="'+wf_uri+wf_path+encodeURIComponent(name)+'">'+name+'</a>';
 	    } else {
-	       tde.innerHTML=name; // html encoding ??
+	       tde.innerHTML=escape4(name); // html encoding
 	    }
 	}
 	
@@ -144,12 +144,17 @@
     
     function escape2(s) {
  	   return ('' + s)
-        .replace(/&/g, "\\&amp;").replace(/"/g, "&quot;")
+        .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
     }
     
     function escape3(s) {
  	   return ('' + s)
-        .replace(/&/g, "\\&amp;").replace(/\\/g, "\\\\").replace(/'/g, "\\&apos;").replace(/"/g, "\\&quot;")
+        .replace(/&/g, "&amp;").replace(/\\/g, "\\\\").replace(/'/g, "\\&apos;").replace(/"/g, "\\&quot;")
+    }
+    
+    function escape4(s) {
+ 	   return ('' + s)
+        .replace(/&/g, "&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g, "&quot;")
     }
     
   // -->
