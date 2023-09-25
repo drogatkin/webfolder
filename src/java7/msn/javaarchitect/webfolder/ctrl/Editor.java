@@ -139,7 +139,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 			try (Folder.RequestTransalated rt = Folder.translateReq(topFolder,
 					model.file.replace(File.separatorChar, '/'));) {
 				Path filePath = rt.transPath;
-				//log("editing %s in %s as %b", null, filePath, rt.reqPath, model.as_text);
+				//log("editing %s in %s as %b top %s", null, filePath, rt.reqPath, model.as_text, topFolder);
 				if (Files.isDirectory(filePath) || Files.isWritable(filePath) == false && Files.exists(filePath))
 					return "The file isn't editable";
 				//if (model.content.length() > 10)
@@ -211,6 +211,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public String content;
 		@FormField
 		public String file;
+		//@FormField
+		//public String root; // root directory
 		@FormField(formFieldName = "as text")
 		public boolean as_text;
 		public String editor;

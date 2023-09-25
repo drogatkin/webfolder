@@ -1033,7 +1033,6 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		char psc = fs.getSeparator().charAt(0);
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
-		//System.out.printf("common %s --- %s%n", sp, result.reqPath);
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
@@ -1044,6 +1043,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				partsOfDir = true;
 		} else
 			partsOfDir = true;
+		//System.out.printf("common %s --- %s parts %b%n", sp, result.reqPath, partsOfDir);
 		if (!partsOfDir) {
 			String[] begParts = sp.split("/");
 			sanitize(begParts);
@@ -1064,7 +1064,13 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 								}
 								result.reqPath = result.transPath.toString();
 								break;
-							}
+							} 
+						} else { // it exists but not zip
+							result.transPath = fs.getPath(topPath, sp); // consider creation not in zip
+							//System.out.printf("trans path %s from %s%n", result.transPath, sp);
+							result.transPaths = new Path[1]; // ignore others because not in zip
+							result.transPaths[0] = result.transPath;
+							return result;
 						}
 					} //else {
 						zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
