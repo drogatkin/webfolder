@@ -24,7 +24,7 @@
      <td><input type="checkbox" name="files" value="@element.path@"></td>
     <td id="td_@element.name@" fileName="@element.name@"><span>@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
         @element.name@@element.folder{@true(</a>)@}@</span>
-        <img src="@request.getContextPath*()*@/image/pencil.png" style="float:right" alt="Edit name" onclick="renameFile('td_@^element.name@', @element.folder@, true)"></td>
+        <img src="@request.getContextPath*()*@/image/pencil.png" style="float:right" alt="Edit name" onclick="renameFile(this.parentElement.id, @element.folder@, true)"></td>
     <td style="text-align:center">@element.size@/@element.last_mod?D'MM-dd-yy\@HH@</td>
   </tr>
   )@
