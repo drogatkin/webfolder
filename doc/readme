@@ -1,4 +1,4 @@
-WebFolder 1.8
+WebFolder 1.9
 =============
 
 WAR deployed version
@@ -11,23 +11,26 @@ Access: http://host_name/webfolder
 
 Instant run version
 ```````````````````
-
 Use command: java -jar webfolder.jar
 unless your system start it by double click
 of .jar  in GUI file manager.
 
-Access it using a link from systray, or
+Access it using a link from systray (Windows only), or
 http://host_name:8000/webfolder
 
 Admin screens access
 Login: admin
 Password: admin
 Change password after for better security.
+Note that the password is stored in the user home
+directory, so access to it has to be limited to
+assure protection.
 
 Change top directory to C:\ or some other
 drive on Windows, the program is coming
 precofigured for Linux top directory /
 
-Java 7 version utilizes new file io package,
+Java 7 and up is supported currently with all benefits of nio package,
 and as result allows manipulate with content 
 of zip archives, organize watches and other useful stuff. 
+Zip content access on Android platform can be limited by Android.
