@@ -14,7 +14,7 @@
       ]>
 <!-- 
    A build script file for webfolder
-   Copyright (c) 2008-2022 Dmitriy Rogatkin    -->
+   Copyright (c) 2008-2023 Dmitriy Rogatkin    -->
 
 <bee name="&project;" type="project" dir="..">
   &env;
