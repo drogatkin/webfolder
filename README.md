@@ -62,12 +62,13 @@ I have implemented both desktop and mobile service views for all services to com
 ## Java 7 and up
 Java 7 version of WebFolder utilizes NIO file package and Java 7 languages extension. 
 Unfortunately nio.file implementation is a bit sluggish. On benefit side it allows operation with zip file content.
-The program keeps compatibility with Java 8, but can run on any Java from 6 to 18.
+The program keeps compatibility with Java 8, but can run on any Java from 7 to 21.
 
 
 ## Configuring ACE programmer editor
-WebFolder is coming with preconfigured ACE editor for Java, JavaScript, batch and other common format files. However if you desire
-to modify the set as adding new modes, or modifying existing ones then you can use the guide.
+WebFolder is coming with preconfigured [ACE editor](https://ace.c9.io) for Java, JavaScript, batch and other common format files. However if you desire
+to modify the set as adding new formats, or modifying existing ones then you can use the guide. Get the [sources](https://github.com/ajaxorg/ace-builds/) of the editor first,
+and extract a desirable version in [src/3rd_party/ace](https://github.com/drogatkin/webfolder/tree/master/src/3rd_party/ace) directory.
 
 1. Support editable file extensions are configured in webfolder.properties as property **ace_edit_exts**
         predefined value looks like: **ace_edit_exts**=*.java.js.xml.h.html.diff.c.cpp.bat.sh.json.jsp.diff.properties*
@@ -76,7 +77,7 @@ to modify the set as adding new modes, or modifying existing ones then you can u
 4. Copy addtional ACE modes files as needed to ace/ directory when build the project
 
 ## Version
-The current version is 1.8. A work on 1.9 has started.
+The current version is 1.8. A work on 1.9 has almost finished.
 
 ## Screens
 
