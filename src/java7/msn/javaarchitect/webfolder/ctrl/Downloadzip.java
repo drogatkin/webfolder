@@ -4,6 +4,7 @@ package msn.javaarchitect.webfolder.ctrl;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -11,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -56,11 +58,12 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 					resp.setHeader("Content-Length", "" + Files.size(p));
 					if (appearance != Appearance.mobile || userAgent.indexOf("iPad") > 0) {
 						resp.setContentType("application/octet-stream"); // since going to download
-						if (userAgent.indexOf("MSIE") > 0)
-							name = URLEncoder.encode(name, CharSet.UTF8).replace('+', ' ');
+						//if (userAgent.indexOf("MSIE") > 0)
+							//name = URLEncoder.encode(name, CharSet.UTF8).replace('+', ' ');
 						//if (name.length() > 77)
 							//name = HttpUtils.quoted_printableEncode(name, Folder.DEF_CHARSET);
-						resp.setHeader("Content-disposition", "attachment; filename=\"" + name + "\"; filename*=UTF-8'"+URLEncoder.encode(name, "UTF-8"));
+						//System.out.printf("File %s%n", name);
+						resp.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(name) + "\"; filename*=UTF-8''"+rfc5987_encode(name));
 					} else {
 						// figure first if type is supported
 						String ct = Files.probeContentType(p);
@@ -71,7 +74,11 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 							resp.setContentType(ct);
 						else if (ct.startsWith("application/vnd.android.package-archive")) {
 							resp.setContentType(ct);
-							resp.setHeader("Content-disposition", "attachment; filename=\"" + name + '"');
+							resp.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(name) + '"');
+						} else if (ct.startsWith("audio/") || ct.startsWith("image/") || ct.startsWith("application/x-pdf") ||
+								ct.startsWith("application/pdf") || ct.startsWith("application/zip") || ct.startsWith("video/")) {
+								resp.setContentType(ct);
+								resp.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(name) + "\"; filename*=UTF-8''"+rfc5987_encode(name));
 						} else {
 							message(os, "This file type %s is not supported by the mobile platfrom.", ct);
 							return;
@@ -148,5 +155,26 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 		zs.putNextEntry(e);
 		Files.copy(p, zs);
 		zs.closeEntry();		
+	}
+	
+	// probably more tested version should be moved in Aldan3.Util
+	public static String rfc5987_encode(final String s) throws UnsupportedEncodingException {
+	    final byte[] s_bytes = s.getBytes("UTF-8");
+	    final int len = s_bytes.length;
+	    final StringBuilder sb = new StringBuilder(len << 1);
+	    final char[] digits = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+	    final byte[] attr_char = {'!','#','$','&','+','-','.','0','1','2','3','4','5','6','7','8','9',           'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','^','_','`',                        'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','|', '~'};
+	    for (int i = 0; i < len; ++i) {
+	        final byte b = s_bytes[i];
+	        if (Arrays.binarySearch(attr_char, b) >= 0)
+	            sb.append((char) b);
+	        else {
+	            sb.append('%');
+	            sb.append(digits[0x0f & (b >>> 4)]);
+	            sb.append(digits[b & 0x0f]);
+	        }
+	    }
+
+	    return sb.toString();
 	}
 }
