@@ -76,7 +76,10 @@ public class Downloadzip extends com.beegman.webbee.block.Stream {
 							resp.setContentType(ct);
 							resp.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(name) + '"');
 						} else if (ct.startsWith("audio/") || ct.startsWith("image/") || ct.startsWith("application/x-pdf") ||
-								ct.startsWith("application/pdf") || ct.startsWith("application/zip") || ct.startsWith("video/")) {
+								ct.startsWith("application/pdf") || ct.startsWith("application/zip") || ct.startsWith("video/") ||
+								ct.startsWith("application/msword") || ct.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") ||
+								ct.startsWith("application/vnd.openxmlformats")) {
+							
 								resp.setContentType(ct);
 								resp.setHeader("Content-disposition", "attachment; filename=\"" + URLEncoder.encode(name) + "\"; filename*=UTF-8''"+rfc5987_encode(name));
 						} else {
