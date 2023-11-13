@@ -22,6 +22,10 @@ diskette. (BTW a serverless approach can perfectly work too)
 I think I could achieve my goal and WebFolder is simple one file program as big 
 as 1MB and runs on all operation systems but iOS. I do not see big deal with 
 iOS, because the OS design prevents managing a sharable file space anyway.
+
+Note, if running the file manager on Android platform isn't a requirement and PHP is acceptable, then I strongly recommend to look in
+[tiny file manager](https://github.com/prasathmani/tinyfilemanager/tree/master), it's a very worthy web file manager with the same features set
+offered by the WebFolder.
     
 ## Features
 
