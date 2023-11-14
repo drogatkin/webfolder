@@ -6,7 +6,7 @@ Explore and operate on a remote file system using a web interface.
 ## Overview
 As a software professional I always need to manage more than one computer and it is a 
 very common running different OSes and platforms on different hardware. 
-I am not a big fan of command line tools however I am not big fan of GUI either.
+I am not a big fan of command line tools however I am not a big fan of GUI either.
 
 >My favorite tool is the FAR file manager which generally works well even across network, 
 but you still need to manage to install some ftp server to make access more unified. 
@@ -81,7 +81,10 @@ and extract a desirable version in [src/3rd_party/ace](https://github.com/drogat
 4. Copy addtional ACE modes files as needed to ace/ directory when build the project
 
 ## Version
-The current version is 1.8. A work on 1.9 has almost finished.
+The current version is 1.9. 
+
+## Download
+Feel free to download **webfolder** from [SourceForge](https://sourceforge.net/projects/webfolder/files/webfolder-releases/) site.
 
 ## Screens
 
