@@ -681,7 +681,10 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				}
 			}
 		}
-		return configProps.getProperty(name, defVal);
+		String result = configProps.getProperty(name);
+		if (result == null || result.isEmpty())
+			return defVal;
+		return result; //configProps.getProperty(name, configProps.getProperty(name);
 	}
 	
 	static String[] readBookmarks(FrontController frontController) {
@@ -1036,6 +1039,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
+			//System.out.printf("path %s for %s / %s%n", p, topPath, sp);
 			if (Files.isRegularFile(p)) {
 				if (!isZip(p.getFileName().toString()))
 					partsOfDir = true;
@@ -1060,7 +1064,9 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 								try {
 									fs = FileSystems.newFileSystem(result.transPath, null);
 								} catch(ProviderNotFoundException pnfe) {
-									throw new IOException("File system not found for " + result.transPath, pnfe);
+									//throw new IOException("File system not found for " + result.transPath, pnfe);
+									//log("File system not found for " + result.transPath, pnfe);
+									System.err.printf("File system not found for %s at %s%n", result.transPath, pnfe);
 								}
 								result.reqPath = result.transPath.toString();
 								break;
@@ -1072,17 +1078,20 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 							result.transPaths[0] = result.transPath;
 							return result;
 						}
-					} //else {
-						zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
-						//System.out.printf("Zip parts are %s after inserting %s%n", Arrays.toString(zipParts), begParts[begParts.length - 1]);
-						begParts = removeLast(begParts);
-					//}
+					} else {
+						if (begParts.length <= 2)
+							throw new IOException("File not found for " + result.transPath);
+					}
+					zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
+					//System.out.printf("Zip parts are %s after inserting %s%n", Arrays.toString(zipParts), begParts[begParts.length - 1]);
+					begParts = removeLast(begParts);
 				} catch(InvalidPathException ipe) {
 					//zipParts = insertFirst(zipParts, begParts[begParts.length - 1]);
 					// reduce number of parts
 					//begParts = removeLast(begParts);
 				}
 			} while (begParts.length > 1);
+			
 			// based that real path parts and inside zip parts transPaths
 			// result.transPath = fs.getPath(topPath, begParts);
 			result.transPaths = new Path[webPaths.length];
@@ -1106,7 +1115,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				result.transPaths [i] = fs.getPath(topPath, sp.replace('/', psc));
 			}
 		}
-		//System.out.printf("Trans returned %s%n", result);
+		//System.out.printf("!!!Trans returned %s%n", result);
 		return result;
 	}
 	
@@ -1182,7 +1191,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	    result[index] = element;
 	    //System.out.printf("Setting %s at %d%n", element, index);
 	    if (index < original.length)
-	    System.arraycopy(original, index, result, index + 1, original.length - index);
+	    	System.arraycopy(original, index, result, index + 1, original.length - index);
 	    return result;
 	}
 	
