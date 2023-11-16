@@ -508,14 +508,15 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	
 	public String processRenameCall() {
 		try {
-			Path path = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), getParameterValue("path", "", 0)).transPath;
+			RequestTransalated trans = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), getParameterValue("path", "", 0));
+			Path path = trans.transPath;
 
 			Path sfrom = path.resolve(getParameterValue("from", "", 0));
 			Path sto = path.resolve(getParameterValue("to", "", 0));
-			//System.out.printf("ren %s to %s%n",sfrom, sto);
-			Files.move(sfrom, sto, StandardCopyOption.ATOMIC_MOVE);
-			//log("anala:"+sto, null);
-			if (Files.isRegularFile(sto))
+			//System.out.printf("ren %s to %s as %s in %s%n",sfrom, sto, trans.transPath, trans.reqPath);
+			sto = Files.move(sfrom, sto, StandardCopyOption.ATOMIC_MOVE); // REPLACE_EXISTING
+			//log("anala:"+tar, null);
+			if (Files.isRegularFile(sto) && trans.reqPath.isEmpty())
 				if (isZip(sto.getFileName().toString()))
 					return "oka";
 				else
