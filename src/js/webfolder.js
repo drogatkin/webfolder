@@ -64,6 +64,9 @@
 	}
 		
 	function renameFile(fid, folder,mobile) {
+	   //console.log('Renaming '+fid)
+	   if (getElement('rename_input'))
+	        return true // event.preventDefault()
 	   var tdel = getElement(fid);
 	   var name = tdel.getAttribute('fileName');
 	   var elem = getElement(fid)
@@ -71,7 +74,7 @@
 	   if (mobile)
 	      elem =elem.firstChild
 	   const edith = '<input id="rename_input" type="text" value="'+escape2(name)+'" onkeydown="renameOnEnter(\''+escape3(name)+'\', this.value, \''+escape3(fid)+'\','+folder+','+mobile+')">'
-	   console.log(edith)
+	   //console.log(edith)
 	   elem.innerHTML=edith
 	   getElement('rename_input').focus();
 	}
