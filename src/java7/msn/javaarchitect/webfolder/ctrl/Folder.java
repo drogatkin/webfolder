@@ -507,8 +507,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	}
 	
 	public String processRenameCall() {
-		try {
-			RequestTransalated trans = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), getParameterValue("path", "", 0));
+		try (RequestTransalated trans = translateReq(getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator()), getParameterValue("path", "", 0));){
 			Path path = trans.transPath;
 
 			Path sfrom = path.resolve(getParameterValue("from", "", 0));
@@ -1064,12 +1063,13 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 								result.transPath = p;
 								try {
 									fs = FileSystems.newFileSystem(result.transPath, null);
+									result.reqPath = result.transPath.toString();
 								} catch(ProviderNotFoundException pnfe) {
 									//throw new IOException("File system not found for " + result.transPath, pnfe);
 									//log("File system not found for " + result.transPath, pnfe);
 									System.err.printf("File system not found for %s at %s%n", result.transPath, pnfe);
 								}
-								result.reqPath = result.transPath.toString();
+								
 								break;
 							} 
 						} else { // it exists but not zip
