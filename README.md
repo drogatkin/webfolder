@@ -23,8 +23,10 @@ I think I could achieve my goal and WebFolder is simple one file program as big
 as 1MB and runs on all operation systems but iOS. I do not see big deal with 
 iOS, because the OS design prevents managing a sharable file space anyway.
 
+I also deploy an instance of WebFolder on every Docker image I create.
+
 Note, if running the file manager on Android platform isn't a requirement and PHP is acceptable, then I strongly recommend to look in
-[tiny file manager](https://github.com/prasathmani/tinyfilemanager/tree/master), it's a very worthy web file manager with the same features set
+[tiny file manager](https://github.com/prasathmani/tinyfilemanager/tree/master), it's a very worthy web file manager  with a similar features set
 offered by the WebFolder.
     
 ## Features
