@@ -51,9 +51,18 @@ function autosave() {
 	if (autosave_on == 'true' && document.hidden) 
 		saveInBkgd()
 }
+function share() {
+    if (navigator.share) {
+        navigator.share({
+		  title: document.title,
+		  text: "Editing file : @model.file@",
+		  url: window.location.href
+		}).then(() => console.log('Successful share'))
+	}
+}
 </script>
 <form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@" style="height:100%;">
-<div>Editing: @model.file@</div>
+<div>Editing: @model.file@<span style="margin-left:2em" onclick="share()">Share</span></div>
 <input type="hidden" name="file" value="@model.file@">
 <div style="width:98%;height:98%;display: flex; align-items: center;">@.ui.field*(content,java.lang.Object^@model@)*@</div>
 
