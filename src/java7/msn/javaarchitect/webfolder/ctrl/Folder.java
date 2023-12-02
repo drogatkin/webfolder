@@ -1065,7 +1065,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 									fs = FileSystems.newFileSystem(result.transPath, null);
 									result.reqPath = result.transPath.toString();
 								} catch(ProviderNotFoundException pnfe) {
-									log("File system not found for " + result.transPath, pnfe);
+									System.out.printf("File system not found for %s at %s%n" ,result.transPath, pnfe);
 									throw new IOException("File system not found for " + result.transPath, pnfe);
 								}
 								
