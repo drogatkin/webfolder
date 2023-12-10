@@ -28,7 +28,7 @@ public class Opendirect extends Stream {
 			Path fp = rt.transPath;
 			if(rt.reqPath.isEmpty() == false && rt.transPath.getParent() == null) {
 				fp = FileSystems.getDefault().getPath(rt.reqPath);
-				rt.close();
+				//rt.close();
 			}
 			if (Files.isRegularFile(fp) == false || Files.isReadable(fp) == false) {
 				resp.setContentType("text/plain; charset=UTF-8");
