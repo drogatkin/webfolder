@@ -1,12 +1,12 @@
 <script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
 <script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <script type="text/javascript" src="@contextpath@/js/ui.js"></script>
-<div style="padding-bottom:3px;padding-top:3px"><h3 style="display:inline">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@
-   </h3>&nbsp;&nbsp;<img src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()">
-<div id="refresh_btn" style="display:inline;border:solid black 1px;margin-left:1em;visibility:hidden"><a href="@contextpath@@servletpath@/Folder@:path@"> Refresh</a></div></div>
-<form name="folder" method="post" action="@request.getRequestURI*()*@">
 
-  <input type="hidden" name="path" value="@path@">
+<form name="folder" method="post" action="@request.getRequestURI*()*@">
+  <div class="control_panel" id="panel1">
+  <div style="padding-bottom:3px;padding-top:3px"><h3 style="display:inline">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@
+   </h3>&nbsp;&nbsp;<img src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()">
+  <div id="refresh_btn" style="display:inline;border:solid black 1px;margin-left:1em;visibility:hidden"><a href="@contextpath@@servletpath@/Folder@:path@"> Refresh</a></div></div>
   <div style="position:relative;background-color:#2B3C66;padding:2px 2px 2px 2px">
       <input type="submit" name="submit" value="Get file links">
       &nbsp;
@@ -23,8 +23,11 @@
       <input type="submit" name="submit" value="Delete">&nbsp;      
   </div>
   @%'insert/bookmark.htmt'@
+  </div>
   
-<div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;" onresize="adjContHeight()">
+  <input type="hidden" name="path" value="@path@">
+  
+<div style="height:inherit;overflow-y: scroll; overflow-x: hidden;display:flex;flex-direction: column;" class="content" onresize="adjContHeight()">
 <table class="tinytable" id="folder_table">
   <thead style="position: sticky; top:0;">
   <tr>
@@ -32,7 +35,7 @@
     <th><h3>name </h3> </th><th><h3>size</h3></th><th><h3>modified</h3></th><th><h3>attrs</h3></th>
   </tr>
   </thead>
-  <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto">
+  <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto"">
   @model(<tr>
     <td><input type="checkbox" name="files" value="@element.path@" @element.unaccessible{@true(disabled)@}@></td>
     <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
@@ -85,8 +88,7 @@
 	   }
 	   didUpdate = true;
 	}
-	function adjContHeight() {
-	}
+	
 	@watchservice(
 	function initFields() { 
         handlerUrl = wf_uri+'/ajax/CheckForModifications'+wf_path+'?page-mark='+encodeURIComponent(pageMark);
@@ -102,8 +104,8 @@
 	     });
      }
      
-     function adjSize () {
-     }
+     function adjContHeight() {
+	 }
      
      function copyPath() {
         if (navigator.clipboard && window.isSecureContext) {
@@ -114,6 +116,20 @@
 	        })
 	    }
      }
+     
+     const maint = document.getElementsByTagName('main')[0]
+     maint.onscroll = function() {scrollHandler()};
+       var header = document.getElementById("panel1");
+     var sticky = header.offsetTop;
+
+	function scrollHandler() {
+	   //console.log('  -- '+event.target.scrollTop)
+	  if (event.target.scrollTop > sticky) {
+	    header.classList.add("sticky")
+	  } else {
+	    header.classList.remove("sticky")
+	  }
+	} 
   // -->
 </script>
 <div>&nbsp;</div>
