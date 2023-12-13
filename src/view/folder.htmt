@@ -117,11 +117,14 @@
 	    }
      }
      
+     var sticky
+     var header
+     
      function initFields() {
 	     const maint = document.getElementsByTagName('main')[0]
 	     maint.onscroll = function() {scrollHandler()};
-	       var header = document.getElementById("panel1");
-	     var sticky = header.offsetTop;
+	     header = document.getElementById("panel1");
+	     sticky = header.offsetTop;
 	     window.addEventListener("drop", function(e){
 		    e.preventDefault();
 	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
