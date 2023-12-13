@@ -117,10 +117,17 @@
 	    }
      }
      
-     const maint = document.getElementsByTagName('main')[0]
-     maint.onscroll = function() {scrollHandler()};
-       var header = document.getElementById("panel1");
-     var sticky = header.offsetTop;
+     function initFields() {
+	     const maint = document.getElementsByTagName('main')[0]
+	     maint.onscroll = function() {scrollHandler()};
+	       var header = document.getElementById("panel1");
+	     var sticky = header.offsetTop;
+	     window.addEventListener("drop", function(e){
+		    e.preventDefault();
+	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
+		    fileInput.files = e.dataTransfer.files
+		})
+	}
 
 	function scrollHandler() {
 	   //console.log('  -- '+event.target.scrollTop)
