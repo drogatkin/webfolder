@@ -16,7 +16,7 @@
   <thead>
   <tr>
      <th class="nosort"><div style="cursor:pointer" onclick="selectAll()"><h3>X</h3></div></th>
-    <th><h3>name</h3></th><th class="nosort"><h3>info</h3></th>
+    <th><h3>Name</h3></th><th><h3>Size</h3></th><th><h3>Date</h3></th>
   </tr>
   </thead>
   <tbody>
@@ -25,7 +25,8 @@
     <td id="td_@element.name@" fileName="@element.name@"><span>@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
         @element.name@@element.folder{@true(</a>)@}@</span>
         <img src="@request.getContextPath*()*@/image/pencil.png" style="float:right" alt="Edit name" onclick="renameFile(this.parentElement.id, @element.folder@, true)"></td>
-    <td style="text-align:center">@element.size@/@element.last_mod?D'MM-dd-yy\@HH@</td>
+    <td style="text-align:right">@element.size@</td>
+    <td style="text-align:center">@element.last_mod?D'yy:MM-dd\@HH@</td>
   </tr>
   )@
   </tbody>
