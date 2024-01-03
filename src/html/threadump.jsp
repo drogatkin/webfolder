@@ -5,6 +5,9 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+<link rel="icon" 
+      type="image/ico" 
+      href="./favicon.ico">
 <title>WebFolder: HTTP headers and Thread Dump</title>
 <style>
      <jsp:include page="css/style.css"/>
@@ -106,6 +109,6 @@ Generating Thread-Dump At:&nbsp;<%=new java.util.Date()%><BR>
   </tr>
  </table>
    <div><a href="<%=going_back%>">Go back</a></div>
-   <jsp:include page="/WEB-INF/view/insert/copyright.htmt"/>
+   <%@ include file="copyright.jsp" %>
 </body>
 </html>
