@@ -1,10 +1,11 @@
+<%@ page import="java.util.Properties"  %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
  <title>WebFolder: System properties info</title>
  <style>
-     <jsp:include page="css/style.css"/>
+     <jsp:include page="css/style.css" />
 </style>
 </head>
 <body>
@@ -36,6 +37,12 @@ if (going_back == null)
 </table>
 <hr />
 <div><a href="<%=going_back %>">Go back</a></div>
-<jsp:include page="/WEB-INF/view/insert/copyright.htmt"/>
+<%--
+<%@ include file="copyright.jsp" %>
+
+--%>
+
+<div style="padding-top:1em;font-size: small;"><%=((Properties)application.getAttribute(org.aldan3.servlet.Constant.ALDAN3_CONFIG)).getProperty("app_name")%> 
+   <%=((Properties)application.getAttribute(org.aldan3.servlet.Constant.ALDAN3_CONFIG)).getProperty("version")%> &copy; <%=msn.javaarchitect.webfolder.ctrl.Behavior.year()%> Dmitriy Rogatkin</div>
 </body>
 </html>
