@@ -397,9 +397,9 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 						}
 					});
 		} catch (Exception e) {
+			log("", e);
 			if (e instanceof IOException)
 				throw (IOException) e;
-			log("", e);
 		}
 	}
 
@@ -1017,6 +1017,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		
 	}
 	
+	private static final boolean  priv_debug = false;
 	/** processes web arguments and translate them in local file system
 	 * Path values
 	 * @param topPath root directory of exposed file system, can be any level to restrict access
@@ -1030,7 +1031,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	public static RequestTransalated translateReq(String topPath, String ...webPaths) throws IOException {
 		if (webPaths == null || webPaths.length == 0 )
 			throw new IllegalArgumentException("Inconsistency in using arguments, no web paths specified");
-		//System.out.printf("translated called top %s, paths %s%n", topPath, Arrays.toString(webPaths));
+		if (priv_debug)
+	    	System.out.printf("translated called top %s, paths %s%n", topPath, Arrays.toString(webPaths));
 		RequestTransalated result = new RequestTransalated();
 		FileSystem fs = FileSystems.getDefault();
 		char psc = fs.getSeparator().charAt(0);
@@ -1039,7 +1041,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
-			//System.out.printf("path %s for %s / %s%n", p, topPath, sp);
+			if (priv_debug)
+				System.out.printf("path %s for %s ~ %s%n", p, topPath, sp);
 			if (Files.isRegularFile(p)) {
 				if (!isZip(p.getFileName().toString()))
 					partsOfDir = true;
@@ -1047,7 +1050,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 				partsOfDir = true;
 		} else
 			partsOfDir = true;
-		//System.out.printf("common %s --- %s parts %b%n", sp, result.reqPath, partsOfDir);
+		if (priv_debug)
+			System.out.printf("common %s --- %s parts %b%n", sp, result.reqPath, partsOfDir);
 		if (!partsOfDir) {
 			String[] begParts = sp.split("/");
 			sanitize(begParts);
@@ -1055,7 +1059,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			do {
 				try {
 					Path p = Paths.get(topPath, begParts);
-					//System.out.printf("Parts from %s are %s%n", p, Arrays.toString(begParts));
+					if (priv_debug)
+						System.out.printf("Parts from %s are %s%n", p, Arrays.toString(begParts));
 					if (Files.exists(p)) {
 						if (Files.isRegularFile(p)) {
 							// check if it's zip
@@ -1066,7 +1071,19 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 									result.reqPath = result.transPath.toString();
 								} catch(ProviderNotFoundException pnfe) {
 									System.out.printf("File system not found for %s at %s%n" ,result.transPath, pnfe);
-									throw new IOException("File system not found for " + result.transPath, pnfe);
+									if (zipParts.length == 0) {
+										// consider the file as regular, non zip
+										result.transPath = fs.getPath(topPath, sp);
+										result.transPaths = new Path[webPaths.length];
+										if (priv_debug)
+											System.out.printf("ordinary %s --- %s%n", sp, result.transPath);
+										for(int i=0; i<webPaths.length;i++) {
+											sp = DataConv.ifNull(webPaths[i], "");
+											result.transPaths [i] = fs.getPath(topPath, sp.replace('/', psc));
+										}
+										return result;
+									}
+								    throw new IOException("File system not found for " + result.transPath, pnfe);
 								}
 								
 								break;

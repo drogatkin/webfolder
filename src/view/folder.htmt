@@ -7,7 +7,7 @@
   <div style="padding-bottom:3px;padding-top:3px"><h3 style="display:inline">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@&nbsp;&nbsp;@file@
    </h3>&nbsp;&nbsp;<img src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()">
   <div id="refresh_btn" style="display:inline;border:solid black 1px;margin-left:1em;visibility:hidden"><a href="@contextpath@@servletpath@/Folder@:path@"> Refresh</a></div></div>
-  <div style="position:relative;background-color:#2B3C66;padding:2px 2px 2px 2px">
+  <div style="background-color:#2B3C66;padding:2px 2px 2px 2px">
       <input type="submit" name="submit" value="Get file links">
       &nbsp;
       <input type="submit" name="submit" value="Download">&nbsp;
@@ -133,6 +133,8 @@
 	}
 
 	function scrollHandler() {
+	   if (true)
+	      return
 	   //console.log('  -- '+event.target.scrollTop)
 	  if (event.target.scrollTop > sticky) {
 	    header.classList.add("sticky")
