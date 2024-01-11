@@ -133,7 +133,7 @@
 	}
 
 	function scrollHandler() {
-	   if (true)
+	   if (false)
 	      return
 	   //console.log('  -- '+event.target.scrollTop)
 	  if (event.target.scrollTop > sticky) {
