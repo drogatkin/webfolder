@@ -3,6 +3,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	metadata-complete="true">
 	<description>Remote web interfaced file manager (version 1.9.143)</description>
+	<!-- Set the default request and response character encodings to UTF-8.   -->
+    <request-character-encoding>UTF-8</request-character-encoding>
+    <response-character-encoding>UTF-8</response-character-encoding>
 
         <filter>
 		<filter-name>BasicAuth</filter-name>
