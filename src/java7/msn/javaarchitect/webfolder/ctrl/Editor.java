@@ -19,6 +19,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,6 +49,8 @@ import org.aldan3.model.Coordinator;
  */
 public class Editor extends Form<Editor.editing, AppModel> {
 	public static final String AUTOSAVE = "AUTOSAVE";
+	
+	private String modified;
 
 	@Override
 	protected editing loadModel(editing model) {
@@ -103,7 +106,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 									model.content = "";
 								model.content += Stream.streamToString(is, model.as_text ? "UTF-8" : "ISO-8859-1",
 										maxSize);
-								
+								model.modified = Files.getLastModifiedTime(filePath).toMillis();
 							} catch (IOException ioe) {
 								log("", ioe);
 								// MalformedInputException
@@ -144,6 +147,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					return "The file isn't editable";
 				//if (model.content.length() > 10)
 					//return "Too big";
+				if (model.modified < Files.getLastModifiedTime(filePath).toMillis())
+						return "File's already modified, reread";
 				if (model.as_text && !model.eol_type.equals("N")) {
 					
 				}
@@ -181,7 +186,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 												.relativize(
 														rp.getFileSystem().getPath(rt.reqPath,
 																filePath.getParent().toString())).toString(), "UTF-8");
-
+                    model.modified = Files.getLastModifiedTime(filePath).toMillis();
+					modified = "OK "+model.modified;
 					return "";
 				} catch (IOException e) {
 					log("Exception at saving file", e);
@@ -195,6 +201,14 @@ public class Editor extends Form<Editor.editing, AppModel> {
 
 		return "Can't save the file, a wrong location";
 	}
+	
+	@Override
+	protected void addEnv(Object model, boolean ajaxView) {
+		if (ajaxView)
+			if (model instanceof Map && !((Map)model).containsKey(Variable.ERROR))
+				((Map)model).put(Variable.ERROR, modified);
+		super.addEnv(model, ajaxView);
+	}	
 
 	@Override
 	protected String getTitle() {
@@ -223,6 +237,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public String eol_type;
 		@FormField
 		public String do_autosave;
+		@FormField(presentType=FieldType.Hidden)
+		public long modified;
 	}
 	
 	@OptionMap(valueMap = "id")

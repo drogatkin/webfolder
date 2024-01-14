@@ -1,7 +1,7 @@
 <form name="editor" method="POST" onsubmit="store()" action="@contextpath@@servletpath@/@pageservicename@" style="height:90%">
 <div>Editing: @model.file@</div>
 <input type="hidden" name="file" value="@model.file@">
-
+<input type="hidden" name="modified" value="@model.modified@">
 <!--div>@.ui.field*(file,java.lang.Object^@model@)*@</div-->
 @model.editor{@ace(
 <pre id="editor">@model.content@</pre>
@@ -94,10 +94,14 @@ function saveInBkgd() {
    xhr.onload = function () {
       if (xhr.status === 200) {
           var resp = xhr.responseText
-          if (resp && resp.trim() && resp != 'OK') {
+          //alert("gt "+xhr.responseType+ " with "+xhr.response+" and status "+xhr.statusText+" resp "+resp)
+          if (resp && resp.trim() && !resp.startsWith('OK')) {
           	showBkgStatus(resp)
-          } else
+          } else {
+             if (resp.startsWith('OK'))
+                 document.querySelector('input[name=modified]').value =  resp.substring(3)
              showBkgStatus()
+          }
        } else {
           showBkgStatus('An error occurred!')
        }
