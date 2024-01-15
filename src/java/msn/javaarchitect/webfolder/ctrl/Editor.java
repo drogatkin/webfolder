@@ -8,11 +8,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.aldan3.annot.FormField;
+import org.aldan3.annot.FormField.FieldType;
 import org.aldan3.data.util.FieldConverter;
+import org.aldan3.servlet.Constant.Variable;
 import org.aldan3.util.DataConv;
 import org.aldan3.util.Stream;
 
@@ -20,6 +24,8 @@ import com.beegman.webbee.block.Form;
 import com.beegman.webbee.model.AppModel;
 
 public class Editor extends Form<Editor.editing, AppModel> {
+	
+	private String modified;
 
 	@Override
 	protected editing loadModel(editing model) {
@@ -45,6 +51,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 									model.content += "\r\n<Content of the file was truncated>";
 									model.partial = true;
 								}
+								model.modified = editFile.lastModified();
 							} catch (IOException ioe) {
 								model.content = "" + ioe;
 							} finally {
@@ -84,6 +91,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				File editFile = new File(path, filePath);
 				if (editFile.isDirectory() || (editFile.exists() && editFile.canWrite() == false))
 					return "The file isn't editable";
+				if (model.modified < editFile.lastModified())
+					return "File's already modified, reread";
 				OutputStreamWriter osw = null;
 				try {
 					navigation = "Folder/"
@@ -94,6 +103,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						model.content = model.content.replaceAll("(\\r)?\\n", System.getProperty("line.separator"));
 					osw.write(model.content);
 					osw.flush();
+					model.modified = editFile.lastModified();
+					modified = "OK "+model.modified;
 					return "";
 				} catch (Exception e) {
 					log("", e);
@@ -109,6 +120,14 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		}
 		return "Can't save file, wrong location";
 	}
+	
+	@Override
+	protected void addEnv(Object model, boolean ajaxView) {
+		if (ajaxView)
+			if (model instanceof Map && !((Map)model).containsKey(Variable.ERROR))
+				((Map)model).put(Variable.ERROR, modified);
+		super.addEnv(model, ajaxView);
+	}	
 
 	@Override
 	protected String getTitle() {
@@ -128,6 +147,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		@FormField(formFieldName="as text")
 		public boolean as_text;
 		public boolean partial;
+		@FormField(presentType=FieldType.Hidden)
+		public long modified;
 	}
 
 	public static class File2Str implements FieldConverter<File> {
