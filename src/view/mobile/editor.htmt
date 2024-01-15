@@ -28,10 +28,13 @@ function saveInBkgd() {
           // TODO use a special return template with only status text like 'ok' or error...
           var resp = xhr.responseText
           //alert(resp)
-          if (resp && resp.trim() && resp != 'OK') {
-             showSuccess(resp)
-          } else
-          	showSuccess('OK')
+          if (resp && resp.trim() && !resp.startsWith('OK')) {
+          	showSuccess(resp)
+          } else {
+             if (resp.startsWith('OK'))
+                 document.querySelector('input[name=modified]').value =  resp.substring(3)
+             showSuccess('Ok')
+          }
        } else {
           showSuccess('An error occurred!')
        }
@@ -63,6 +66,7 @@ function share() {
 </script>
 <form name="editor" method="POST" action="@contextpath@@servletpath@/@pageservicename@" style="height:100%;">
 <div>Editing: @model.file@<span style="margin-left:2em" onclick="share()">Share</span></div>
+<input type="hidden" name="modified" value="@model.modified@">
 <input type="hidden" name="file" value="@model.file@">
 <div style="width:98%;height:98%;display: flex; align-items: center;">@.ui.field*(content,java.lang.Object^@model@)*@</div>
 
@@ -74,7 +78,7 @@ function share() {
 <input type="submit" name="submit" value="Save" @model.partial{@true(disabled)@}@>
 &nbsp;&nbsp;
 <button class="button" onclick="saveInBkgd(); return false;" id="bkgUpl" @model.partial{@true(aria-disabled="true")@}@>Save &amp; continue</button>
-&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="@request.getHeader*(referer)*@" onclick="autosave_on='false'">Discard</a>
 </div>
 </form>
