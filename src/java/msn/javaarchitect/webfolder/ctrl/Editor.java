@@ -91,7 +91,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				File editFile = new File(path, filePath);
 				if (editFile.isDirectory() || (editFile.exists() && editFile.canWrite() == false))
 					return "The file isn't editable";
-				if (model.modified < editFile.lastModified())
+				if (editFile.exists() && model.modified < editFile.lastModified())
 					return "File's already modified, reread";
 				OutputStreamWriter osw = null;
 				try {
@@ -103,6 +103,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						model.content = model.content.replaceAll("(\\r)?\\n", System.getProperty("line.separator"));
 					osw.write(model.content);
 					osw.flush();
+					osw.close();
 					model.modified = editFile.lastModified();
 					modified = "OK "+model.modified;
 					return "";
@@ -114,7 +115,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 						osw.close();
 					} catch (Exception e) {
 
-					}
+					}				
 				}
 			}
 		}

@@ -147,7 +147,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 					return "The file isn't editable";
 				//if (model.content.length() > 10)
 					//return "Too big";
-				if (model.modified < Files.getLastModifiedTime(filePath).toMillis())
+				if (Files.exists(filePath) && model.modified < Files.getLastModifiedTime(filePath).toMillis())
 						return "File's already modified, reread";
 				if (model.as_text && !model.eol_type.equals("N")) {
 					
