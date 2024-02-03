@@ -119,13 +119,16 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			//log("display: %s for %s", null, rt.transPath.getFileSystem(), rt);
 			//System.err.printf("display: %s %n", rt);
 			long total = 0;
+			int count = 0;
 			Webfile wf;
 			for (Path entry : stream) {
 				result.add(wf = new Webfile(entry, rt.reqPath));
 				total += wf.size;
+				count++;
 			}			
 			try {
 				String totals = DataConv.toStringInUnits(total);
+				totals += "("+count+")";
 				Class fscl = Class.forName("android.os.StatFs");
 				Object fs = fscl.getConstructor(String.class).newInstance(rt.transPath.toString());
 				long bls = ((Integer)fscl.getMethod("getBlockSize").invoke(fs)).longValue();
@@ -136,7 +139,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			} catch(Exception e) {
 				//e.printStackTrace();
 				FileStore fst = Files.getFileStore(rt.transPath);
-				modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+" / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
+				modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+"("+count+") / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
 						+" / "+DataConv.toStringInUnits(total)); 
 			}
 		} catch (Exception ioe) {
