@@ -139,8 +139,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			} catch(Exception e) {
 				//e.printStackTrace();
 				FileStore fst = Files.getFileStore(rt.transPath);
-				modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+"("+count+") / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
-						+" / "+DataConv.toStringInUnits(total)); 
+				modelInsert("total", DataConv.toStringInUnits(fst.getTotalSpace())+" / "+DataConv.toStringInUnits(fst.getUnallocatedSpace())
+						+" / "+DataConv.toStringInUnits(total) + "(" + count + ")"); 
 			}
 		} catch (Exception ioe) {
 			//log("", ioe);

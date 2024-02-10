@@ -126,11 +126,22 @@
 	     header = document.getElementById("panel1");
 	     sticky = header.offsetTop;
 	     window.addEventListener("drop", function(e){
-		    e.preventDefault();
+		    e.preventDefault()
+		    if (!e.dataTransfer) {
+		   // alert("The site isn't trusted")
+		       showMsg("The site isn't trusted")
+		       return false
+		    }
 	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
 		    fileInput.files = e.dataTransfer.files
 		})
 	}
+	
+	function showMsg(msg) {
+	    // TODO move to common script
+	    getElement('err_txt').innerHTML = msg
+         getElement('status').style.visibility = 'visible'
+    }
 
 	function scrollHandler() {
 	   if (false)
