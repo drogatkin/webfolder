@@ -35,7 +35,7 @@
     <th><h3>name </h3> </th><th><h3>size</h3></th><th><h3>modified</h3></th><th><h3>attrs</h3></th>
   </tr>
   </thead>
-  <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto"">
+  <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto">
   @model(<tr>
     <td><input type="checkbox" name="files" value="@element.path@" @element.unaccessible{@true(disabled)@}@></td>
     <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
@@ -126,12 +126,8 @@
 	     header = document.getElementById("panel1");
 	     sticky = header.offsetTop;
 	     window.addEventListener("drop", function(e){
-		    e.preventDefault()
-		    if (!e.dataTransfer) {
-		   // alert("The site isn't trusted")
-		       showMsg("The site isn't trusted")
-		       return false
-		    }
+		    e.preventDefault()    
+            
 	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
 		    fileInput.files = e.dataTransfer.files
 		})
