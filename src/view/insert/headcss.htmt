@@ -67,7 +67,7 @@ h2 + input[type=text] {
 
 .sticky {
   position: sticky;
-  top: 2px;
+  top: 0px;
   background:#efefef;
   width: 100%
 }

@@ -140,6 +140,16 @@
 	    }
 	}
 	
+		
+	function showMsg(msg) {
+		if (!msg || msg == '') {
+			getElement('status').style.visibility = 'hidden'
+			return
+		}
+	    getElement('err_txt').innerHTML = msg
+        getElement('status').style.visibility = 'visible'
+    }
+	
 	function escape(s) {
  	   return ('' + s)
         .replace(/'/g, "\\&apos;")
