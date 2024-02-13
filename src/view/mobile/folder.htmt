@@ -1,6 +1,5 @@
 <!--            mobile template                -->
 <script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
-<script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <div><span style=" float: left; margin-left:0.2em;"><input type="text" id="query" onkeyup="sorter.search('query')" placeholder="Filter"/></span><span style=" float: right;margin-right:0.2em;">@total@</span></div>
 <div style="overflow:auto;width:100%;margin-left:0.5em">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@<span style="margin-left:0.8em">@file@</span>
    &nbsp;&nbsp;

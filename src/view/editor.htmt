@@ -117,14 +117,7 @@ function saveInBkgd() {
 
 function showBkgStatus(msg) {
      document.getElementById('bkgUpl').innerHTML = 'Save &amp; continue'
-     if (msg) {
-     	//getElement('status').classList.remove('#status')
-        //getElement('status').style.display = 'block'
-        getElement('err_txt').innerHTML = msg
-         getElement('status').style.visibility = 'visible'
-     } else
-         //getElement('status').style.display = 'none'
-     	getElement('status').style.visibility = 'hidden'
+     showMsg(msg)
 }
    
 function autosave() {

@@ -1,5 +1,4 @@
 <script type="text/javascript" src="@contextpath@/js/tinysort.js"></script>
-<script type="text/javascript" src="@contextpath@/js/webfolder.js"></script>
 <script type="text/javascript" src="@contextpath@/js/ui.js"></script>
 
 <form name="folder" method="post" action="@request.getRequestURI*()*@">
@@ -132,12 +131,6 @@
 		    fileInput.files = e.dataTransfer.files
 		})
 	}
-	
-	function showMsg(msg) {
-	    // TODO move to common script
-	    getElement('err_txt').innerHTML = msg
-         getElement('status').style.visibility = 'visible'
-    }
 
 	function scrollHandler() {
 	   if (false)
