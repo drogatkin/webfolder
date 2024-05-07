@@ -55,6 +55,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 	@Override
 	protected editing loadModel(editing model) {
 		if (model.file != null) {
+		    model.referer = req.getHeader("referer");
 			String tpath = getConfigValue(Folder.TOPFOLDER, File.separator);
 			try (Folder.RequestTransalated rt = Folder.translateReq(tpath, model.file.replace(File.separatorChar, '/'));) {
 				//System.out.printf("-->loadinging %s%n", model.file);
@@ -66,13 +67,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				} catch (Exception e) {
 
 				}
-				String editExts = getConfigValue("ace_edit_exts", "");
-				if (editExts.isEmpty() == false) {
-					String n = filePath.toString().toLowerCase();
-					int dp = n.lastIndexOf('.');
-					if (dp > 0 && dp < n.length() - 1)
-						model.editor = editExts.indexOf(n.substring(dp)) >= 0 ? "ace" : null;
-				}
+				updateEditorType(model, rt.transPath);
 				if (Files.isReadable(filePath)) {
 					if (Files.isDirectory(filePath) == false) {
 						//log("as  text %b%n", null, model.as_text);
@@ -132,6 +127,16 @@ public class Editor extends Form<Editor.editing, AppModel> {
 	protected editing getFormModel() {
 		return new editing();
 	}
+	
+	private final void updateEditorType(editing model, Path filePath) {
+		String editExts = getConfigValue("ace_edit_exts", "");
+		if (editExts.isEmpty() == false) {
+			String n = filePath.toString().toLowerCase();
+			int dp = n.lastIndexOf('.');
+			if (dp > 0 && dp < n.length() - 1)
+				model.editor = editExts.indexOf(n.substring(dp)) >= 0 ? "ace" : null;
+		}
+	}
 
 	@Override
 	protected Object storeModel(editing model) {
@@ -142,13 +147,15 @@ public class Editor extends Form<Editor.editing, AppModel> {
 			try (Folder.RequestTransalated rt = Folder.translateReq(topFolder,
 					model.file.replace(File.separatorChar, '/'));) {
 				Path filePath = rt.transPath;
+				updateEditorType(model, filePath);
+				model.referer = getStringParameterValue("referer", ".", 0);
 				//log("editing %s in %s as %b top %s", null, filePath, rt.reqPath, model.as_text, topFolder);
 				if (Files.isDirectory(filePath) || Files.isWritable(filePath) == false && Files.exists(filePath))
 					return "The file isn't editable";
 				//if (model.content.length() > 10)
 					//return "Too big";
 				if (Files.exists(filePath) && model.modified < Files.getLastModifiedTime(filePath).toMillis())
-						return "File's already modified, reread";
+						return "File's already modified, <a href=\""+req.getContextPath()+req.getServletPath()+"/Editor?file="+model.file+"\">reread</a>";
 				if (model.as_text && !model.eol_type.equals("N")) {
 					
 				}
@@ -239,6 +246,8 @@ public class Editor extends Form<Editor.editing, AppModel> {
 		public String do_autosave;
 		@FormField(presentType=FieldType.Hidden)
 		public long modified;
+		@FormField(presentType=FieldType.Hidden)
+		public String referer;
 	}
 	
 	@OptionMap(valueMap = "id")

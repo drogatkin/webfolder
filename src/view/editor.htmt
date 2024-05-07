@@ -68,8 +68,9 @@ document.addEventListener('keydown', e => {
 @.ui.select*(eol_type,java.lang.Object^@model@)*@ EOL
 &nbsp;
 &nbsp;&nbsp;
-<a href="@request.getHeader*(referer)*@" onclick="autosave_on='false'">Discard</a>
+<a href="@model.referer@" onclick="autosave_on='false'">Discard</a>
 </div>
+@.ui.field*(referer,java.lang.Object^@model@)*@
 </form>
 <script>
 var autosave_on = "@model.do_autosave@" // from server

@@ -72,7 +72,7 @@
   @%headextra@
 </head>
 <body onload="init()">
-<div id="status" onclick="getElement('status').style.visibility = 'hidden'" style="color:#ED0000">@error@</div>
+<div id="status" onclick="getElement('status').style.visibility = 'hidden'" style="color:#ED0000">@.error@</div>
 <div style="width:100%;text-align:right">@toplinks(<a href="javascript:void(0)" onclick="goto('@element.getAnchor*()*@')">@element.getTitle*()*@</a>&nbsp;|)@&nbsp;@%stationary@</div>
 @%request.INNER_VIEW@
 </body>
