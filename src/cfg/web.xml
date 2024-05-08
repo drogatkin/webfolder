@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	metadata-complete="true">
-	<description>Remote web interfaced file manager (version 1.9.146)</description>
+	<description>Remote web interfaced file manager (version 1.9.151)</description>
 	<!-- Set the default request and response character encodings to UTF-8.   -->
     <request-character-encoding>UTF-8</request-character-encoding>
     <response-character-encoding>UTF-8</response-character-encoding>
