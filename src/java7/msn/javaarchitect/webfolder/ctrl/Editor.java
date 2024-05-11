@@ -55,9 +55,12 @@ public class Editor extends Form<Editor.editing, AppModel> {
 	@Override
 	protected editing loadModel(editing model) {
 		if (model.file != null) {
-		    model.referer = req.getHeader("referer");
+		    String file = model.file.replace(File.separatorChar, '/');
+		    int lastSep = file.lastIndexOf('/');
+		    
 			String tpath = getConfigValue(Folder.TOPFOLDER, File.separator);
-			try (Folder.RequestTransalated rt = Folder.translateReq(tpath, model.file.replace(File.separatorChar, '/'));) {
+			try (Folder.RequestTransalated rt = Folder.translateReq(tpath, file);) {
+			    model.referer = req.getContextPath() + req.getServletPath() + "/Folder"+URLEncoder.encode((lastSep > 0? file.substring(0, lastSep): file), "UTF-8");
 				//System.out.printf("-->loadinging %s%n", model.file);
 				Path filePath = rt.transPath;
 				//log("ld editing %s as %s",null, model.file, filePath);
@@ -155,7 +158,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				//if (model.content.length() > 10)
 					//return "Too big";
 				if (Files.exists(filePath) && model.modified < Files.getLastModifiedTime(filePath).toMillis())
-						return "File's already modified, <a href=\""+req.getContextPath()+req.getServletPath()+"/Editor?file="+model.file+"\">reread</a>";
+						return "File's already modified, <a href=\""+req.getContextPath()+req.getServletPath()+"/Editor?file="+URLEncoder.encode(model.file, "UTF-8") +"\">reread</a>";
 				if (model.as_text && !model.eol_type.equals("N")) {
 					
 				}
