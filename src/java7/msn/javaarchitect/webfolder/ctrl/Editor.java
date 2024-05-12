@@ -158,7 +158,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				//if (model.content.length() > 10)
 					//return "Too big";
 				if (Files.exists(filePath) && model.modified < Files.getLastModifiedTime(filePath).toMillis())
-						return "File's already modified, <a href=\""+req.getContextPath()+req.getServletPath()+"/Editor?file="+URLEncoder.encode(model.file, "UTF-8") +"\">reread</a>";
+						return "File's already modified, <a href=\""+req.getContextPath()+req.getServletPath()+"/Editor?file="+URLEncoder.encode(model.file, "UTF-8") + "&as+text=" + (model.as_text?"true":"false") +"\">reread</a>";
 				if (model.as_text && !model.eol_type.equals("N")) {
 					
 				}
