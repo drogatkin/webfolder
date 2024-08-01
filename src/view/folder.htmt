@@ -14,7 +14,7 @@
       <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
       <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
       <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true" checked>text&nbsp;<input type="checkbox" name="tail" value="true">tail</div>
-      <input type="submit" name="submit" value="Edit">&nbsp;
+      <input type="submit" name="submit" value="Edit" disabled>&nbsp;
       <input type="text" name="folder" size="14">&nbsp;<input type="submit" name="submit" value="New folder">
       </div>&nbsp;
       <input type="submit" name="submit" value="Copy">&nbsp;
@@ -36,7 +36,7 @@
   </thead>
   <tbody style="overflow-y: scroll; overflow-x: hidden;flex:auto">
   @model(<tr>
-    <td><input type="checkbox" name="files" value="@element.path@" @element.unaccessible{@true(disabled)@}@></td>
+    <td><input type="checkbox" name="files" value="@element.path@" onclick="selChange(this)" @element.unaccessible{@true(disabled)@}@></td>
     <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
         @element.name@@element.folder{@true(</a>)@}@</td>
     <td style="text-align:right">@element.size@</td>
@@ -115,6 +115,23 @@
 	        })
 	    }
      }
+     
+    function selChange(cbox) {
+        const form1 = document.forms[0]
+        if (document.forms.folder.elements.files.length == undefined) {
+            form1.querySelector('input[value="Edit"]').disabled = cbox.checked == false
+       } else  {
+           var nsel = 0
+           for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
+               if (document.forms.folder.elements.files[el].checked) {
+                   nsel++
+                   if (nsel > 1)
+                    break
+               }
+           }
+           form1.querySelector('input[value="Edit"]').disabled = nsel != 1
+       }
+    }
      
      var sticky
      var header
