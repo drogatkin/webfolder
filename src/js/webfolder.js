@@ -141,27 +141,13 @@
 	}
 	
 	function someName(inpc) {
-        const form1 = document.forms[0]
+	    const form1 = document.forms.folder
         var nsel = 0
-       for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
-           if (document.forms.folder.elements.files[el].checked) {
-               nsel++
-               if (nsel > 1)
-                break
-           }
-       }
-       form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && inpc.value == ''
-       form1.querySelector('input[value="New folder"]').disabled = inpc.value == ''
-    }
-    
-    function selChange(cbox) {
-        const form1 = document.forms[0]
-        const named = form1.querySelector('input[name="folder"]').value != ''
-        if (document.forms.folder.elements.files.length == undefined) {
-            if (cbox)
-                form1.querySelector('input[value="Edit"]').disabled = cbox.checked == false
-       } else  {
-           var nsel = 0
+        if (document.forms.folder.elements.files == undefined) {
+        
+        } else if (document.forms.folder.elements.files.length == undefined) {
+           nsel = document.forms.folder.elements.files.checked?1:0 
+        } else
            for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
                if (document.forms.folder.elements.files[el].checked) {
                    nsel++
@@ -169,12 +155,32 @@
                     break
                }
            }
-           form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && !named
-           form1.querySelector('input[value="Copy"]').disabled = nsel == 0
-           form1.querySelector('input[value="Delete"]').disabled = nsel == 0
-           form1.querySelector('input[value="Get file links"]').disabled = nsel == 0
-           form1.querySelector('input[value="Download"]').disabled = nsel == 0
+       form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && inpc.value == ''
+       form1.querySelector('input[value="New folder"]').disabled = inpc.value == ''
+    }
+    
+    function selChange(cbox) {
+        const form1 = document.forms[0]
+        const named = form1.querySelector('input[name="folder"]').value != ''
+        var nsel = 0
+        // TODO distinct files and folders counter
+        if (document.forms.folder.elements.files.length == undefined) {
+            if (cbox && cbox.checked)
+                nsel = 1
+       } else  {
+           for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
+               if (document.forms.folder.elements.files[el].checked) {
+                   nsel++
+                   if (nsel > 1)
+                    break
+               }
+           }
        }
+       form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && !named
+       form1.querySelector('input[value="Copy"]').disabled = nsel == 0
+       form1.querySelector('input[value="Delete"]').disabled = nsel == 0
+       form1.querySelector('input[value="Get file links"]').disabled = nsel == 0
+       form1.querySelector('input[value="Download"]').disabled = nsel == 0
     }
 	
 	function showMsg(msg) {

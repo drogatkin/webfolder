@@ -4,9 +4,9 @@
 <div style="overflow:auto;width:100%;margin-left:0.5em">@parents(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@element.path@">@element.name@</a>&gt;)@<span style="margin-left:0.8em">@file@</span>
    &nbsp;&nbsp;
    <picture>
-      <source srcset="@contextpath@/image/copy-ivory.png" media="(prefers-color-scheme: dark)"><img class="hide-on-portrait" src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()"></div>
+      <source srcset="@contextpath@/image/copy-ivory.png" media="(prefers-color-scheme: dark)"><img class="hide-on-portrait" src="@contextpath@/image/copy.png" alt="copy" width="14" height="14" onclick="copyPath()">
    </picture>
-
+</div>
  @%'insert/bookmark.htmt'@
 <form name="folder" method="POST">
   <input type="hidden" name="path" value="@path@">
