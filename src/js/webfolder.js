@@ -172,6 +172,8 @@
            form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && !named
            form1.querySelector('input[value="Copy"]').disabled = nsel == 0
            form1.querySelector('input[value="Delete"]').disabled = nsel == 0
+           form1.querySelector('input[value="Get file links"]').disabled = nsel == 0
+           form1.querySelector('input[value="Download"]').disabled = nsel == 0
        }
     }
 	

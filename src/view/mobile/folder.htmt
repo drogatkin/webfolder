@@ -65,8 +65,8 @@
   // -->
 </script>
 
-<div class="ctrline"><input type="submit" name="submit" value="Get file links">&nbsp;&nbsp;
-      <input type="submit" name="submit" value="Download">&nbsp;</div>
+<div class="ctrline"><input type="submit" name="submit" value="Get file links" disabled>&nbsp;&nbsp;
+      <input type="submit" name="submit" value="Download" disabled>&nbsp;</div>
       
       <div  class="ctrline">
          <fieldset> <input type="file" size="4" name="file" multiple="multiple">&nbsp;
