@@ -13,13 +13,14 @@
       <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em"> <input type="file" name="file" multiple="multiple">&nbsp;<!-- HTML5 check can be needed -->
       <input type="submit" name="submit" value="Upload" onclick="return upload()"></div>&nbsp;
       <div style="display:inline;border:1px solid gray;padding:2px 1em 2px 1em">
-      <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true" checked>text&nbsp;<input type="checkbox" name="tail" value="true">tail</div>
+      <div style="display:inline; color:white; margin-left:1em; margin-right:1em">as<input type="checkbox" name="as text" value="true" checked>text&nbsp;
+             <input type="checkbox" name="tail" value="true">tail</div>
       <input type="submit" name="submit" value="Edit" disabled>&nbsp;
-      <input type="text" name="folder" size="14">&nbsp;<input type="submit" name="submit" value="New folder">
+      <input type="text" name="folder" size="14" oninput="someName(this)">&nbsp;<input type="submit" name="submit" value="New folder" disabled>
       </div>&nbsp;
-      <input type="submit" name="submit" value="Copy">&nbsp;
+      <input type="submit" name="submit" value="Copy" disabled>&nbsp;
       <input type="submit" name="submit" value="Paste">&nbsp;
-      <input type="submit" name="submit" value="Delete">&nbsp;      
+      <input type="submit" name="submit" value="Delete" disabled>&nbsp;      
   </div>
   @%'insert/bookmark.htmt'@
   </div>
@@ -115,24 +116,7 @@
 	        })
 	    }
      }
-     
-    function selChange(cbox) {
-        const form1 = document.forms[0]
-        if (document.forms.folder.elements.files.length == undefined) {
-            form1.querySelector('input[value="Edit"]').disabled = cbox.checked == false
-       } else  {
-           var nsel = 0
-           for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
-               if (document.forms.folder.elements.files[el].checked) {
-                   nsel++
-                   if (nsel > 1)
-                    break
-               }
-           }
-           form1.querySelector('input[value="Edit"]').disabled = nsel != 1
-       }
-    }
-     
+    
      var sticky
      var header
      

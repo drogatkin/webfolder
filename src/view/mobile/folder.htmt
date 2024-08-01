@@ -62,22 +62,6 @@
 	      }
       }
       
-    function selChange(cbox) {
-        const form1 = document.forms[0]
-        if (document.forms.folder.elements.files.length == undefined) {
-            form1.querySelector('input[value="Edit"]').disabled = cbox.checked == false
-       } else  {
-           var nsel = 0
-           for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
-               if (document.forms.folder.elements.files[el].checked) {
-                   nsel++
-                   if (nsel > 1)
-                    break
-               }
-           }
-           form1.querySelector('input[value="Edit"]').disabled = nsel != 1
-       }
-    }
   // -->
 </script>
 
@@ -91,12 +75,12 @@
       <div  class="ctrline">
          <fieldset>
             <input type="submit" name="submit" value="Edit" disabled>&nbsp;as&nbsp;<input type="checkbox" name="as text" value="true" checked>text&nbsp;&nbsp;
-            <input type="text" name="folder" size="20">&nbsp;<input type="submit" name="submit" value="New folder">
+            <input type="text" name="folder" size="20" oninput="someName(this)">&nbsp;<input type="submit" name="submit" value="New folder" disabled>
          </fieldset>
       </div>
       <div  class="ctrline">
-         <input type="submit" name="submit" value="Copy">&nbsp;
+         <input type="submit" name="submit" value="Copy" disabled>&nbsp;
          <input type="submit" name="submit" value="Paste">&nbsp;
-         <input type="submit" name="submit" value="Delete">&nbsp;
+         <input type="submit" name="submit" value="Delete" disabled>&nbsp;
      </div>
 </form>

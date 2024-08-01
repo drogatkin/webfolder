@@ -140,7 +140,41 @@
 	    }
 	}
 	
-		
+	function someName(inpc) {
+        const form1 = document.forms[0]
+        var nsel = 0
+       for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
+           if (document.forms.folder.elements.files[el].checked) {
+               nsel++
+               if (nsel > 1)
+                break
+           }
+       }
+       form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && inpc.value == ''
+       form1.querySelector('input[value="New folder"]').disabled = inpc.value == ''
+    }
+    
+    function selChange(cbox) {
+        const form1 = document.forms[0]
+        const named = form1.querySelector('input[name="folder"]').value != ''
+        if (document.forms.folder.elements.files.length == undefined) {
+            if (cbox)
+                form1.querySelector('input[value="Edit"]').disabled = cbox.checked == false
+       } else  {
+           var nsel = 0
+           for(var el=0,n= document.forms.folder.elements.files.length; el<n; el++) {
+               if (document.forms.folder.elements.files[el].checked) {
+                   nsel++
+                   if (nsel > 1)
+                    break
+               }
+           }
+           form1.querySelector('input[value="Edit"]').disabled = nsel != 1 && !named
+           form1.querySelector('input[value="Copy"]').disabled = nsel == 0
+           form1.querySelector('input[value="Delete"]').disabled = nsel == 0
+       }
+    }
+	
 	function showMsg(msg) {
 		if (!msg || msg == '') {
 			getElement('status').style.visibility = 'hidden'
