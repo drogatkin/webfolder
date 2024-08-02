@@ -131,7 +131,11 @@
 	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
 		    fileInput.files = e.dataTransfer.files
 		})
+		
+		selChange()
 	}
+	
+	
 
 	function scrollHandler() {
 	   if (false)

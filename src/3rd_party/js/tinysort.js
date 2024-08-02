@@ -7,7 +7,10 @@ TINY.table=function(){
 	function sorter(n,t,p){this.n=n; this.id=t; this.p=p; if(this.p.init){this.init()}}
 	sorter.prototype.init=function(){
 		this.set(); var t=this.t, i=d=0; t.h=T$$('tr',t)[0];
-		t.l=t.r.length; t.w=t.r[0].cells.length; t.a=[]; t.c=[]; this.p.is=this.p.size;
+		t.l=t.r.length;
+		if (t.l == 0)
+		    return // no rows in the table
+		t.w=t.r[0].cells.length; t.a=[]; t.c=[]; this.p.is=this.p.size;
 		if(this.p.colddid){
 			d=T$(this.p.colddid);
 			var o=document.createElement('option'); o.value=-1; o.innerHTML='All Columns'; d.appendChild(o)

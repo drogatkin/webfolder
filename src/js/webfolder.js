@@ -160,6 +160,8 @@
     }
     
     function selChange(cbox) {
+        if (document.forms.folder.elements.files == undefined) 
+            return
         const form1 = document.forms[0]
         const named = form1.querySelector('input[name="folder"]').value != ''
         var nsel = 0

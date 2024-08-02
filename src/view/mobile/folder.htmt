@@ -62,6 +62,10 @@
 	      }
       }
       
+      function extra_actions(secure, context) {
+          selChange()
+      }
+      
   // -->
 </script>
 
