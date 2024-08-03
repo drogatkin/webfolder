@@ -127,15 +127,17 @@
 	     sticky = header.offsetTop;
 	     window.addEventListener("drop", function(e){
 		    e.preventDefault()    
-            
 	        const fileInput =  document.forms.folder.querySelector('input[name="file"]')
 		    fileInput.files = e.dataTransfer.files
 		})
-		
-		selChange()
 	}
 	
-	
+      window.addEventListener('pageshow', (event) => {
+          if (event.persisted || window.performance && 
+                    window.performance.navigation.type == 2) { 
+             selChange();
+          }
+      })	
 
 	function scrollHandler() {
 	   if (false)
