@@ -246,7 +246,7 @@ public class Terminal {
 						if (consoleStream == null && System.console() != null)
 							consoleStream = System.console().writer();
 						// make global var for output stream
-						currentProcess.waitFor();
+						int exitCode = currentProcess.waitFor();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

@@ -32,7 +32,7 @@ body {font:12px Verdana,Arial;  background:#fff url(@contextpath@/image/bg.gif) 
 #tablelocation div {float:left; margin-left:15px}
 .page {margin-top:2px; font-style:italic}
 #selectedrow td {background:#c6d5e1}
-textarea#content {width:90%}
+textarea[name="content"] {width:99%; font-size:14pt;}
 @midori(
 input[type=submit]
 {
