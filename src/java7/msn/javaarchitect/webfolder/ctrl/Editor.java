@@ -66,7 +66,7 @@ public class Editor extends Form<Editor.editing, AppModel> {
 				//log("ld editing %s as %s",null, model.file, filePath);
 				int maxSize = 1024 * 1024;
 				try {
-					maxSize = Integer.parseInt(frontController.getProperty("MaxEditedSize", "" + (1024 * 1024)));
+					maxSize = Integer.parseInt(frontController.getProperty("MaxEditedSize", "" + maxSize));
 				} catch (Exception e) {
 
 				}
