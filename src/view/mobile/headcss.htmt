@@ -32,7 +32,7 @@ body {font:11px Verdana,Arial; background:#fff url(@contextpath@/image/bg.gif) r
 #tablelocation div {float:left; margin-left:15px}
 .page {margin-top:2px; font-style:italic}
 #selectedrow td {background:#c6d5e1}
-
+textarea[name="content"] {font-size:14pt;}
 input[type=submit] {padding: 6px 8px;}
 input[type=file] {padding: 6px 8px;}
 
