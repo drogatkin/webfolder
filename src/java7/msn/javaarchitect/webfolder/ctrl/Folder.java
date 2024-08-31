@@ -1070,7 +1070,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 							if (isZip(p.getFileName().toString())) {
 								result.transPath = p;
 								try {
-									fs = FileSystems.newFileSystem(result.transPath, null);
+									fs = FileSystems.newFileSystem(result.transPath, (ClassLoader)null);
 									result.reqPath = result.transPath.toString();
 								} catch(ProviderNotFoundException pnfe) {
 									System.out.printf("File system not found for %s at %s%n" ,result.transPath, pnfe);

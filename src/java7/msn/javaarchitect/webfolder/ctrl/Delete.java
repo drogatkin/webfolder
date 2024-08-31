@@ -22,9 +22,10 @@ import com.beegman.webbee.block.Message;
  */
 public class Delete extends Message {
 
-	static final String PATH_SEPARATOR = "\\?";
+	static final String PATH_SEPARATOR = "\t";
 	@Override
 	protected void doApprovedAction() {
+	    //log("Payload :%s", null, getParameterValue("payload", "", 0));
 		String[] selection = getParameterValue("payload", "", 0).split(
 				PATH_SEPARATOR);
 		if (selection.length == 0)
@@ -105,6 +106,6 @@ public class Delete extends Message {
 	@Override
 	protected String getPayload() {
 		return DataConv.arrayToString(req.getParameterValues("files"),
-				PATH_SEPARATOR.charAt(1));
+				PATH_SEPARATOR.charAt(0));
 	}
 }
