@@ -1,5 +1,5 @@
 # a rustbee script to build webfolder 
-
+# it requires RustBee v 1.04.05 or better
 project =webfolder
 "build_directory" = ./bin
 source_directory ="src/java7"
@@ -11,8 +11,10 @@ resources ="${domain}.${project}.resources"
 manifestf =""
 main_class= "${domain}.${project}.Main"
 
+include(../rust_util/src/script/common-java.7b)
+
 websocket jar=${build_directory}/.temp_repo/javax.websocket-api-1.1.jar
-servlet jar=${build_directory}/.temp_repo/javax.servlet-api-3.1.0.jar
+servlet jar=${build_directory}/.temp_repo/javax.servlet-api-4.0.1.jar
 
 aldan3_home="/home/dmitriy/projects/aldan3"
 aldan3=${aldan3_home}${~separator~}build${~separator~}aldan3.jar
@@ -23,7 +25,7 @@ cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}
 
 target clean {
     dependency {true}
-    exec rm  (
+    rm (
         -r,
         ${build_directory}/${domain},
         ${build_directory}/${build_file}
@@ -37,7 +39,7 @@ target dep_dir {
      }
    }
    display(Dir ${build_directory}${~separator~}.temp_repo -p)
-   exec mkdir (
+   mkdr (
         -p,
         ${build_directory}${~separator~}.temp_repo
    )
@@ -54,7 +56,6 @@ target get_deps {
      }
    }
    }
-   {
       if {
        eq {
           timestamp(websocket jar)
@@ -76,7 +77,7 @@ target get_deps {
           timestamp(servlet jar)
        }
        then {
-         servlet_api="javax.servlet:javax.servlet-api:3.1.0":rep-maven
+         servlet_api="javax.servlet:javax.servlet-api:4.0.1":rep-maven
          as_url(servlet_api)
          exec wget (
            ~~, 
@@ -85,36 +86,33 @@ target get_deps {
          )
       }
    }
-  }
 }
 
 target compile:. {
    dependency {
-     dependency {
-          target(get_deps)
-      }
        or {
               newerthan(${source_directory}/.java,${build_directory}/.class)
        }
    }
-   {
-        display(Compiling Java 7+ src ...)
-       newerthan(${source_directory}/.java,${build_directory}/.class)
-       assign(main src,~~)
-       exec javac (
-         -d,
-         ${build_directory},
-        -classpath,
-         ${cp},
-         main src
-       )     
-      if {
-         neq(${~~}, 0)
-         then {
-            panic("Compilation error(s)")
-         }
-     }
+   dependency {
+          target(get_deps)
    }
+    display(Compiling Java nio src ...)
+   newerthan(${source_directory}/.java,${build_directory}/.class)
+   assign(main src,~~)
+   exec javac (
+     -d,
+     ${build_directory},
+    -classpath,
+     ${cp},
+     main src
+   )     
+  if {
+     neq(${~~}, 0)
+     then {
+        panic("Compilation error(s)")
+     }
+ }
 }
 
 target jar {
@@ -125,15 +123,14 @@ target jar {
           target(compile)
       }
      
-     {    display(Jarring ${build_file} ...)
-          exec jar (
-            -cf,
-            ${build_directory}/${build_file},
-            -C,
-            ${build_directory},
-            ${domain}
-          )
-     }
+      display(Jarring ${build_file} ...)
+      exec jar (
+        -cf,
+        ${build_directory}/${build_file},
+        -C,
+        ${build_directory},
+        ${domain}
+      )
 }
 
 target test {
@@ -142,11 +139,34 @@ target test {
      }
      dependency {
          true }
-     {    display(Testing ${build_file} ...)
-          exec java (
-            -cp,
-            ${cp},
-            msn.javaarchitect.webfolder.ctrl.Folder
-         )
+     display(Testing ${build_file} ...)
+      exec java (
+        -cp,
+        ${cp},
+        msn.javaarchitect.webfolder.ctrl.Folder
+     )
+}
+
+target war {
+	dependency {
+          target(jar)
+   }
+   dependency {
+      or {
+       anynewer(bin/${war_file},src/view/*)
+       anynewer(bin/${war_file},src/html/*)
+       anynewer(bin/${war_file},src/cfg/*)
+       anynewer(bin/${war_file},src/js/*)
      }
+   }
+   display(Preparing ${war_file})
+   zip(bin/${war_file},
+   -B WEB-INF,src/cfg/web.xml
+   )
+}
+
+target deploy {
+	dependency {
+          target(war)
+   }
 }
