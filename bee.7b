@@ -161,7 +161,22 @@ target war {
    }
    display(Preparing ${war_file})
    zip(bin/${war_file},
-   -B WEB-INF,src/cfg/web.xml
+   -B WEB-INF,src/cfg/web.xml,
+   -C WEB-INF/classes/${domain},${build_directory}${~/~}${domain},
+   -B WEB-INF/lib,${aldan3_home}${~/~}build${~/~}aldan3.jar,
+   -B WEB-INF/lib,${aldan3_home}-jdo${~/~}build${~/~}aldan3-jdo.jar,
+   -B WEB-INF/lib,${webbee},
+   -B WEB-INF/config,src${~/~}cfg${~/~}*.properties,
+   -B WEB-INF/view,src${~/~}view${~/~}*.htmt,
+   -B WEB-INF/view,src${~/~}view${~/~}*.txt,
+   -B WEB-INF/view/insert,src${~/~}view${~/~}insert${~/~}*.htmt,
+   -B WEB-INF/view/background,src${~/~}view${~/~}background${~/~}*.htmt,
+   -B WEB-INF/view/mobile,src${~/~}view${~/~}mobile${~/~}*.htmt,
+   -B image,src${~/~}3rd_party${~/~}image${~/~}*.gif,
+   -B image,src${~/~}image${~/~}*.png,
+   -B,src${~/~}image${~/~}favicon.ico,
+   -B js,src${~/~}js${~/~}*.js,
+   -B css,src${~/~}html${~/~}style.css
    )
 }
 
