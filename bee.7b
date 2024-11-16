@@ -1,5 +1,5 @@
 # a rustbee script to build webfolder 
-# it requires RustBee v 1.04.05 or better
+# it requires RustBee v 1.12.01 or better
 project =webfolder
 "build_directory" = ./bin
 source_directory ="src/java7"
@@ -10,6 +10,7 @@ war_file ="${project}.war"
 resources ="${domain}.${project}.resources"
 manifestf =""
 main_class= "${domain}.${project}.Main"
+TJWS_HOME=../TJWS2
 
 include(../rust_util/src/script/common-java.7b)
 
@@ -19,7 +20,8 @@ servlet jar=${build_directory}/.temp_repo/javax.servlet-api-4.0.1.jar
 aldan3_home="/home/dmitriy/projects/aldan3"
 aldan3=${aldan3_home}${~separator~}build${~separator~}aldan3.jar
 aldan3-jdo=${aldan3_home}-jdo${~separator~}build${~separator~}aldan3-jdo.jar
-webbee="/home/dmitriy/projects/Webbee/build/out/webbee.jar"
+webbee_home=/home/dmitriy/projects/Webbee
+webbee="${webbee_home}/build/out/webbee.jar"
 
 cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}${~path_separator~}${aldan3-jdo}${~path_separator~}${webbee}${~path_separator~}${build_directory}
 
@@ -153,30 +155,41 @@ target war {
    }
    dependency {
       or {
-       anynewer(bin/${war_file},src/view/*)
-       anynewer(bin/${war_file},src/html/*)
-       anynewer(bin/${war_file},src/cfg/*)
-       anynewer(bin/${war_file},src/js/*)
+       anynewer(src/view/*,${build_directory}/${war_file})
+       anynewer(src/html/*,${build_directory}/${war_file})
+       anynewer(src/cfg/*,${build_directory}/${war_file})
+       anynewer(src/js/*,${build_directory}/${war_file})
+       anynewer(${webbee_home}${~/~}src${~/~}*,${build_directory}/${war_file})
+       anynewer(bee.7b,${build_directory}/${war_file})
      }
    }
    display(Preparing ${war_file})
-   zip(bin/${war_file},
+   zip(${build_directory}${~/~}${war_file},
    -B WEB-INF,src/cfg/web.xml,
    -C WEB-INF/classes/${domain},${build_directory}${~/~}${domain},
    -B WEB-INF/lib,${aldan3_home}${~/~}build${~/~}aldan3.jar,
    -B WEB-INF/lib,${aldan3_home}-jdo${~/~}build${~/~}aldan3-jdo.jar,
    -B WEB-INF/lib,${webbee},
    -B WEB-INF/config,src${~/~}cfg${~/~}*.properties,
-   -B WEB-INF/view,src${~/~}view${~/~}*.htmt,
-   -B WEB-INF/view,src${~/~}view${~/~}*.txt,
-   -B WEB-INF/view/insert,src${~/~}view${~/~}insert${~/~}*.htmt,
-   -B WEB-INF/view/background,src${~/~}view${~/~}background${~/~}*.htmt,
-   -B WEB-INF/view/mobile,src${~/~}view${~/~}mobile${~/~}*.htmt,
+   -C WEB-INF/view,src${~/~}view${~/~}*.htmt,
+   -C WEB-INF/view,src${~/~}view${~/~}*.txt,
    -B image,src${~/~}3rd_party${~/~}image${~/~}*.gif,
    -B image,src${~/~}image${~/~}*.png,
    -B,src${~/~}image${~/~}favicon.ico,
    -B js,src${~/~}js${~/~}*.js,
-   -B css,src${~/~}html${~/~}style.css
+   -B css,src${~/~}html${~/~}style.css,
+   -B,src${~/~}html${~/~}*.html,
+   -B,src${~/~}html${~/~}*.jsp,
+   -B,src${~/~}html${~/~}*.json,
+   -B js,src/3rd_party/js/*.js,
+   -B sound,src${~/~}sound${~/~}*.ogg,
+   -B js,src${~/~}3rd_party${~/~}ace${~/~}*.js,
+   # merging webbee
+   -B WEB-INF/text,${webbee_home}${~/~}src${~/~}res${~/~}text${~/~}*.properties,
+   -C WEB-INF/view,${webbee_home}${~/~}src${~/~}res${~/~}template${~/~}*.htmt,
+   -B js,${webbee_home}${~/~}src${~/~}js${~/~}*.js,
+   -B css,${webbee_home}${~/~}src${~/~}res${~/~}css${~/~}*.css,
+   -B image,${webbee_home}${~/~}src${~/~}res${~/~}image${~/~}*.gif
    )
 }
 
@@ -184,4 +197,11 @@ target deploy {
 	dependency {
           target(war)
    }
+   dependency {
+      or {
+       anynewer(${build_directory}${~/~}${war_file},${TJWS_HOME}/1.x/webapps/${war_file})
+       }
+    }
+    display(Deploying ${build_directory}/${war_file} ...)
+    cp(${build_directory}/${war_file},${TJWS_HOME}/1.x/webapps)
 }
