@@ -27,11 +27,11 @@ cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}
 
 target clean {
     dependency {true}
-    rm (
-        -r,
-        ${build_directory}/${domain},
-        ${build_directory}/${build_file}
-    )
+    files(${build_directory}/${build_file}, ${build_directory}/${war_file}, ${build_directory}/${domain}/*.class/)
+    #assign(files,~~)
+    for file:~~ {
+    	rm (file)
+    }
 }
 
 target dep_dir {
