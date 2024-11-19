@@ -8,10 +8,10 @@ As a software professional I always need to manage more than one computer and it
 very common running different OSes and platforms on different hardware. 
 I am not a big fan of command line tools however I am not a big fan of GUI either.
 
->My favorite tool is the FAR file manager which generally works well even across network, 
+>My favorite tool is the [FAR file manager](https://github.com/FarGroup/FarManager) which is generally works well even across network, 
 but you still need to manage to install some ftp server to make access more unified. 
 So finally I came to an idea utilize web browser. Mostly every imaginable platform can run it, 
-so only one part was under question is server side. 
+so only one part was under question is the server side. 
  
 Certainly I do not have luxury to install a full blown app server to run a certain 
 server side program as PHP or Python module, and even Node.js. Using Java servlets brings you even 
@@ -87,6 +87,11 @@ The current version is 1.9.
 
 ## Download
 Feel free to download **webfolder** from [SourceForge](https://sourceforge.net/projects/webfolder/files/webfolder-releases/) site.
+
+## Build
+
+You can build it youself and customize as needed. I use [7Bee](https://github.com/drogatkin/7bee), or if you do not like Java,
+then [RustBee](https://gitlab.com/tools6772135/rusthub/-/tree/master). You need to step in the build directory to use 7Bee.
 
 ## Screens
 

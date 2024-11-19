@@ -28,7 +28,6 @@ cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}
 target clean {
     dependency {true}
     files(${build_directory}/${build_file}, ${build_directory}/${war_file}, ${build_directory}/${domain}/*.class/)
-    #assign(files,~~)
     for file:~~ {
     	rm (file)
     }
@@ -163,7 +162,7 @@ target war {
        anynewer(bee.7b,${build_directory}/${war_file})
      }
    }
-   display(Preparing ${war_file})
+   display(Preparing ${war_file} on ${~os~})
    zip(${build_directory}${~/~}${war_file},
    -B WEB-INF,src/cfg/web.xml,
    -C WEB-INF/classes/${domain},${build_directory}${~/~}${domain},
