@@ -1,4 +1,6 @@
 {".js":"ace/mode/javascript",".java":"ace/mode/java",".xml":"ace/mode/xml", ".html":"ace/mode/html",
 ".jsp":"ace/mode/jsp",".bat":"ace/mode/batchfile",".c":"ace/mode/c_cpp",".cpp":"ace/mode/c_cpp",".diff":"ace/mode/diff",
 ".json":"ace/mode/json", ".properties":"ace/mode/properties",".h":"ace/mode/c_cpp", ".htmt":"ace/mode/html",".swift":"ace/mode/swift",
-".kt":"ace/mode/kotlin",".rs":"ace/mode/rust",".pas":"ace/mode/pascal"}    
+".kt":"ace/mode/kotlin",".rs":"ace/mode/rust",".pas":"ace/mode/pascal",
+    ".7b":"ace/mode/textfile"
+}    
