@@ -169,6 +169,7 @@ target war {
    -B WEB-INF/lib,${aldan3_home}${~/~}build${~/~}aldan3.jar,
    -B WEB-INF/lib,${aldan3_home}-jdo${~/~}build${~/~}aldan3-jdo.jar,
    -B WEB-INF/lib,${webbee},
+   -B WEB-INF/lib,bin${~/~}android-compat.jar,
    -B WEB-INF/config,src${~/~}cfg${~/~}*.properties,
    -C WEB-INF/view,src${~/~}view${~/~}*.htmt,
    -C WEB-INF/view,src${~/~}view${~/~}*.txt,
@@ -198,7 +199,7 @@ target deploy {
    }
    dependency {
       or {
-       anynewer(${build_directory}${~/~}${war_file},${TJWS_HOME}/1.x/webapps/${war_file})
+       anynewer(${build_directory}${~/~}${war_file},${TJWS_HOME}${~/~}1.x${~/~}webapps-test${~/~}${war_file})
        }
     }
     cp(${build_directory}${~/~}${war_file},${TJWS_HOME}${~/~}1.x${~/~}webapps-test)
