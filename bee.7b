@@ -1,7 +1,7 @@
 # a rustbee script to build webfolder 
 # it requires RustBee v 1.12.01 or better
 project =webfolder
-"build_directory" = ./bin
+"build_directory" = .${~/~}bin
 source_directory ="src/java7"
 doc_directory=doc
 build_file ="${project}.jar"
@@ -10,18 +10,18 @@ war_file ="${project}.war"
 resources ="${domain}.${project}.resources"
 manifestf =""
 main_class= "${domain}.${project}.Main"
-TJWS_HOME=../TJWS2
+TJWS_HOME=..${~/~}TJWS
 
-include(../rust_util/src/script/common-java.7b)
+include(../rusthub/src/script/common-java.7b)
 
 websocket jar=${build_directory}/.temp_repo/javax.websocket-api-1.1.jar
 servlet jar=${build_directory}/.temp_repo/javax.servlet-api-4.0.1.jar
 
-aldan3_home="/home/dmitriy/projects/aldan3"
+aldan3_home="..${~/~}aldan3"
 aldan3=${aldan3_home}${~separator~}build${~separator~}aldan3.jar
 aldan3-jdo=${aldan3_home}-jdo${~separator~}build${~separator~}aldan3-jdo.jar
-webbee_home=/home/dmitriy/projects/Webbee
-webbee="${webbee_home}/build/out/webbee.jar"
+webbee_home=..${~/~}Webbee
+webbee="${webbee_home}${~/~}build${~/~}out${~/~}webbee.jar"
 
 cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}${~path_separator~}${aldan3-jdo}${~path_separator~}${webbee}${~path_separator~}${build_directory}
 
@@ -39,9 +39,8 @@ target dep_dir {
         timestamp(${build_directory}${~separator~}.temp_repo)
      }
    }
-   display(Dir ${build_directory}${~separator~}.temp_repo -p)
-   mkdr (
-        -p,
+   display(Dir ${build_directory}${~separator~}.temp_repo)
+   mkd (
         ${build_directory}${~separator~}.temp_repo
    )
 }
@@ -57,6 +56,7 @@ target get_deps {
      }
    }
    }
+   dependency { target(dep_dir) }
       if {
        eq {
           timestamp(websocket jar)
@@ -201,6 +201,6 @@ target deploy {
        anynewer(${build_directory}${~/~}${war_file},${TJWS_HOME}/1.x/webapps/${war_file})
        }
     }
-    display(Deploying ${build_directory}/${war_file} ...)
-    cp(${build_directory}/${war_file},${TJWS_HOME}/1.x/webapps)
+    cp(${build_directory}${~/~}${war_file},${TJWS_HOME}${~/~}1.x${~/~}webapps-test)
+    display(Deploying ${build_directory}${~/~}${war_file} ... --> ${~~})
 }
