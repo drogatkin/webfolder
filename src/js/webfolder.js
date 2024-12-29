@@ -8,7 +8,8 @@
                document.forms.folder.elements.files[el].parentNode.parentNode.style.display !== "none")
               document.forms.folder.elements.files[el].checked =
                  document.forms.folder.elements.files[el].checked == false;
-               }
+            }
+        selChange()
     }
 
     var uplProgr = false;

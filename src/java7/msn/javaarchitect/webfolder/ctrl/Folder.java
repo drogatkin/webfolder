@@ -90,6 +90,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	
 	public static final String CLIPBOARD_TOPFOLDER = CLIPBOARD+TOPFOLDER;
 	
+	public static final String OS_RE_SLASH = File.separator.charAt(0) == '\\'? "\\"+File.separator:File.separator;
+	
 	static final String DEF_CHARSET = CharSet.UTF8;
 	
 	static final String ZIP_EXT[] = {".zip", ".war", ".jar", ".apk", ".ipa", ".odt", ".ods", ".odp" };
@@ -143,7 +145,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 						+" / "+DataConv.toStringInUnits(total) + "(" + count + ")"); 
 			}
 		} catch (Exception ioe) {
-			//log("", ioe);
+			log("Problem getting tabular data:", ioe);
 			//getResult("" + ioe);
 			modelInsert(Variable.ERROR, ioe);
 			/*if (req.getPathInfo().endsWith("/favicon.ico")) {
@@ -297,8 +299,11 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 					if (clipTopFolder == null)
 						clipTopFolder = getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator());
 					for (String from : selection) {
+					    // adjust separators (probably do it on stage of getting to clipboard)
+					    from = adjustSeparators(from);
 						try {
-							// if (from.indexOf("..") < 0) sanity already done when
+							if (priv_debug)
+					        	System.out.printf("Copy from %s to %s%n", from, path);
 							// placed in clipboard
 							copy(clipTopFolder, from, path); // TODO check if decode required
 						} catch (IOException ioe) {
@@ -446,7 +451,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		if (webPath == null)
 			webPath = "/";
 		FileSystem defFS = FileSystems.getDefault();
-		Path path = defFS.getPath(webPath.replace('/', defFS.getSeparator().charAt(0)));
+		Path path = defFS.getPath(adjustSeparators(webPath));
 
 		pageModel.put("file", path.getFileName());
 		path = path.getParent();
@@ -956,7 +961,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	public Webelement[] splitPath(String path) {
 		if (path == null)
 			return new Webelement[0]; // null can be good as well
-		String[] paths = path.split(File.separatorChar == '\\' ? "\\\\" : "" + File.separatorChar);
+		String[] paths = path.split(OS_RE_SLASH);
 		Webelement[] result = new Webelement[paths.length == 0 ? 1 : paths.length];
 		result[0] = new Webelement();
 		result[0].name = getConfigValue(TOPFOLDER, FileSystems.getDefault().getSeparator());
@@ -977,7 +982,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		if (path == null)
 			return null;
 		try {
-			String[] paths = path.split(File.separatorChar == '\\' ? "\\\\" : "" + File.separatorChar);
+			String[] paths = path.split(OS_RE_SLASH);
 			path = "";
 			for (String part : paths) {
 				if (part.length() == 0)
@@ -1041,6 +1046,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		char psc = fs.getSeparator().charAt(0);
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
+		// ajust separators
+		sp = adjustSeparators(sp);
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
@@ -1056,7 +1063,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		if (priv_debug)
 			System.out.printf("common %s --- %s parts %b%n", sp, result.reqPath, partsOfDir);
 		if (!partsOfDir) {
-			String[] begParts = sp.split("/");
+			String[] begParts = sp.split(OS_RE_SLASH);
 			sanitize(begParts);
 			String[] zipParts = new String[0];			// find first zip in the path
 			do {
@@ -1117,12 +1124,11 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 			result.transPaths = new Path[webPaths.length];
 			//result.transPaths [0] = fs.getPath("/", zipParts);
 			for(int i=0; i<webPaths.length;i++) {
-				String parts[] = webPaths[i].split("/");
-				//System.out.printf("Parts %d of %s%n", parts.length, Arrays.toString(parts));
+				String parts[] = adjustSeparators(webPaths[i]).split(OS_RE_SLASH);
+				//System.out.printf("->part %d of %s%n", parts.length, Arrays.toString(parts));
 				parts = Arrays.copyOfRange(parts, begParts.length, parts.length); // can be an exception
-				//System.out.printf("Zip parts are %s after inserting %s%n",
 				sanitize(parts);
-				result.transPaths [i] = fs.getPath("/", parts);
+				result.transPaths [i] = fs.getPath(File.separator, parts);
 				if (i == 0)
 					result.transPath = result.transPaths [i];
 			}
