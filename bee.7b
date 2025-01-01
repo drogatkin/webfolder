@@ -183,6 +183,7 @@ target war {
    -B,src${~/~}html${~/~}*.json,
    -B js,src/3rd_party/js/*.js,
    -B sound,src${~/~}sound${~/~}*.ogg,
+   -B sound,src${~/~}sound${~/~}*.mp3,
    -B js,src${~/~}3rd_party${~/~}ace${~/~}*.js,
    # merging webbee
    -B WEB-INF/text,${webbee_home}${~/~}src${~/~}res${~/~}text${~/~}*.properties,
