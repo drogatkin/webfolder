@@ -400,10 +400,6 @@
          <parameter type="path">src/css/*.css</parameter-->
          <parameter>A js/</parameter>
          <parameter type="path">src/3rd_party/js/*.js</parameter>
-         <parameter>A sound/</parameter>
-         <parameter type="path">src/sound/*.ogg</parameter>
-         <parameter>A sound/</parameter>
-         <parameter type="path">src/sound/*.mp3</parameter>
 
          <!--   Webbbee resources to avoid overwriting  -->
          <parameter>A WEB-INF/view/insert</parameter>
