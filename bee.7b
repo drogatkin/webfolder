@@ -104,6 +104,7 @@ target compile:. {
    exec javac (
      -d,
      ${build_directory},
+     -source,8,-target,8,
     -classpath,
      ${cp},
      main src
