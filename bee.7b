@@ -27,7 +27,7 @@ cp=${servlet jar}${~path_separator~}${websocket jar}${~path_separator~}${aldan3}
 
 target clean {
     dependency {true}
-    files(${build_directory}/${build_file}, ${build_directory}/${war_file})
+    files(${build_directory}${~/~}${build_file}, ${build_directory}${~/~}${war_file},${build_directory}${~/~}android-compat.jar)
     for file:~~ {
     	rm (file)
     }

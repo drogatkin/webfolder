@@ -93,6 +93,10 @@ Feel free to download **webfolder** from [SourceForge](https://sourceforge.net/p
 You can build it youself and customize as needed. I use [7Bee](https://github.com/drogatkin/7bee), or if you do not like Java,
 then [RustBee](https://gitlab.com/tools6772135/rusthub/-/tree/master). You need to step in the build directory to use 7Bee.
 
+## Troubleshoot
+1. Console may not work at initial deploying the webfolder. It's issued that the console code reads autentication data
+from file which can be not established yet. Open the admin screen and press Apply. Now the console will work.
+
 ## Screens
 
 ![a directory view](https://github.com/drogatkin/webfolder/blob/master/doc/screen%20shot1.png?raw=true)
