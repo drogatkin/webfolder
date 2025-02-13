@@ -41,7 +41,7 @@
     <td id="td_@element.name@" fileName="@element.name@" ondblclick="renameFile(this.id, @element.folder{@true(true)@@(false)@}@)">@element.folder{@true(<a href="@request.getContextPath*()*@@request.getServletPath*()*@/Folder@msn.javaarchitect.webfolder.ctrl.Folder.webPath*(@element.path@)*@">)@ }@
         @element.name@@element.folder{@true(</a>)@}@</td>
     <td style="text-align:right">@element.size@</td>
-    <td>@element.last_mod@</td>
+    <td style="text-align:right">@element.last_mod@</td>
     <td style="text-align:center;font-family:Monospace;cursor:pointer" title="@element.owner@" onclick="updateAttrs(this,'@^element.path@', '@element.permissions@')">@element.permissions@</td>
   </tr>)@
   </tbody>

@@ -14,18 +14,6 @@ public class Behavior extends BaseBehavior {
 	}
 	
 	public static String year() {
-		if (getVersion() < 8) 
-			return "2024";
 		return Year.now().toString();
-	}
-	
-	private static int getVersion() {
-	    String version = System.getProperty("java.version");
-	    if(version.startsWith("1.")) {
-	        version = version.substring(2, 3);
-	    } else {
-	        int dot = version.indexOf(".");
-	        if(dot != -1) { version = version.substring(0, dot); }
-	    } return Integer.parseInt(version);
 	}
 }
