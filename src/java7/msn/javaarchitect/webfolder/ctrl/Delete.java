@@ -12,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
 import org.aldan3.util.DataConv;
+import org.aldan3.util.inet.HttpUtils;
 
 import com.beegman.webbee.block.Message;
 
@@ -99,7 +100,7 @@ public class Delete extends Message {
 	@Override
 	protected String getMessage() {
 		return "<pre>Please confirm that the following files will be deleted:?"
-				+ DataConv.arrayToString(req.getParameterValues("files"), '\n')
+				+ HttpUtils.htmlEncode(DataConv.arrayToString(req.getParameterValues("files"), '\n'))
 				+ "</pre>";
 	}
 
