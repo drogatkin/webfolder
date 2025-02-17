@@ -1047,7 +1047,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
 		// ajust separators
-		sp = adjustSeparators(sp);
+		// TODO investigate if the call needed
+		//sp = adjustSeparators(sp);
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
@@ -1186,7 +1187,7 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	public static void sanitize(String[] parts) throws IOException {
 		for (String part: parts)
 			if (part.equals(".") || part.equals(".."))
-				throw new IOException("Invalid path element with dots");
+				throw new IOException("Invalid path element with dots(.,..)");
 	}
 	
 	// these methods have to be parts of util
