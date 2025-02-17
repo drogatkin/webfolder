@@ -419,6 +419,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 	
 	static String adjustSeparators(String pathName) {
 		char separatorChar = FileSystems.getDefault().getSeparator().charAt(0);
+	//	if (separatorChar == '\\')
+		//    return pathName.replace(separatorChar, '/');
 		if (separatorChar != '\\')
 			pathName = pathName.replace('\\', separatorChar);
 		else
@@ -1047,8 +1049,8 @@ public class Folder extends Tabular <Collection<Folder.Webfile>, AppModel> {
 		result.reqPath = "";
 		String sp = getLongestBegining(webPaths);
 		// ajust separators
-		// TODO investigate if the call needed
-		//sp = adjustSeparators(sp);
+		if (File.separator.charAt(0) == '\\') // TODO need to investigate the conditio
+		    sp = adjustSeparators(sp);
 		boolean partsOfDir = false;
 		if (sp.isEmpty() == false) {
 			Path p = fs.getPath(topPath, sp);
